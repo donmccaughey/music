@@ -19,7 +19,14 @@ clean :
 
 python_files := \
 	src/music.py \
-	src/music_test.py
+	src/music_test.py \
+	\
+	src/cuesheet/__init__.py \
+	src/cuesheet/cuesheet.py \
+	src/cuesheet/file.py \
+	src/cuesheet/index.py \
+	src/cuesheet/index_test.py \
+	src/cuesheet/track.py
 
 source_files := $(filter-out %_test.py, $(python_files))
 
