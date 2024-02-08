@@ -1,0 +1,4 @@
+[run]
+branch = True
+include = src/**/*
+omit = src/**/*_test.py
