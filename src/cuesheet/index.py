@@ -1,23 +1,37 @@
 from dataclasses import dataclass
-
+from typing import Union
 
 @dataclass
 class Index:
+    number: int
     minutes: int
     seconds: int
     frames: int
 
     @staticmethod
-    def parse(index: str) -> tuple[int, 'Index'] | None:
-        parts = [part for part in index.split() if part]
-        if len(parts) != 3:
+    def parse(index_string: str) -> Union['Index', None]:
+        tokens = to_tokens(index_string)
+        if len(tokens) != 3:
             return None
-        if parts[0].upper() != 'INDEX':
+
+        if tokens[0].upper() != 'INDEX':
             return None
-        # todo remove zero padding
-        i = int(parts[1])
-        hours, minutes, frames = [int(time) for time in parts[2].split(':')]
-        return (
-            i,
-            Index(hours, minutes, frames)
-        )
+        if tokens[1].isdigit():
+            number = int(tokens[1])
+        else:
+            return None
+        times = to_ints(tokens[2], ':')
+        if len(times) != 3:
+            return None
+
+        minutes, seconds, frames = times
+        # TODO: validate ranges
+        return Index(number, minutes, seconds, frames)
+
+
+def to_ints(s: str, separator: str) -> list[int]:
+    return [int(token) for token in s.split(separator) if token.isdigit()]
+
+
+def to_tokens(s: str) -> list[str]:
+    return [token for token in s.split() if token]
