@@ -1,5 +1,7 @@
 from dataclasses import dataclass
-from typing import Union
+from typing import Optional
+from .parse import to_ints, to_tokens
+
 
 @dataclass
 class Index:
@@ -9,8 +11,8 @@ class Index:
     frames: int
 
     @staticmethod
-    def parse(index_string: str) -> Union['Index', None]:
-        tokens = to_tokens(index_string)
+    def parse(index: str) -> Optional['Index']:
+        tokens = to_tokens(index)
         if len(tokens) != 3:
             return None
 
@@ -27,11 +29,3 @@ class Index:
         minutes, seconds, frames = times
         # TODO: validate ranges
         return Index(number, minutes, seconds, frames)
-
-
-def to_ints(s: str, separator: str) -> list[int]:
-    return [int(token) for token in s.split(separator) if token.isdigit()]
-
-
-def to_tokens(s: str) -> list[str]:
-    return [token for token in s.split() if token]

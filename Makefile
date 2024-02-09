@@ -26,6 +26,9 @@ python_files := \
 	src/cuesheet/file.py \
 	src/cuesheet/index.py \
 	src/cuesheet/index_test.py \
+	src/cuesheet/parse.py \
+	src/cuesheet/performer.py \
+	src/cuesheet/performer_test.py \
 	src/cuesheet/track.py
 
 source_files := $(filter-out %_test.py, $(python_files))

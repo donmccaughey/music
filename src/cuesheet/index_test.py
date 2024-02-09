@@ -20,6 +20,7 @@ def test_index_parse(index_string, expected_number, expected_minutes, expected_s
 
 
 @pytest.mark.parametrize('index_string', [
+    'INDEX: 01 00:00:00'
     'INDE 01 00:00:00',
     'INDEX 01 ',
     'INDEX 00:00:00',
@@ -27,6 +28,8 @@ def test_index_parse(index_string, expected_number, expected_minutes, expected_s
     'INDEX xx 04:20:38',
     'INDEX 01 09:21',
     'INDEX 01 09:21:xx',
+    '   ',
+    '',
 ])
 def test_index_parse_failure(index_string):
     index = Index.parse(index_string)
