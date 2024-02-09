@@ -11,8 +11,8 @@ class Index:
     frames: int
 
     @staticmethod
-    def parse(index: str) -> Optional['Index']:
-        tokens = to_tokens(index)
+    def parse(statement: str) -> Optional['Index']:
+        tokens = to_tokens(statement)
         if len(tokens) != 3:
             return None
 

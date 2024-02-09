@@ -29,6 +29,8 @@ python_files := \
 	src/cuesheet/parse.py \
 	src/cuesheet/performer.py \
 	src/cuesheet/performer_test.py \
+	src/cuesheet/title.py \
+	src/cuesheet/title_test.py \
 	src/cuesheet/track.py
 
 source_files := $(filter-out %_test.py, $(python_files))

@@ -18,8 +18,10 @@ def test_performer_parse_fails(performer_string, expected_name):
 
 @pytest.mark.parametrize('performer_string', [
     'PERFORMER: "Alice"',
-    'ERFORMER "Bob"',
-    '"Carlos"',
+    'PERFORMER Bob"',
+    'PERFORMER "Carlos',
+    'ERFORMER "Davina"',
+    '"Ed"',
     '   ',
     '',
 ])
