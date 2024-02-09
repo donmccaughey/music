@@ -35,10 +35,6 @@ test_files := $(filter %_test.py, $(python_files))
 
 $(TMP)/.coverage : \
 		.coveragerc \
-		$(source_files) \
-		$(test_files) \
-		$(TMP)/pip-install-requirements.stamp.txt \
-		$(TMP)/pip-install-requirements-dev.stamp.txt \
 		$(TMP)/mypy.stamp.txt \
 		| $$(dir $$@)
 	rm -rf "$(TMP)/coverage"
@@ -53,6 +49,9 @@ $(TMP)/.coverage : \
 
 $(TMP)/mypy.stamp.txt : \
 		.mypy.ini \
+		$(source_files) \
+		$(test_files) \
+		$(TMP)/pip-install-requirements.stamp.txt \
 		$(TMP)/pip-install-requirements-dev.stamp.txt
 	python3 -m mypy --check-untyped-defs src
 	date > $@
