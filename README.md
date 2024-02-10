@@ -9,6 +9,8 @@
 [4]: https://codecov.io/gh/donmccaughey/music/branch/main/graph/badge.svg?token=z4oPGYrhtM
 [5]: https://codecov.io/gh/donmccaughey/music
 
+[docs](docs/README.md)
+
 
 ## Development Setup
 
