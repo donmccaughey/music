@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from .cuesheet import CueSheet
 
 
@@ -7,6 +9,8 @@ def test_cue_sheet_parse():
     assert cue_sheet.performer
     assert cue_sheet.performer.name == '3 Doors Down'
     # TODO: assert cue_sheet.title.title == 'Away From The Sun'
+    assert cue_sheet.file
+    assert cue_sheet.file.filename == Path('album.wav')
 
 
 CUE_SHEET1 = '''

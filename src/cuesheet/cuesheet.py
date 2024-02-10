@@ -34,6 +34,8 @@ class CueSheet:
                     pass
                 case Error():
                     pass
+                case File():
+                    cue_sheet.file = line
                 case Index():
                     pass
                 case Performer():

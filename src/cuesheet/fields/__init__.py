@@ -17,6 +17,7 @@ F = TypeVar('F', bound=Field)
 FieldType = Type[F]
 
 field_types: list[FieldType] = [
+    File,
     Index,
     Performer,
     Title,

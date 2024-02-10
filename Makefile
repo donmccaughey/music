@@ -30,6 +30,7 @@ python_files := \
 	src/cuesheet/fields/__init__.py \
 	src/cuesheet/fields/field.py \
 	src/cuesheet/fields/file.py \
+	src/cuesheet/fields/file_test.py \
 	src/cuesheet/fields/index.py \
 	src/cuesheet/fields/index_test.py \
 	src/cuesheet/fields/parse.py \

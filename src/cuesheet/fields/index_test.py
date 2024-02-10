@@ -13,7 +13,7 @@ from .index import Index
     ])
 def test_index_parse(index_string, expected_number, expected_minutes, expected_seconds, expected_frames):
     index = Index.parse(42, index_string)
-    assert index is not None
+    assert index
     assert index.line_number == 42
     assert index.line == index_string
     assert index.number == expected_number
@@ -36,4 +36,4 @@ def test_index_parse(index_string, expected_number, expected_minutes, expected_s
 ])
 def test_index_parse_failure(index_string):
     index = Index.parse(42, index_string)
-    assert index is None
+    assert not index
