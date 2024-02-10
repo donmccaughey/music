@@ -26,6 +26,7 @@ python_files := \
 	src/cuesheet/__init__.py \
 	src/cuesheet/cuesheet.py \
 	src/cuesheet/cuesheet_test.py \
+	src/cuesheet/parse.py \
 	\
 	src/cuesheet/fields/__init__.py \
 	src/cuesheet/fields/field.py \

@@ -1,14 +1,11 @@
-from typing import Type, TypeVar
-
-from .fields import Field
 from .fields import File
 from .fields import Index
 from .fields import Performer
 from .fields import Title
-from .fields.parse import to_tokens
 from .lines import Blank
 from .lines import Error
 from .lines import Line
+from .parse import parse_lines
 
 
 class CueSheet:
@@ -46,34 +43,3 @@ class CueSheet:
                 case _:
                     raise RuntimeError(f'Unsupported line type {line}')
         return cue_sheet
-
-
-def parse_lines(s: str) -> list[Line]:
-    return [parse_line(i + 1, line) for (i, line) in enumerate(s.splitlines())]
-
-
-P = TypeVar('P', bound=Field)
-Parser = Type[P]
-parsers: list[Parser] = [
-    Index,
-    Performer,
-    Title,
-]
-parser_map: dict[str, Parser] = {
-    parser.__name__.upper(): parser for parser in parsers
-}
-
-
-def parse_line(line_number: int, line: str) -> Line:
-    tokens = to_tokens(line)
-
-    if not tokens:
-        return Blank(line_number, line)
-
-    type_name = tokens[0]
-    if type_name in parser_map:
-        parser = parser_map[type_name]
-        statement = parser.parse(line_number, line)
-        return statement if statement else Error(line_number, line)
-
-    return Error(line_number, line)
