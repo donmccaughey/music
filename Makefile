@@ -26,17 +26,21 @@ python_files := \
 	src/cuesheet/__init__.py \
 	src/cuesheet/blank.py \
 	src/cuesheet/cuesheet.py \
+	src/cuesheet/cuesheet_test.py \
 	src/cuesheet/error.py \
-	src/cuesheet/field.py \
-	src/cuesheet/file.py \
-	src/cuesheet/index.py \
-	src/cuesheet/index_test.py \
-	src/cuesheet/parse.py \
-	src/cuesheet/performer.py \
-	src/cuesheet/performer_test.py \
-	src/cuesheet/title.py \
-	src/cuesheet/title_test.py \
-	src/cuesheet/track.py
+	src/cuesheet/line.py \
+	\
+	src/cuesheet/fields/__init__.py \
+	src/cuesheet/fields/field.py \
+	src/cuesheet/fields/file.py \
+	src/cuesheet/fields/index.py \
+	src/cuesheet/fields/index_test.py \
+	src/cuesheet/fields/parse.py \
+	src/cuesheet/fields/performer.py \
+	src/cuesheet/fields/performer_test.py \
+	src/cuesheet/fields/title.py \
+	src/cuesheet/fields/title_test.py \
+	src/cuesheet/fields/track.py
 
 source_files := $(filter-out %_test.py, $(python_files))
 
