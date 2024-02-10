@@ -4,6 +4,7 @@ from .blank import Blank
 from .error import Error
 from .file import File
 from .index import Index
+from .line import Line
 from .parse import to_tokens
 from .performer import Performer
 from .statement import Statement
@@ -12,6 +13,7 @@ from .title import Title
 
 class CueSheet:
     def __init__(self):
+        self.lines: list[Line] = []
         self.performer: Performer | None = None
         self.title: Title | None = None
         self.year: int | None = None
@@ -21,8 +23,9 @@ class CueSheet:
         self.comment: str | None = None
         self.file: File | None = None
 
-        self.errors: list[Error] = []
-        self.lines: list[Statement | Error] = []
+    @property
+    def errors(self) -> list[Error]:
+        return [line for line in self.lines if isinstance(line, Error)]
 
     @staticmethod
     def parse(s: str) -> 'CueSheet':
@@ -33,7 +36,7 @@ class CueSheet:
                 case Blank():
                     pass
                 case Error():
-                    cue_sheet.errors.append(line)
+                    pass
                 case Index():
                     pass
                 case Performer():
@@ -45,7 +48,7 @@ class CueSheet:
         return cue_sheet
 
 
-def parse_lines(s: str) -> list[Statement | Error]:
+def parse_lines(s: str) -> list[Line]:
     return [parse_line(i + 1, line) for (i, line) in enumerate(s.splitlines())]
 
 
@@ -61,7 +64,7 @@ parser_map: dict[str, Parser] = {
 }
 
 
-def parse_line(line_number: int, line: str) -> Statement | Error:
+def parse_line(line_number: int, line: str) -> Line:
     tokens = to_tokens(line)
 
     if not tokens:

@@ -1,7 +1,8 @@
-from .statement import Statement
+from dataclasses import dataclass
+
+from .line import Line
 
 
-class Error:
-    def __init__(self, line_number: int, cause: Statement | str):
-        self.line_number = line_number
-        self.cause = cause
+@dataclass
+class Error(Line):
+    pass
