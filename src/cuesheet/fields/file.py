@@ -22,6 +22,7 @@ class File(Field):
 
         if tokens[0].upper() != 'FILE':
             return None
+
         if tokens[1].startswith('"') and tokens[1].endswith('"'):
             filename = tokens[1][1:-1]
         else:

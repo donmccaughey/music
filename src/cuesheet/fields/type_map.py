@@ -6,6 +6,7 @@ from .file import File
 from .index import Index
 from .performer import Performer
 from .title import Title
+from .track import Track
 
 F = TypeVar('F', bound=Field)
 
@@ -16,6 +17,7 @@ types: list[FieldType] = [
     Index,
     Performer,
     Title,
+    Track,
 ]
 
 type_map: dict[str, FieldType] = {

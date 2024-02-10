@@ -40,6 +40,7 @@ python_files := \
 	src/cuesheet/fields/title.py \
 	src/cuesheet/fields/title_test.py \
 	src/cuesheet/fields/track.py \
+	src/cuesheet/fields/track_test.py \
 	src/cuesheet/fields/type_map.py \
 	\
 	src/cuesheet/fields/lines/__init__.py \

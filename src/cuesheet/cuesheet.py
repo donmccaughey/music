@@ -5,6 +5,7 @@ from .fields import Index
 from .fields import Line
 from .fields import Performer
 from .fields import Title
+from .fields import Track
 from .fields import parse_lines
 
 
@@ -34,14 +35,26 @@ class CueSheet:
                     pass
                 case Error():
                     pass
-                case File():
-                    cue_sheet.file = line
-                case Index():
-                    pass
-                case Performer():
-                    cue_sheet.performer = line
-                case Title():
-                    cue_sheet.title = line
+                case File() as file:
+                    cue_sheet.file = file
+                case Index() as index:
+                    assert cue_sheet.file
+                    cue_sheet.file.tracks[-1].indices.append(index)
+                case Performer() as performer:
+                    if cue_sheet.performer:
+                        assert cue_sheet.file
+                        cue_sheet.file.tracks[-1].performer = performer
+                    else:
+                        cue_sheet.performer = performer
+                case Title() as title:
+                    if cue_sheet.title:
+                        assert cue_sheet.file
+                        cue_sheet.file.tracks[-1].title = title
+                    else:
+                        cue_sheet.title = title
+                case Track() as track:
+                    assert cue_sheet.file
+                    cue_sheet.file.tracks.append(track)
                 case _:
                     raise RuntimeError(f'Unsupported line type {line}')
         return cue_sheet

@@ -8,9 +8,41 @@ def test_cue_sheet_parse():
     assert cue_sheet
     assert cue_sheet.performer
     assert cue_sheet.performer.name == '3 Doors Down'
-    # TODO: assert cue_sheet.title.title == 'Away From The Sun'
+    assert cue_sheet.title
+    assert cue_sheet.title.title == 'Away From The Sun'
     assert cue_sheet.file
     assert cue_sheet.file.filename == Path('album.wav')
+    assert len(cue_sheet.file.tracks) == 12
+
+    track1 = cue_sheet.file.tracks[0]
+    assert track1.number == 1
+    assert track1.track_type == 'AUDIO'
+    assert track1.title
+    assert track1.title.title == "When I'm Gone"
+    assert track1.performer
+    assert track1.performer.name == '3 Doors Down'
+    assert len(track1.indices) == 1
+
+    index1 = track1.indices[0]
+    assert index1.number == 1
+    assert index1.minutes == 0
+    assert index1.seconds == 0
+    assert index1.frames == 0
+
+    track12 = cue_sheet.file.tracks[-1]
+    assert track12.number == 12
+    assert track12.track_type == 'AUDIO'
+    assert track12.title
+    assert track12.title.title == "This Time"
+    assert track12.performer
+    assert track12.performer.name == '3 Doors Down'
+    assert len(track1.indices) == 1
+
+    index1 = track12.indices[0]
+    assert index1.number == 1
+    assert index1.minutes == 41
+    assert index1.seconds == 38
+    assert index1.frames == 70
 
 
 CUE_SHEET1 = '''

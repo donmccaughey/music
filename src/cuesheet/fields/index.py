@@ -20,10 +20,12 @@ class Index(Field):
 
         if tokens[0].upper() != 'INDEX':
             return None
+
         if tokens[1].isdigit():
             number = int(tokens[1])
         else:
             return None
+
         times = split_ints(tokens[2], ':')
         if len(times) != 3:
             return None
