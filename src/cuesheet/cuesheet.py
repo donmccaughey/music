@@ -44,31 +44,46 @@ class CueSheet:
                 case Error():
                     pass
                 case File() as file:
-                    cue_sheet.file = file
+                    cue_sheet.parse_file(file)
                 case Index() as index:
-                    if cue_sheet.file:
-                        cue_sheet.file.tracks[-1].indices.append(index)
-                    else:
-                        cue_sheet.errors.append(Error.from_line(index))
+                    cue_sheet.parse_index(index)
                 case Performer() as performer:
-                    if not cue_sheet.performer:
-                        cue_sheet.performer = performer
-                    elif cue_sheet.file and cue_sheet.file.tracks:
-                        cue_sheet.file.tracks[-1].performer = performer
-                    else:
-                        cue_sheet.errors.append(Error.from_line(performer))
+                    cue_sheet.parse_performer(performer)
                 case Title() as title:
-                    if not cue_sheet.title:
-                        cue_sheet.title = title
-                    elif not cue_sheet.file or not cue_sheet.file.tracks:
-                        cue_sheet.errors.append(Error.from_line(title))
-                    else:
-                        cue_sheet.file.tracks[-1].title = title
+                    cue_sheet.parse_title(title)
                 case Track() as track:
-                    if cue_sheet.file:
-                        cue_sheet.file.tracks.append(track)
-                    else:
-                        cue_sheet.errors.append(Error.from_line(track))
+                    cue_sheet.parse_track(track)
                 case _:
                     raise RuntimeError(f'Unsupported line type {line}')
         return cue_sheet
+
+    def parse_file(self, file: File):
+        self.file = file
+
+    def parse_index(self, index: Index):
+        if self.file:
+            self.file.tracks[-1].indices.append(index)
+        else:
+            self.errors.append(Error.from_line(index))
+
+    def parse_performer(self, performer: Performer):
+        if not self.performer:
+            self.performer = performer
+        elif self.file and self.file.tracks:
+            self.file.tracks[-1].performer = performer
+        else:
+            self.errors.append(Error.from_line(performer))
+
+    def parse_title(self, title: Title):
+        if not self.title:
+            self.title = title
+        elif not self.file or not self.file.tracks:
+            self.errors.append(Error.from_line(title))
+        else:
+            self.file.tracks[-1].title = title
+
+    def parse_track(self, track: Track):
+        if self.file:
+            self.file.tracks.append(track)
+        else:
+            self.errors.append(Error.from_line(track))
