@@ -1,6 +1,3 @@
-from typing import Type
-from typing import TypeVar
-
 from .field import Field
 from .file import File
 from .index import Index
@@ -11,21 +8,7 @@ from .parse import to_tokens
 from .performer import Performer
 from .title import Title
 from .track import Track
-
-F = TypeVar('F', bound=Field)
-
-FieldType = Type[F]
-
-field_types: list[FieldType] = [
-    File,
-    Index,
-    Performer,
-    Title,
-]
-
-field_type_map: dict[str, FieldType] = {
-    field_type.__name__.upper(): field_type for field_type in field_types
-}
+from .type_map import type_map
 
 
 def parse_lines(s: str) -> list[Line]:
@@ -39,8 +22,8 @@ def parse_line(line_number: int, line: str) -> Line:
         return Blank(line_number, line)
 
     type_name = tokens[0]
-    if type_name in field_type_map:
-        parser = field_type_map[type_name]
+    if type_name in type_map:
+        parser = type_map[type_name]
         statement = parser.parse(line_number, line)
         return statement if statement else Error(line_number, line)
 
