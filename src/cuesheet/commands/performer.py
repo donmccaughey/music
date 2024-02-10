@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from .field import Field
+from .command import Command
 from .split import split_quoted_string
 
 
 @dataclass
-class Performer(Field):
+class Performer(Command):
     name: str
 
     @classmethod

@@ -1,12 +1,13 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from .field import Field
-from .split import split_ints, split_tokens
+from .command import Command
+from .split import split_ints
+from .split import split_tokens
 
 
 @dataclass
-class Index(Field):
+class Index(Command):
     number: int
     minutes: int
     seconds: int

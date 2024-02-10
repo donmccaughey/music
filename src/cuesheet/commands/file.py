@@ -2,13 +2,13 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
-from .field import Field
+from .command import Command
 from .split import split_tokens
 from .track import Track
 
 
 @dataclass
-class File(Field):
+class File(Command):
     filename: Path
     file_type: str
     tracks: list[Track]

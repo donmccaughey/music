@@ -27,26 +27,26 @@ python_files := \
 	src/cuesheet/cuesheet.py \
 	src/cuesheet/cuesheet_test.py \
 	\
-	src/cuesheet/fields/__init__.py \
-	src/cuesheet/fields/field.py \
-	src/cuesheet/fields/file.py \
-	src/cuesheet/fields/file_test.py \
-	src/cuesheet/fields/index.py \
-	src/cuesheet/fields/index_test.py \
-	src/cuesheet/fields/parse.py \
-	src/cuesheet/fields/performer.py \
-	src/cuesheet/fields/performer_test.py \
-	src/cuesheet/fields/split.py \
-	src/cuesheet/fields/title.py \
-	src/cuesheet/fields/title_test.py \
-	src/cuesheet/fields/track.py \
-	src/cuesheet/fields/track_test.py \
-	src/cuesheet/fields/type_map.py \
+	src/cuesheet/commands/__init__.py \
+	src/cuesheet/commands/command.py \
+	src/cuesheet/commands/command_type_map.py \
+	src/cuesheet/commands/file.py \
+	src/cuesheet/commands/file_test.py \
+	src/cuesheet/commands/index.py \
+	src/cuesheet/commands/index_test.py \
+	src/cuesheet/commands/parse.py \
+	src/cuesheet/commands/performer.py \
+	src/cuesheet/commands/performer_test.py \
+	src/cuesheet/commands/split.py \
+	src/cuesheet/commands/title.py \
+	src/cuesheet/commands/title_test.py \
+	src/cuesheet/commands/track.py \
+	src/cuesheet/commands/track_test.py \
 	\
-	src/cuesheet/fields/lines/__init__.py \
-	src/cuesheet/fields/lines/blank.py \
-	src/cuesheet/fields/lines/error.py \
-	src/cuesheet/fields/lines/line.py
+	src/cuesheet/commands/lines/__init__.py \
+	src/cuesheet/commands/lines/blank.py \
+	src/cuesheet/commands/lines/error.py \
+	src/cuesheet/commands/lines/line.py
 
 source_files := $(filter-out %_test.py, $(python_files))
 

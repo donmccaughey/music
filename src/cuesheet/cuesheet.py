@@ -1,11 +1,11 @@
-from .fields import Blank
-from .fields import Error
-from .fields import File
-from .fields import Index
-from .fields import Performer
-from .fields import Title
-from .fields import Track
-from .fields import parse_lines
+from .commands import Blank
+from .commands import Error
+from .commands import File
+from .commands import Index
+from .commands import Performer
+from .commands import Title
+from .commands import Track
+from .commands import parse_lines
 
 
 class CueSheet:

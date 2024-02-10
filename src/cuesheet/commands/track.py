@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from .field import Field
+from .command import Command
 from .index import Index
 from .performer import Performer
 from .split import split_tokens
@@ -9,7 +9,7 @@ from .title import Title
 
 
 @dataclass
-class Track(Field):
+class Track(Command):
     number: int
     track_type: str
     title: Title | None

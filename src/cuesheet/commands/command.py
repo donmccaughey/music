@@ -3,11 +3,12 @@ from typing import Optional, Type, TypeVar
 
 from .lines import Line
 
-F = TypeVar('F', bound='Field')
+C = TypeVar('C', bound='Command')
+CommandType = Type[C]
 
 
 @dataclass
-class Field(Line):
+class Command(Line):
     @classmethod
-    def parse(cls: Type[F], line_number: int, line: str) -> Optional[F]:
+    def parse(cls: Type[C], line_number: int, line: str) -> Optional[C]:
         raise NotImplementedError()
