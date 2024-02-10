@@ -1,8 +1,8 @@
+from .command_type_map import command_type_map
 from .lines import Blank
 from .lines import Error
 from .lines import Line
 from .split import split_tokens
-from .command_type_map import command_type_map
 
 
 def parse_lines(s: str) -> list[Line]:
@@ -15,10 +15,10 @@ def parse_line(line_number: int, line: str) -> Line:
     if not tokens:
         return Blank(line_number, line)
 
-    type_name = tokens[0]
-    if type_name in command_type_map:
-        parser = command_type_map[type_name]
-        statement = parser.parse(line_number, line)
-        return statement if statement else Error(line_number, line)
+    command_name = tokens[0]
+    if command_name in command_type_map:
+        command_type = command_type_map[command_name]
+        command = command_type.parse(line_number, line)
+        return command if command else Error(line_number, line)
 
     return Error(line_number, line)
