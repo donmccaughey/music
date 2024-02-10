@@ -3,11 +3,11 @@ from typing import Optional, Type, TypeVar
 
 from .line import Line
 
-S = TypeVar('S', bound='Statement')
+F = TypeVar('F', bound='Field')
 
 
 @dataclass
-class Statement(Line):
+class Field(Line):
     @classmethod
-    def parse(cls: Type[S], line_number: int, line: str) -> Optional[S]:
+    def parse(cls: Type[F], line_number: int, line: str) -> Optional[F]:
         raise NotImplementedError()

@@ -1,4 +1,5 @@
 import pytest
+
 from .title import Title
 
 

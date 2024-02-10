@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from typing import Optional
+
+from .field import Field
 from .parse import to_ints, to_tokens
-from .statement import Statement
 
 
 @dataclass
-class Index(Statement):
+class Index(Field):
     number: int
     minutes: int
     seconds: int

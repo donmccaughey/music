@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from typing import Optional
+
+from .field import Field
 from .parse import parse_quoted_string
-from .statement import Statement
 
 
 @dataclass
-class Title(Statement):
+class Title(Field):
     title: str
 
     @classmethod

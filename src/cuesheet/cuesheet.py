@@ -7,7 +7,7 @@ from .index import Index
 from .line import Line
 from .parse import to_tokens
 from .performer import Performer
-from .statement import Statement
+from .field import Field
 from .title import Title
 
 
@@ -52,7 +52,7 @@ def parse_lines(s: str) -> list[Line]:
     return [parse_line(i + 1, line) for (i, line) in enumerate(s.splitlines())]
 
 
-P = TypeVar('P', bound=Statement)
+P = TypeVar('P', bound=Field)
 Parser = Type[P]
 parsers: list[Parser] = [
     Index,

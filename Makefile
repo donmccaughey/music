@@ -27,13 +27,13 @@ python_files := \
 	src/cuesheet/blank.py \
 	src/cuesheet/cuesheet.py \
 	src/cuesheet/error.py \
+	src/cuesheet/field.py \
 	src/cuesheet/file.py \
 	src/cuesheet/index.py \
 	src/cuesheet/index_test.py \
 	src/cuesheet/parse.py \
 	src/cuesheet/performer.py \
 	src/cuesheet/performer_test.py \
-	src/cuesheet/statement.py \
 	src/cuesheet/title.py \
 	src/cuesheet/title_test.py \
 	src/cuesheet/track.py
