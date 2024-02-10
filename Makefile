@@ -26,7 +26,6 @@ python_files := \
 	src/cuesheet/__init__.py \
 	src/cuesheet/cuesheet.py \
 	src/cuesheet/cuesheet_test.py \
-	src/cuesheet/parse.py \
 	\
 	src/cuesheet/fields/__init__.py \
 	src/cuesheet/fields/field.py \
@@ -40,10 +39,10 @@ python_files := \
 	src/cuesheet/fields/title_test.py \
 	src/cuesheet/fields/track.py \
 	\
-	src/cuesheet/lines/__init__.py \
-	src/cuesheet/lines/blank.py \
-	src/cuesheet/lines/error.py \
-	src/cuesheet/lines/line.py
+	src/cuesheet/fields/lines/__init__.py \
+	src/cuesheet/fields/lines/blank.py \
+	src/cuesheet/fields/lines/error.py \
+	src/cuesheet/fields/lines/line.py
 
 source_files := $(filter-out %_test.py, $(python_files))
 

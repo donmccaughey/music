@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional, Type, TypeVar
 
-from ..lines import Line
+from .lines import Line
 
 F = TypeVar('F', bound='Field')
 
