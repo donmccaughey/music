@@ -1,18 +1,27 @@
-from dataclasses import dataclass
 from typing import Optional
 from .parse import to_ints, to_tokens
+from .statement import Statement
 
 
-@dataclass
-class Index:
-    number: int
-    minutes: int
-    seconds: int
-    frames: int
+class Index(Statement):
+    def __init__(
+            self,
+            line_number: int,
+            line: str,
+            number: int,
+            minutes: int,
+            seconds: int,
+            frames: int,
+    ):
+        super().__init__(line_number, line)
+        self.number = number
+        self.minutes = minutes
+        self.seconds = seconds
+        self.frames = frames
 
-    @staticmethod
-    def parse(statement: str) -> Optional['Index']:
-        tokens = to_tokens(statement)
+    @classmethod
+    def parse(cls, line_number: int, line: str) -> Optional['Index']:
+        tokens = to_tokens(line)
         if len(tokens) != 3:
             return None
 
@@ -28,4 +37,4 @@ class Index:
 
         minutes, seconds, frames = times
         # TODO: validate ranges
-        return Index(number, minutes, seconds, frames)
+        return Index(line_number, line, number, minutes, seconds, frames)

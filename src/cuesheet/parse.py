@@ -1,17 +1,9 @@
-def to_ints(s: str, separator: str) -> list[int]:
-    return [int(token) for token in s.split(separator) if token.isdigit()]
-
-
-def to_tokens(s: str) -> list[str]:
-    return [token for token in s.split() if token]
-
-
-def parse_quoted_string(type: str, s: str) -> str | None:
+def parse_quoted_string(type_name: str, s: str) -> str | None:
     tokens = to_tokens(s)
     if len(tokens) < 2:
         return None
 
-    if tokens[0].upper() != type:
+    if tokens[0].upper() != type_name:
         return None
 
     del tokens[0]
@@ -25,3 +17,11 @@ def parse_quoted_string(type: str, s: str) -> str | None:
         return None
 
     return ' '.join([token for token in tokens if token])
+
+
+def to_ints(s: str, separator: str) -> list[int]:
+    return [int(token) for token in s.split(separator) if token.isdigit()]
+
+
+def to_tokens(s: str) -> list[str]:
+    return [token for token in s.split() if token]

@@ -11,8 +11,10 @@ from .performer import Performer
     ]
 )
 def test_performer_parse_fails(performer_string, expected_name):
-    performer = Performer.parse(performer_string)
+    performer = Performer.parse(42, performer_string)
     assert performer is not None
+    assert performer.line_number == 42
+    assert performer.line == performer_string
     assert performer.name == expected_name
 
 
@@ -26,5 +28,5 @@ def test_performer_parse_fails(performer_string, expected_name):
     '',
 ])
 def test_performer_parse(performer_string):
-    performer = Performer.parse(performer_string)
+    performer = Performer.parse(42, performer_string)
     assert performer is None

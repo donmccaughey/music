@@ -1,13 +1,14 @@
-from dataclasses import dataclass
 from typing import Optional
 from .parse import parse_quoted_string
+from .statement import Statement
 
 
-@dataclass
-class Title:
-    title: str
+class Title(Statement):
+    def __init__(self, line_number: int, line: str, title: str):
+        super().__init__(line_number, line)
+        self.title = title
 
-    @staticmethod
-    def parse(statement: str) -> Optional['Title']:
-        title = parse_quoted_string('TITLE', statement)
-        return Title(title) if title else None
+    @classmethod
+    def parse(cls, line_number: int, line: str) -> Optional['Title']:
+        name = parse_quoted_string('TITLE', line)
+        return Title(line_number, line, name) if name else None

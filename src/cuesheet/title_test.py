@@ -11,9 +11,11 @@ from .title import Title
     ]
 )
 def test_performer_parse_fails(title_string, expected_title):
-    performer = Title.parse(title_string)
-    assert performer is not None
-    assert performer.title == expected_title
+    title = Title.parse(42, title_string)
+    assert title is not None
+    assert title.line_number == 42
+    assert title.line == title_string
+    assert title.title == expected_title
 
 
 @pytest.mark.parametrize('title_string', [
@@ -26,5 +28,5 @@ def test_performer_parse_fails(title_string, expected_title):
     '',
 ])
 def test_performer_parse(title_string):
-    performer = Title.parse(title_string)
-    assert performer is None
+    title = Title.parse(42, title_string)
+    assert title is None
