@@ -5,4 +5,6 @@ from .line import Line
 
 @dataclass
 class Error(Line):
-    pass
+    @staticmethod
+    def from_line(line: Line) -> 'Error':
+        return Error(line.line_number, line.line)

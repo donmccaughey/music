@@ -2,7 +2,6 @@ from .fields import Blank
 from .fields import Error
 from .fields import File
 from .fields import Index
-from .fields import Line
 from .fields import Performer
 from .fields import Title
 from .fields import Track
@@ -11,7 +10,6 @@ from .fields import parse_lines
 
 class CueSheet:
     def __init__(self):
-        self.lines: list[Line] = []
         self.performer: Performer | None = None
         self.title: Title | None = None
         self.year: int | None = None
@@ -20,16 +18,12 @@ class CueSheet:
         self.discid: str | None = None
         self.comment: str | None = None
         self.file: File | None = None
-
-    @property
-    def errors(self) -> list[Error]:
-        return [line for line in self.lines if isinstance(line, Error)]
+        self.errors: list[Error] = []
 
     @staticmethod
     def parse(s: str) -> 'CueSheet':
         cue_sheet = CueSheet()
-        cue_sheet.lines = parse_lines(s)
-        for line in cue_sheet.lines:
+        for line in parse_lines(s):
             match line:
                 case Blank():
                     pass
@@ -38,23 +32,29 @@ class CueSheet:
                 case File() as file:
                     cue_sheet.file = file
                 case Index() as index:
-                    assert cue_sheet.file
-                    cue_sheet.file.tracks[-1].indices.append(index)
+                    if cue_sheet.file:
+                        cue_sheet.file.tracks[-1].indices.append(index)
+                    else:
+                        cue_sheet.errors.append(Error.from_line(index))
                 case Performer() as performer:
-                    if cue_sheet.performer:
-                        assert cue_sheet.file
+                    if not cue_sheet.performer:
+                        cue_sheet.performer = performer
+                    elif cue_sheet.file and cue_sheet.file.tracks:
                         cue_sheet.file.tracks[-1].performer = performer
                     else:
-                        cue_sheet.performer = performer
+                        cue_sheet.errors.append(Error.from_line(performer))
                 case Title() as title:
-                    if cue_sheet.title:
-                        assert cue_sheet.file
-                        cue_sheet.file.tracks[-1].title = title
-                    else:
+                    if not cue_sheet.title:
                         cue_sheet.title = title
+                    elif not cue_sheet.file or not cue_sheet.file.tracks:
+                        cue_sheet.errors.append(Error.from_line(title))
+                    else:
+                        cue_sheet.file.tracks[-1].title = title
                 case Track() as track:
-                    assert cue_sheet.file
-                    cue_sheet.file.tracks.append(track)
+                    if cue_sheet.file:
+                        cue_sheet.file.tracks.append(track)
+                    else:
+                        cue_sheet.errors.append(Error.from_line(track))
                 case _:
                     raise RuntimeError(f'Unsupported line type {line}')
         return cue_sheet
