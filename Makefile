@@ -29,7 +29,6 @@ python_files := \
 	\
 	src/cuesheet/commands/__init__.py \
 	src/cuesheet/commands/command.py \
-	src/cuesheet/commands/command_type_map.py \
 	src/cuesheet/commands/file.py \
 	src/cuesheet/commands/file_test.py \
 	src/cuesheet/commands/index.py \

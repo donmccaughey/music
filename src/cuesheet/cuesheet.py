@@ -1,4 +1,5 @@
 from .commands import Blank
+from .commands import CommandType
 from .commands import Error
 from .commands import File
 from .commands import Index
@@ -20,10 +21,23 @@ class CueSheet:
         self.file: File | None = None
         self.errors: list[Error] = []
 
+    command_types: list[CommandType] = [
+        File,
+        Index,
+        Performer,
+        Title,
+        Track,
+    ]
+
+    command_type_map: dict[str, CommandType] = {
+        command_type.__name__.upper(): command_type
+        for command_type in command_types
+    }
+
     @staticmethod
     def parse(s: str) -> 'CueSheet':
         cue_sheet = CueSheet()
-        for line in parse_lines(s):
+        for line in parse_lines(cue_sheet.command_type_map, s):
             match line:
                 case Blank():
                     pass

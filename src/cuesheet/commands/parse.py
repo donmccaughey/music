@@ -1,15 +1,15 @@
-from .command_type_map import command_type_map
+from .command import CommandType
 from .lines import Blank
 from .lines import Error
 from .lines import Line
 from .split import split_tokens
 
 
-def parse_lines(s: str) -> list[Line]:
-    return [parse_line(i + 1, line) for (i, line) in enumerate(s.splitlines())]
+def parse_lines(command_type_map: dict[str, CommandType], s: str) -> list[Line]:
+    return [parse_line(command_type_map, i + 1, line) for (i, line) in enumerate(s.splitlines())]
 
 
-def parse_line(line_number: int, line: str) -> Line:
+def parse_line(command_type_map: dict[str, CommandType], line_number: int, line: str) -> Line:
     tokens = split_tokens(line)
 
     if not tokens:
