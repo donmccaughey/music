@@ -1,23 +1,15 @@
+from dataclasses import dataclass
 from typing import Optional
 from .parse import to_ints, to_tokens
 from .statement import Statement
 
 
+@dataclass
 class Index(Statement):
-    def __init__(
-            self,
-            line_number: int,
-            line: str,
-            number: int,
-            minutes: int,
-            seconds: int,
-            frames: int,
-    ):
-        super().__init__(line_number, line)
-        self.number = number
-        self.minutes = minutes
-        self.seconds = seconds
-        self.frames = frames
+    number: int
+    minutes: int
+    seconds: int
+    frames: int
 
     @classmethod
     def parse(cls, line_number: int, line: str) -> Optional['Index']:

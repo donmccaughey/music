@@ -1,12 +1,13 @@
+from dataclasses import dataclass
 from typing import Optional, Type, TypeVar
 
 S = TypeVar('S', bound='Statement')
 
 
+@dataclass
 class Statement:
-    def __init__(self, line_number: int, line: str):
-        self.line_number = line_number
-        self.line = line
+    line_number: int
+    line: str
 
     @classmethod
     def parse(cls: Type[S], line_number: int, line: str) -> Optional[S]:
