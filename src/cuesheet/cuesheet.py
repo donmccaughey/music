@@ -1,14 +1,14 @@
 from typing import Type, TypeVar
 
-from .blank import Blank
-from .error import Error
-from .fields.field import Field
-from .fields.file import File
-from .fields.index import Index
+from .fields import Field
+from .fields import File
+from .fields import Index
+from .fields import Performer
+from .fields import Title
 from .fields.parse import to_tokens
-from .fields.performer import Performer
-from .fields.title import Title
-from .line import Line
+from .lines import Blank
+from .lines import Error
+from .lines import Line
 
 
 class CueSheet:
