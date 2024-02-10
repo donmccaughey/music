@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from .field import Field
-from .parse import to_ints, to_tokens
+from .split import split_ints, split_tokens
 
 
 @dataclass
@@ -14,7 +14,7 @@ class Index(Field):
 
     @classmethod
     def parse(cls, line_number: int, line: str) -> Optional['Index']:
-        tokens = to_tokens(line)
+        tokens = split_tokens(line)
         if len(tokens) != 3:
             return None
 
@@ -24,7 +24,7 @@ class Index(Field):
             number = int(tokens[1])
         else:
             return None
-        times = to_ints(tokens[2], ':')
+        times = split_ints(tokens[2], ':')
         if len(times) != 3:
             return None
 

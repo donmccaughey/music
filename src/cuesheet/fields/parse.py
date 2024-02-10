@@ -1,27 +1,24 @@
-def parse_quoted_string(type_name: str, s: str) -> str | None:
-    tokens = to_tokens(s)
-    if len(tokens) < 2:
-        return None
-
-    if tokens[0].upper() != type_name:
-        return None
-
-    del tokens[0]
-    if tokens[0].startswith('"'):
-        tokens[0] = tokens[0][1:]
-    else:
-        return None
-    if tokens[-1].endswith('"'):
-        tokens[-1] = tokens[-1][:-1]
-    else:
-        return None
-
-    return ' '.join([token for token in tokens if token])
+from .lines import Blank
+from .lines import Error
+from .lines import Line
+from .split import split_tokens
+from .type_map import type_map
 
 
-def to_ints(s: str, separator: str) -> list[int]:
-    return [int(token) for token in s.split(separator) if token.isdigit()]
+def parse_lines(s: str) -> list[Line]:
+    return [parse_line(i + 1, line) for (i, line) in enumerate(s.splitlines())]
 
 
-def to_tokens(s: str) -> list[str]:
-    return [token for token in s.split() if token]
+def parse_line(line_number: int, line: str) -> Line:
+    tokens = split_tokens(line)
+
+    if not tokens:
+        return Blank(line_number, line)
+
+    type_name = tokens[0]
+    if type_name in type_map:
+        parser = type_map[type_name]
+        statement = parser.parse(line_number, line)
+        return statement if statement else Error(line_number, line)
+
+    return Error(line_number, line)

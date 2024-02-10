@@ -36,6 +36,7 @@ python_files := \
 	src/cuesheet/fields/parse.py \
 	src/cuesheet/fields/performer.py \
 	src/cuesheet/fields/performer_test.py \
+	src/cuesheet/fields/split.py \
 	src/cuesheet/fields/title.py \
 	src/cuesheet/fields/title_test.py \
 	src/cuesheet/fields/track.py \

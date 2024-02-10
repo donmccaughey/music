@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Optional
 
 from .field import Field
-from .parse import to_tokens
+from .split import split_tokens
 from .track import Track
 
 
@@ -15,7 +15,7 @@ class File(Field):
 
     @classmethod
     def parse(cls, line_number: int, line: str) -> Optional['File']:
-        tokens = to_tokens(line)
+        tokens = split_tokens(line)
         if len(tokens) != 3:
             # TODO: handle any filename, not just "album.wav"
             return None
