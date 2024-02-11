@@ -36,6 +36,7 @@ python_files := \
 	src/cuesheet/commands/parse.py \
 	src/cuesheet/commands/performer.py \
 	src/cuesheet/commands/performer_test.py \
+	src/cuesheet/commands/rem.py \
 	src/cuesheet/commands/split.py \
 	src/cuesheet/commands/title.py \
 	src/cuesheet/commands/title_test.py \

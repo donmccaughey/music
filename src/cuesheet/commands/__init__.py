@@ -7,6 +7,7 @@ from .lines import Error
 from .lines import Line
 from .parse import parse_lines
 from .performer import Performer
+from .rem import Rem
 from .split import split_tokens
 from .title import Title
 from .track import Track

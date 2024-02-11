@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Optional
 
 from .command import Command
+from .rem import Rem
 from .split import split_tokens
 from .track import Track
 
@@ -11,6 +12,7 @@ from .track import Track
 class File(Command):
     filename: Path
     file_type: str
+    remarks: list[Rem]
     tracks: list[Track]
 
     @classmethod
@@ -31,4 +33,4 @@ class File(Command):
         file_type = tokens[2]
         # TODO: is WAVE the only valid type?
 
-        return File(line_number, line, Path(filename), file_type, [])
+        return File(line_number, line, Path(filename), file_type, [], [])

@@ -4,6 +4,7 @@ from typing import Optional
 from .command import Command
 from .index import Index
 from .performer import Performer
+from .rem import Rem
 from .split import split_tokens
 from .title import Title
 
@@ -15,6 +16,7 @@ class Track(Command):
     title: Title | None
     performer: Performer | None
     indices: list[Index]
+    remarks: list[Rem]
 
     @classmethod
     def parse(cls, line_number: int, line: str) -> Optional['Track']:
@@ -32,4 +34,4 @@ class Track(Command):
 
         track_type = tokens[2]
 
-        return Track(line_number, line, number, track_type, None, None, [])
+        return Track(line_number, line, number, track_type, None, None, [], [])

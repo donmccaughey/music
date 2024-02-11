@@ -50,6 +50,8 @@ def test_parse():
     assert index1.seconds == 38
     assert index1.frames == 70
 
+    assert not cue_sheet.errors
+
 
 def test_parse_blank():
     s = make_test_data('''
@@ -170,6 +172,51 @@ def test_parse_performer_misplaced():
     assert len(cue_sheet.errors) == 1
     assert cue_sheet.errors[0].line_number == 4
     assert cue_sheet.errors[0].line == '    PERFORMER "3 Doors Down"'
+
+
+def test_parse_remark():
+    s = make_test_data('''
+        PERFORMER "3 Doors Down"
+        TITLE "Away From The Sun"
+        REM foo bar
+    ''')
+    cue_sheet = CueSheet.parse(s)
+    assert cue_sheet
+    assert len(cue_sheet.remarks) == 1
+    assert cue_sheet.remarks[0].remark == 'foo bar'
+    assert not cue_sheet.errors
+
+
+def test_parse_remark_in_file():
+    s = make_test_data('''
+        PERFORMER "3 Doors Down"
+        TITLE "Away From The Sun"
+        FILE "album.wav" WAVE
+            REM foo bar
+    ''')
+    cue_sheet = CueSheet.parse(s)
+    assert cue_sheet
+    assert not cue_sheet.remarks
+    assert cue_sheet.file and cue_sheet.file.remarks
+    assert cue_sheet.file.remarks[0].remark == 'foo bar'
+    assert not cue_sheet.errors
+
+
+def test_parse_remark_in_track():
+    s = make_test_data('''
+        PERFORMER "3 Doors Down"
+        TITLE "Away From The Sun"
+        FILE "album.wav" WAVE
+            TRACK 01 AUDIO
+                REM foo bar
+    ''')
+    cue_sheet = CueSheet.parse(s)
+    assert cue_sheet
+    assert not cue_sheet.remarks
+    assert cue_sheet.file and not cue_sheet.file.remarks
+    assert cue_sheet.file.tracks and cue_sheet.file.tracks[0].remarks
+    assert cue_sheet.file.tracks[0].remarks[0].remark == 'foo bar'
+    assert not cue_sheet.errors
 
 
 def test_parse_title_misplaced():

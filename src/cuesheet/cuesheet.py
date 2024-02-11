@@ -4,6 +4,7 @@ from .commands import Error
 from .commands import File
 from .commands import Index
 from .commands import Performer
+from .commands import Rem
 from .commands import Title
 from .commands import Track
 from .commands import parse_lines
@@ -18,6 +19,7 @@ class CueSheet:
         self.asin: str | None = None
         self.discid: str | None = None
         self.comment: str | None = None
+        self.remarks: list[Rem] = []
         self.file: File | None = None
         self.errors: list[Error] = []
 
@@ -25,6 +27,7 @@ class CueSheet:
         File,
         Index,
         Performer,
+        Rem,
         Title,
         Track,
     ]
@@ -49,6 +52,8 @@ class CueSheet:
                     cue_sheet.parse_index(index)
                 case Performer() as performer:
                     cue_sheet.parse_performer(performer)
+                case Rem() as rem:
+                    cue_sheet.parse_rem(rem)
                 case Title() as title:
                     cue_sheet.parse_title(title)
                 case Track() as track:
@@ -79,6 +84,15 @@ class CueSheet:
             self.file.tracks[-1].performer = performer
         else:
             self.errors.append(Error.from_line(performer))
+
+    def parse_rem(self, rem: Rem):
+        if self.file:
+            if self.file.tracks:
+                self.file.tracks[-1].remarks.append(rem)
+            else:
+                self.file.remarks.append(rem)
+        else:
+            self.remarks.append(rem)
 
     def parse_title(self, title: Title):
         if not self.title:
