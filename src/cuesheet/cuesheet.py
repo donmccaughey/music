@@ -39,10 +39,10 @@ class CueSheet:
         cue_sheet = CueSheet()
         for line in parse_lines(cue_sheet.command_type_map, s):
             match line:
-                case Blank():
-                    pass
-                case Error():
-                    pass
+                case Blank() as blank:
+                    cue_sheet.parse_blank(blank)
+                case Error() as error:
+                    cue_sheet.parse_error(error)
                 case File() as file:
                     cue_sheet.parse_file(file)
                 case Index() as index:
@@ -57,11 +57,17 @@ class CueSheet:
                     raise RuntimeError(f'Unsupported line type {line}')
         return cue_sheet
 
+    def parse_blank(self, blank: Blank):
+        pass
+
+    def parse_error(self, error: Error):
+        self.errors.append(error)
+
     def parse_file(self, file: File):
         self.file = file
 
     def parse_index(self, index: Index):
-        if self.file:
+        if self.file and self.file.tracks:
             self.file.tracks[-1].indices.append(index)
         else:
             self.errors.append(Error.from_line(index))
