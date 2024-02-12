@@ -24,14 +24,16 @@ def test_write_report():
     paths = find_cue_sheet_paths(root)
     sio = StringIO()
 
-    write_report(root, paths, sio)
+    write_report(root, paths, sio, True)
 
-    lines = [line.strip() for line in sio.getvalue().splitlines()]
+    lines = [line for line in sio.getvalue().splitlines()]
 
-    assert len(lines) == 4
-    assert 'Found 3 cue sheets in' in lines[0]
-    assert lines[1:] == [
-        '- cuesheet.txt:',
-        '- double_album/cuesheet1.txt:',
-        '- double_album/cuesheet2.txt:',
+    assert len(lines) == 6
+    assert lines == [
+        'Found 3 cue sheets in ' + str(root),
+        '    - cuesheet.txt',
+        '    - double_album/cuesheet1.txt',
+        '    - double_album/cuesheet2.txt',
+        '- Unicode errors in 0 files',
+        '- Parsing errors in 0 files',
     ]

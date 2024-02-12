@@ -10,6 +10,7 @@ from .file import File
     [
         ('FILE "album.wav" WAVE', Path('album.wav'), 'WAVE'),
         ('\n  FILE \t"album.wav"   WAVE\n', Path('album.wav'), 'WAVE'),
+        ('FILE "album.wav"', Path('album.wav'), None),
     ])
 def test_file_parse(file_string, expected_filename, expected_file_type):
     file = File.parse(42, file_string)

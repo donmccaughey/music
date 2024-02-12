@@ -11,14 +11,14 @@ from .track import Track
 @dataclass
 class File(Command):
     filename: Path
-    file_type: str
+    file_type: str | None
     remarks: list[Rem]
     tracks: list[Track]
 
     @classmethod
     def parse(cls, line_number: int, line: str) -> Optional['File']:
         tokens = split_tokens(line)
-        if len(tokens) != 3:
+        if len(tokens) not in (2, 3):
             # TODO: handle any filename, not just "album.wav"
             return None
 
@@ -30,7 +30,7 @@ class File(Command):
         else:
             return None
 
-        file_type = tokens[2]
+        file_type = tokens[2] if len(tokens) > 2 else None
         # TODO: is WAVE the only valid type?
 
         return File(line_number, line, Path(filename), file_type, [], [])
