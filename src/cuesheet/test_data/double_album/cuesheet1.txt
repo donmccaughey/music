@@ -1,0 +1,64 @@
+PERFORMER "Afterdark"
+REM MIXEDBY "Ernst Schoemaker"
+TITLE "Afterdark - Cape Town"
+REM DISC 1 OF 2
+REM YEAR 2007
+REM GENRE "House"
+REM ASIN B000LP4O0Q
+REM DISCID AA0F820C
+REM COMMENT "ExactAudioCopy v0.95b4"
+FILE "album1.wav" WAVE
+  TRACK 01 AUDIO
+    TITLE "Only God Can Judge Me"
+    PERFORMER "The Love Machine"
+    REM FEATURING "Nash"
+    INDEX 01 00:00:00
+  TRACK 02 AUDIO
+    TITLE "Wanna Tell Ya"
+    PERFORMER "Troydon"
+    INDEX 01 05:03:50
+  TRACK 03 AUDIO
+    TITLE "Free Stylin"
+    PERFORMER "The Littlemen"
+    INDEX 01 11:07:06
+  TRACK 04 AUDIO
+    TITLE "Where Are We Going"
+    PERFORMER "Ernst Schoemaker"
+    REM FEATURING "Jana"
+    INDEX 01 15:23:14
+  TRACK 05 AUDIO
+    TITLE "Second Thoughts"
+    PERFORMER "Erefaan Pearce"
+    INDEX 01 20:52:69
+  TRACK 06 AUDIO
+    TITLE "Forever Free"
+    REM SUBTITLE "Sooz n Shoes Mix"
+    PERFORMER "Ernst Schoemaker"
+    INDEX 01 27:21:13
+  TRACK 07 AUDIO
+    TITLE "Twist it Like This"
+    PERFORMER "DJ Billy Monk"
+    INDEX 01 31:50:42
+  TRACK 08 AUDIO
+    TITLE "Recahrge"
+    PERFORMER "Digital Minds"
+    INDEX 01 37:46:37
+  TRACK 09 AUDIO
+    TITLE "Late Night Shopping"
+    REM SUBTITLE "Tiger Sprouts Revision"
+    PERFORMER "Ernst Schoemaker & The Passion"
+    INDEX 01 43:09:09
+  TRACK 10 AUDIO
+    TITLE "Healing Destination"
+    REM SUBTITLE "Troydon's Destination For Healing Mix"
+    PERFORMER "Goema Captains Of Cape Town"
+    INDEX 01 47:59:30
+  TRACK 11 AUDIO
+    TITLE "Funk From My Trunk"
+    PERFORMER "Digital Minds"
+    INDEX 01 54:19:20
+  TRACK 12 AUDIO
+    TITLE "Umama O Sdudla"
+    PERFORMER "Troydon"
+    REM FEATURING "Maurice"
+    INDEX 01 59:31:16

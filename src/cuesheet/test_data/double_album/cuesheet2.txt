@@ -1,0 +1,56 @@
+PERFORMER "Afterdark"
+REM MIXEDBY "Erefaan Pearce"
+TITLE "Afterdark - Cape Town"
+REM DISC 2 OF 2
+REM YEAR 2007
+REM GENRE "House"
+REM ASIN B000LP4O0Q
+REM DISCID 940E370B
+REM COMMENT "ExactAudioCopy v0.95b4"
+FILE "album2.wav" WAVE
+  TRACK 01 AUDIO
+    TITLE "For Life"
+    PERFORMER "Erefaan Pearce"
+    INDEX 01 00:00:00
+  TRACK 02 AUDIO
+    TITLE "The Calling"
+    PERFORMER "Leighton Moody"
+    INDEX 01 05:59:01
+  TRACK 03 AUDIO
+    TITLE "Never There"
+    PERFORMER "Green Jnr"
+    REM FEATURING "Eddie Boyd"
+    INDEX 01 11:34:28
+  TRACK 04 AUDIO
+    TITLE "Strange Days"
+    PERFORMER "Green Jnr"
+    INDEX 01 15:35:63
+  TRACK 05 AUDIO
+    TITLE "Got What U Need"
+    PERFORMER "Lu Chase"
+    REM FEATURING "Eddie Boyd"
+    INDEX 01 21:25:62
+  TRACK 06 AUDIO
+    TITLE "Feel My Pain"
+    PERFORMER "Anwar Ariefdien"
+    INDEX 01 26:49:21
+  TRACK 07 AUDIO
+    TITLE "Moods & Grooves"
+    PERFORMER "Soul Revolution"
+    INDEX 01 33:20:02
+  TRACK 08 AUDIO
+    TITLE "Deep Fraze"
+    PERFORMER "Soul Revolution"
+    INDEX 01 38:20:01
+  TRACK 09 AUDIO
+    TITLE "Hints Of Life"
+    PERFORMER "Ernst Schoemaker"
+    INDEX 01 43:51:55
+  TRACK 10 AUDIO
+    TITLE "Thursday Morning"
+    PERFORMER "Erefaan Pearce"
+    INDEX 01 49:07:66
+  TRACK 11 AUDIO
+    TITLE "Disco Biscuits"
+    PERFORMER "DJ Pascal"
+    INDEX 01 55:57:40

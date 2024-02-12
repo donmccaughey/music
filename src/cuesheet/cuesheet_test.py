@@ -9,7 +9,7 @@ TEST_DATA_DIR = Path(__file__).resolve().parent / 'test_data'
 
 
 def test_parse():
-    cue_sheet = CueSheet.parse(read_test_data('cue_sheet1.txt'))
+    cue_sheet = CueSheet.parse(read_test_data('cuesheet.txt'))
     assert cue_sheet
     assert cue_sheet.performer
     assert cue_sheet.performer.name == '3 Doors Down'
