@@ -28,13 +28,10 @@ def test_write_report():
 
     lines = [line.strip() for line in sio.getvalue().splitlines()]
 
-    assert len(lines) == 7
+    assert len(lines) == 4
     assert 'Found 3 cue sheets in' in lines[0]
     assert lines[1:] == [
         '- cuesheet.txt:',
-        'okay',
         '- double_album/cuesheet1.txt:',
-        'okay',
         '- double_album/cuesheet2.txt:',
-        'okay',
     ]
