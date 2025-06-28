@@ -4,13 +4,8 @@ from pathlib import Path
 from typing import TextIO
 
 from cuesheet import CueSheet
+from find_cue_sheet_paths import find_cue_sheet_paths
 from options import parse_options
-
-
-def find_cue_sheet_paths(root: Path) -> list[Path]:
-    paths = list(root.rglob('cuesheet*.txt'))
-    paths.sort()
-    return paths
 
 
 def write_report(root: Path, paths: list[Path], out: TextIO, verbose: bool):
