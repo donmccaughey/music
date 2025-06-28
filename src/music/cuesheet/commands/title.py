@@ -13,4 +13,4 @@ class Title(Command):
     @classmethod
     def parse(cls, line_number: int, line: str) -> Title | None:
         name = split_quoted_string('TITLE', line)
-        return Title(line_number, line, name) if name else None
+        return cls(line_number, line, name) if name else None

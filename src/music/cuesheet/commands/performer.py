@@ -13,4 +13,4 @@ class Performer(Command):
     @classmethod
     def parse(cls, line_number: int, line: str) -> Performer | None:
         name = split_quoted_string('PERFORMER', line)
-        return Performer(line_number, line, name) if name else None
+        return cls(line_number, line, name) if name else None

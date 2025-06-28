@@ -35,4 +35,4 @@ class Track(Command):
 
         track_type = tokens[2]
 
-        return Track(line_number, line, number, track_type, None, None, [], [])
+        return cls(line_number, line, number, track_type, None, None, [], [])

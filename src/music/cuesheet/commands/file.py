@@ -34,4 +34,4 @@ class File(Command):
         file_type = tokens[2] if len(tokens) > 2 else None
         # TODO: is WAVE the only valid type?
 
-        return File(line_number, line, Path(filename), file_type, [], [])
+        return cls(line_number, line, Path(filename), file_type, [], [])
