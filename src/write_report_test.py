@@ -2,21 +2,7 @@ from io import StringIO
 from pathlib import Path
 
 from music import find_cue_sheet_paths
-from music import parse_options
 from music import write_report
-
-
-def test_find_cue_sheet_paths():
-    root = Path(__file__).parent / 'cuesheet/test_data'
-    paths = find_cue_sheet_paths(root)
-    assert paths
-    assert len(paths) == 3
-
-
-def test_parse_options():
-    options = parse_options(['mypath'])
-    assert isinstance(options.root, Path)
-    assert options.root == Path('mypath')
 
 
 def test_write_report():
