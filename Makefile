@@ -29,38 +29,7 @@ cov : $(TMP)/coverage.sqlite
 	open "$(TMP)/coverage/index.html"
 
 
-python_files := \
-	src/music.py \
-	src/music_test.py \
-	\
-	src/cuesheet/__init__.py \
-	src/cuesheet/cuesheet.py \
-	src/cuesheet/cuesheet_test.py \
-	\
-	src/cuesheet/commands/__init__.py \
-	src/cuesheet/commands/command.py \
-	src/cuesheet/commands/file.py \
-	src/cuesheet/commands/file_test.py \
-	src/cuesheet/commands/index.py \
-	src/cuesheet/commands/index_test.py \
-	src/cuesheet/commands/parse.py \
-	src/cuesheet/commands/performer.py \
-	src/cuesheet/commands/performer_test.py \
-	src/cuesheet/commands/rem.py \
-	src/cuesheet/commands/split.py \
-	src/cuesheet/commands/title.py \
-	src/cuesheet/commands/title_test.py \
-	src/cuesheet/commands/track.py \
-	src/cuesheet/commands/track_test.py \
-	\
-	src/cuesheet/commands/lines/__init__.py \
-	src/cuesheet/commands/lines/blank.py \
-	src/cuesheet/commands/lines/error.py \
-	src/cuesheet/commands/lines/line.py
-
-source_files := $(filter-out %_test.py, $(python_files))
-
-test_files := $(filter %_test.py, $(python_files))
+src_files := $(shell find src/ -type f -not -name '.DS_Store')
 
 
 uv.lock : pyproject.toml .python-version
@@ -84,8 +53,7 @@ $(TMP)/coverage.sqlite : \
 
 $(TMP)/mypy.stamp.txt : \
 		.mypy.ini \
-		$(source_files) \
-		$(test_files) \
+		$(src_files) \
 		$(TMP)/uv-sync.stamp.txt
 	uv run -m mypy --check-untyped-defs src
 	date > $@
