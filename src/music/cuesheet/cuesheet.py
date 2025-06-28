@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from .commands import Blank
 from .commands import CommandType
 from .commands import Error
@@ -37,9 +39,9 @@ class CueSheet:
         for command_type in command_types
     }
 
-    @staticmethod
-    def parse(s: str) -> 'CueSheet':
-        cue_sheet = CueSheet()
+    @classmethod
+    def parse(cls, s: str) -> CueSheet:
+        cue_sheet = cls()
         for line in parse_lines(cue_sheet.command_type_map, s):
             match line:
                 case Blank() as blank:

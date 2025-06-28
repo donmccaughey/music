@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 
 from .command import Command
 from .split import split_ints
@@ -14,7 +15,7 @@ class Index(Command):
     frames: int
 
     @classmethod
-    def parse(cls, line_number: int, line: str) -> Optional['Index']:
+    def parse(cls, line_number: int, line: str) -> Index | None:
         tokens = split_tokens(line)
         if len(tokens) != 3:
             return None

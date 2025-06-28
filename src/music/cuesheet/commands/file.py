@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
 from .command import Command
 from .rem import Rem
@@ -16,7 +17,7 @@ class File(Command):
     tracks: list[Track]
 
     @classmethod
-    def parse(cls, line_number: int, line: str) -> Optional['File']:
+    def parse(cls, line_number: int, line: str) -> File | None:
         tokens = split_tokens(line)
         if len(tokens) not in (2, 3):
             # TODO: handle any filename, not just "album.wav"

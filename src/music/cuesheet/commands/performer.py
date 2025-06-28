@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 
 from .command import Command
 from .split import split_quoted_string
@@ -10,6 +11,6 @@ class Performer(Command):
     name: str
 
     @classmethod
-    def parse(cls, line_number: int, line: str) -> Optional['Performer']:
+    def parse(cls, line_number: int, line: str) -> Performer | None:
         name = split_quoted_string('PERFORMER', line)
         return Performer(line_number, line, name) if name else None

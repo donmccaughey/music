@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 
 from .command import Command
 from .index import Index
@@ -19,7 +20,7 @@ class Track(Command):
     remarks: list[Rem]
 
     @classmethod
-    def parse(cls, line_number: int, line: str) -> Optional['Track']:
+    def parse(cls, line_number: int, line: str) -> Track | None:
         tokens = split_tokens(line)
         if len(tokens) != 3:
             return None

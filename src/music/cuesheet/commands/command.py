@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, Type, TypeVar
+from typing import Type, TypeVar
 
 from .lines import Line
 
@@ -10,5 +10,5 @@ CommandType = Type[C]
 @dataclass
 class Command(Line):
     @classmethod
-    def parse(cls: Type[C], line_number: int, line: str) -> Optional[C]:
+    def parse(cls: Type[C], line_number: int, line: str) -> C | None:
         raise NotImplementedError()

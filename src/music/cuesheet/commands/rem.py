@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 
 from .split import split_tokens
 from .command import Command
@@ -10,7 +11,7 @@ class Rem(Command):
     remark: str
 
     @classmethod
-    def parse(cls, line_number: int, line: str) -> Optional['Rem']:
+    def parse(cls, line_number: int, line: str) -> Rem | None:
         tokens = split_tokens(line)
         if not tokens:
             return None
