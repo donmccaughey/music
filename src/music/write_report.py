@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import TextIO
 
-from cuesheet import CueSheet
+from .cuesheet import CueSheet
 
 
 def write_report(root: Path, paths: list[Path], out: TextIO, verbose: bool):
