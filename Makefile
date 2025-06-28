@@ -39,7 +39,7 @@ uv.lock : pyproject.toml .python-version
 
 $(TMP)/coverage.sqlite : \
 		.coveragerc \
-		$(TMP)/mypy.stamp.txt \
+		$(TMP)/mypy.stamp \
 		| $$(dir $$@)
 	rm -rf "$(TMP)/coverage"
 	COVERAGE_FILE=$@ \
@@ -51,17 +51,17 @@ $(TMP)/coverage.sqlite : \
 		--quiet --quiet
 
 
-$(TMP)/mypy.stamp.txt : \
+$(TMP)/mypy.stamp : \
 		.mypy.ini \
 		$(src_files) \
-		$(TMP)/uv-sync.stamp.txt
+		$(TMP)/uv-sync.stamp
 	uv run -m mypy --check-untyped-defs src
-	date > $@
+	touch $@
 
 
-$(TMP)/uv-sync.stamp.txt : uv.lock | $$(dir $$@)
+$(TMP)/uv-sync.stamp : uv.lock | $$(dir $$@)
 	uv sync --frozen
-	date > $@
+	touch $@
 
 
 $(TMP)/ :
