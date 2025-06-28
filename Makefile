@@ -9,7 +9,7 @@ all : check
 
 
 .PHONY : check
-check : $(TMP)/.coverage
+check : $(TMP)/coverage.sqlite
 
 
 .PHONY : clean
@@ -17,6 +17,16 @@ clean :
 	-rm -rf .mypy_cache
 	-rm -rf .pytest_cache
 	rm -rf $(TMP)
+
+
+.PHONY : clobber
+clobber : clean
+	rm -rf .venv
+
+
+.PHONY : cov
+cov : $(TMP)/coverage.sqlite
+	open "$(TMP)/coverage/index.html"
 
 
 python_files := \
@@ -53,13 +63,18 @@ source_files := $(filter-out %_test.py, $(python_files))
 test_files := $(filter %_test.py, $(python_files))
 
 
-$(TMP)/.coverage : \
+uv.lock : pyproject.toml .python-version
+	uv sync
+	touch $@
+
+
+$(TMP)/coverage.sqlite : \
 		.coveragerc \
 		$(TMP)/mypy.stamp.txt \
 		| $$(dir $$@)
 	rm -rf "$(TMP)/coverage"
 	COVERAGE_FILE=$@ \
-	python3 -m pytest \
+	uv run -m pytest \
 		--cov \
 		--cov-config=$< \
 		--cov-report=html:"$(TMP)/coverage" \
@@ -71,23 +86,13 @@ $(TMP)/mypy.stamp.txt : \
 		.mypy.ini \
 		$(source_files) \
 		$(test_files) \
-		$(TMP)/pip-install-requirements.stamp.txt \
-		$(TMP)/pip-install-requirements-dev.stamp.txt
-	python3 -m mypy --check-untyped-defs src
+		$(TMP)/uv-sync.stamp.txt
+	uv run -m mypy --check-untyped-defs src
 	date > $@
 
 
-$(TMP)/pip-install-requirements.stamp.txt : requirements.txt | $$(dir $$@)
-	python3 -m pip install \
-		--quiet --quiet --quiet \
-		--requirement $<
-	date > $@
-
-
-$(TMP)/pip-install-requirements-dev.stamp.txt : requirements-dev.txt | $$(dir $$@)
-	python3 -m pip install \
-		--quiet --quiet --quiet \
-		--requirement $<
+$(TMP)/uv-sync.stamp.txt : uv.lock | $$(dir $$@)
+	uv sync --frozen
 	date > $@
 
 
