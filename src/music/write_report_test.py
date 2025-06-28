@@ -1,12 +1,12 @@
 from io import StringIO
 from pathlib import Path
 
-from music import find_cue_sheet_paths
-from music import write_report
+from .find_cue_sheet_paths import find_cue_sheet_paths
+from .write_report import write_report
 
 
 def test_write_report():
-    root = Path(__file__).parent / 'cuesheet/test_data'
+    root = Path(__file__).parent.parent / 'cuesheet/test_data'
     paths = find_cue_sheet_paths(root)
     sio = StringIO()
 

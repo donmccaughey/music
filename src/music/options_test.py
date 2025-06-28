@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from options import parse_options
+from .options import parse_options
 
 
 def test_parse_options():
