@@ -9,7 +9,7 @@ from .track import Track
         ('TRACK 01 AUDIO', 1, 'AUDIO'),
         ('\n  TRACK \t01   AUDIO\n', 1, 'AUDIO'),
     ])
-def test_file_parse(track_string, expected_number, expected_track_type):
+def test_track_parse(track_string, expected_number, expected_track_type):
     track = Track.parse(42, track_string)
     assert track
     assert track.line_number == 42
@@ -28,6 +28,6 @@ def test_file_parse(track_string, expected_number, expected_track_type):
         'CRACK 01 AUDIO',
         'TRACK one AUDIO',
     ])
-def test_file_parse_fails(track_string):
+def test_track_parse_fails(track_string):
     track = Track.parse(42, track_string)
     assert not track
