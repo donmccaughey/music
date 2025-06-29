@@ -34,6 +34,6 @@ def test_index_parse(index_string, expected_number, expected_minutes, expected_s
     '   ',
     '',
 ])
-def test_index_parse_failure(index_string):
+def test_index_parse_fails(index_string):
     index = Index.parse(42, index_string)
     assert not index

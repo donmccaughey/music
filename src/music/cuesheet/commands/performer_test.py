@@ -11,7 +11,7 @@ from .performer import Performer
         ('  PERFORMER \t "  Alice  and Bob  "', 'Alice and Bob'),
     ]
 )
-def test_performer_parse_fails(performer_string, expected_name):
+def test_performer_parse(performer_string, expected_name):
     performer = Performer.parse(42, performer_string)
     assert performer
     assert performer.line_number == 42
@@ -28,6 +28,6 @@ def test_performer_parse_fails(performer_string, expected_name):
     '   ',
     '',
 ])
-def test_performer_parse(performer_string):
+def test_performer_parse_fails(performer_string):
     performer = Performer.parse(42, performer_string)
     assert not performer

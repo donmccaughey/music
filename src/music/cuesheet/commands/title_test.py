@@ -11,7 +11,7 @@ from .title import Title
         ('  TITLE \t "  Hello,  World!  "', 'Hello, World!'),
     ]
 )
-def test_performer_parse_fails(title_string, expected_title):
+def test_performer_parse(title_string, expected_title):
     title = Title.parse(42, title_string)
     assert title
     assert title.line_number == 42
@@ -28,6 +28,6 @@ def test_performer_parse_fails(title_string, expected_title):
     '   ',
     '',
 ])
-def test_performer_parse(title_string):
+def test_performer_parse_fails(title_string):
     title = Title.parse(42, title_string)
     assert not title

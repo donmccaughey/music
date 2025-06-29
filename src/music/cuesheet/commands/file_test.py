@@ -31,6 +31,6 @@ def test_file_parse(file_string, expected_filename, expected_file_type):
     '   ',
     '',
 ])
-def test_file_parse_failure(file_string):
+def test_file_parse_fails(file_string):
     file = File.parse(42, file_string)
     assert not file
