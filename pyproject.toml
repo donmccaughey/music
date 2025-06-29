@@ -2,9 +2,16 @@
 name = 'music'
 version = '0.0.1'
 requires-python = '==3.13.*'
-dependencies = [
+dependencies = []
 
-]
+
+[tool.ruff]
+line-length = 80
+
+
+[tool.ruff.format]
+quote-style = 'single'
+
 
 [tool.uv]
 dev-dependencies = [

@@ -16,7 +16,8 @@ class Options:
     def parse(cls, args: list[str] | None = None) -> Options:
         parser = ArgumentParser(description='Finds and check cue sheets')
         parser.add_argument(
-            '-v', '--verbose',
+            '-v',
+            '--verbose',
             action='store_true',
             help='List correctly parsed cue sheets and errors',
         )
@@ -27,7 +28,4 @@ class Options:
             type=Path,
         )
         namespace = parser.parse_args(args if args else sys.argv[1:])
-        return cls(
-            root=namespace.root,
-            verbose=namespace.verbose
-        )
+        return cls(root=namespace.root, verbose=namespace.verbose)

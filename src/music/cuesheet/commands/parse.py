@@ -6,10 +6,15 @@ from .split import split_tokens
 
 
 def parse_lines(command_type_map: dict[str, CommandType], s: str) -> list[Line]:
-    return [parse_line(command_type_map, i + 1, line) for (i, line) in enumerate(s.splitlines())]
+    return [
+        parse_line(command_type_map, i + 1, line)
+        for (i, line) in enumerate(s.splitlines())
+    ]
 
 
-def parse_line(command_type_map: dict[str, CommandType], line_number: int, line: str) -> Line:
+def parse_line(
+    command_type_map: dict[str, CommandType], line_number: int, line: str
+) -> Line:
     tokens = split_tokens(line)
 
     if not tokens:

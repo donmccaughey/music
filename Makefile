@@ -55,8 +55,19 @@ $(TMP)/coverage.sqlite : \
 $(TMP)/mypy.stamp : \
 		.mypy.ini \
 		$(src_files) \
-		$(TMP)/uv-sync.stamp
+		$(TMP)/ruff-format.stamp
 	uv run -m mypy --check-untyped-defs src
+	touch $@
+
+
+$(TMP)/ruff-format.stamp : \
+		pyproject.toml \
+		$(src_files) \
+		$(test_files) \
+		$(TMP)/uv-sync.stamp
+	ruff format \
+		--config pyproject.toml \
+		src
 	touch $@
 
 

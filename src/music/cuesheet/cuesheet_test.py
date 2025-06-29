@@ -39,7 +39,7 @@ def test_parse():
     assert track12.number == 12
     assert track12.track_type == 'AUDIO'
     assert track12.title
-    assert track12.title.title == "This Time"
+    assert track12.title.title == 'This Time'
     assert track12.performer
     assert track12.performer.name == '3 Doors Down'
     assert len(track1.indices) == 1
@@ -54,24 +54,24 @@ def test_parse():
 
 
 def test_parse_blank():
-    s = make_test_data('''
+    s = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         
         FILE "album.wav" WAVE
-    ''')
+    """)
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet
     assert not cue_sheet.errors
 
 
 def test_parse_error():
-    s = make_test_data('''
+    s = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         NOTACOMMAND fnord
         FILE "album.wav" WAVE
-    ''')
+    """)
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
@@ -80,14 +80,14 @@ def test_parse_error():
 
 
 def test_parse_index():
-    s = make_test_data('''
+    s = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             TRACK 02 AUDIO
                 INDEX 00 04:20:38
                 INDEX 01 04:21:66
-    ''')
+    """)
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet and cue_sheet.file and cue_sheet.file.tracks
     assert cue_sheet.file.tracks[0].indices
@@ -108,14 +108,14 @@ def test_parse_index():
 
 @pytest.mark.skip
 def test_parse_index_duplicate_number():
-    s = make_test_data('''
+    s = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             TRACK 02 AUDIO
                 INDEX 00 04:20:38
                 INDEX 00 04:21:66
-    ''')
+    """)
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet and cue_sheet.file and cue_sheet.file.tracks
     assert cue_sheet.file.tracks[0].indices
@@ -133,12 +133,12 @@ def test_parse_index_duplicate_number():
 
 
 def test_parse_index_misplaced_in_head():
-    s = make_test_data('''
+    s = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         INDEX 01 00:00:00
         FILE "album.wav" WAVE
-    ''')
+    """)
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
@@ -147,12 +147,12 @@ def test_parse_index_misplaced_in_head():
 
 
 def test_parse_index_misplaced_in_file():
-    s = make_test_data('''
+    s = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             INDEX 01 00:00:00
-    ''')
+    """)
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
@@ -161,12 +161,12 @@ def test_parse_index_misplaced_in_file():
 
 
 def test_parse_performer_misplaced():
-    s = make_test_data('''
+    s = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             PERFORMER "3 Doors Down"
-    ''')
+    """)
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
@@ -175,11 +175,11 @@ def test_parse_performer_misplaced():
 
 
 def test_parse_remark():
-    s = make_test_data('''
+    s = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         REM foo bar
-    ''')
+    """)
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet
     assert len(cue_sheet.remarks) == 1
@@ -188,12 +188,12 @@ def test_parse_remark():
 
 
 def test_parse_remark_in_file():
-    s = make_test_data('''
+    s = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             REM foo bar
-    ''')
+    """)
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet
     assert not cue_sheet.remarks
@@ -203,13 +203,13 @@ def test_parse_remark_in_file():
 
 
 def test_parse_remark_in_track():
-    s = make_test_data('''
+    s = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             TRACK 01 AUDIO
                 REM foo bar
-    ''')
+    """)
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet
     assert not cue_sheet.remarks
@@ -220,12 +220,12 @@ def test_parse_remark_in_track():
 
 
 def test_parse_title_misplaced():
-    s = make_test_data('''
+    s = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             TITLE "Away From The Sun"
-    ''')
+    """)
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet and cue_sheet.title
     assert cue_sheet.title.title == 'Away From The Sun'
@@ -236,11 +236,11 @@ def test_parse_title_misplaced():
 
 
 def test_parse_track_misplaced():
-    s = make_test_data('''
+    s = make_test_data("""
         PERFORMER "3 Doors Down"
         TRACK 01 AUDIO
         TITLE "Away From The Sun"
-    ''')
+    """)
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1

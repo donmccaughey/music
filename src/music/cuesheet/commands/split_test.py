@@ -7,9 +7,10 @@ def test_split_quoted_string():
     assert split_quoted_string('TITLE', 'TITLE 42') is None
     assert split_quoted_string('TITLE', 'TITLE "42"') == '42'
     assert split_quoted_string('TITLE', 'TITLE "The Title"') == 'The Title'
-    assert split_quoted_string(
-        'TITLE', 'TITLE "The  Messy \t Title"'
-    ) == 'The Messy Title'
+    assert (
+        split_quoted_string('TITLE', 'TITLE "The  Messy \t Title"')
+        == 'The Messy Title'
+    )
 
 
 def test_split_ints():
