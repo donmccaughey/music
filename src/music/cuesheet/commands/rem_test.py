@@ -26,6 +26,6 @@ def test_rem_parse(rem_string, expected_remark):
     '   ',
     '',
 ])
-def test_performer_parse_fails(rem_string):
+def test_rem_parse_fails(rem_string):
     rem = Rem.parse(42, rem_string)
     assert not rem

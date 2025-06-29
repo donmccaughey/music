@@ -23,7 +23,7 @@ def test_index_parse(index_string, expected_number, expected_minutes, expected_s
 
 
 @pytest.mark.parametrize('index_string', [
-    'INDEX: 01 00:00:00'
+    'INDEX: 01 00:00:00',
     'INDE 01 00:00:00',
     'INDEX 01 ',
     'INDEX 00:00:00',

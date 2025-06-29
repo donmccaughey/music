@@ -27,6 +27,8 @@ def test_track_parse(track_string, expected_number, expected_track_type):
         'TRACK 01',
         'CRACK 01 AUDIO',
         'TRACK one AUDIO',
+        '   ',
+        '',
     ])
 def test_track_parse_fails(track_string):
     track = Track.parse(42, track_string)
