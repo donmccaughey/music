@@ -28,4 +28,7 @@ class Options:
             type=Path,
         )
         namespace = parser.parse_args(args if args else sys.argv[1:])
-        return cls(root=namespace.root, verbose=namespace.verbose)
+        return cls(
+            root=namespace.root.expanduser().resolve(),
+            verbose=namespace.verbose,
+        )
