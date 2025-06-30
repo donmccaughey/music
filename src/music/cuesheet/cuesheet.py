@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+from io import StringIO
+
 from .commands import Blank
-from .commands import CommandType
 from .commands import Error
 from .commands import File
 from .commands import Index
@@ -9,7 +10,7 @@ from .commands import Performer
 from .commands import Rem
 from .commands import Title
 from .commands import Track
-from .commands import parse_lines
+from .lexer import Lexer
 
 
 class CueSheet:
@@ -25,24 +26,11 @@ class CueSheet:
         self.file: File | None = None
         self.errors: list[Error] = []
 
-    command_types: list[CommandType] = [
-        File,
-        Index,
-        Performer,
-        Rem,
-        Title,
-        Track,
-    ]
-
-    command_type_map: dict[str, CommandType] = {
-        command_type.__name__.upper(): command_type
-        for command_type in command_types
-    }
-
     @classmethod
     def parse(cls, s: str) -> CueSheet:
         cue_sheet = cls()
-        for line in parse_lines(cue_sheet.command_type_map, s):
+        lexer = Lexer(StringIO(s))
+        for line in lexer.commands():
             match line:
                 case Blank() as blank:
                     cue_sheet.parse_blank(blank)
