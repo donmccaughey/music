@@ -23,18 +23,10 @@ def test_scan():
     ]
 
 
-@fixture
-def command_type_map() -> dict[str, CommandType]:
-    return {
-        'REM': Rem,
-        'TITLE': Title,
-    }
-
-
-def test_scan_line_for_known_command(command_type_map):
+def test_scan_line_for_known_command():
     line_str = 'TITLE "Gimme Shelter"'
     lexer = Lexer()
-    line = lexer.scan_line(command_type_map, 42, line_str)
+    line = lexer.scan_line(42, line_str)
 
     assert line.line_number == 42
     assert line.line == line_str
@@ -42,10 +34,10 @@ def test_scan_line_for_known_command(command_type_map):
     assert line.title == 'Gimme Shelter'
 
 
-def test_scan_line_for_unknown_command(command_type_map):
+def test_scan_line_for_unknown_command():
     line_str = 'BARF "Unknown command"'
     lexer = Lexer()
-    line = lexer.scan_line(command_type_map, 42, line_str)
+    line = lexer.scan_line(42, line_str)
 
     assert line.line_number == 42
     assert line.line == line_str

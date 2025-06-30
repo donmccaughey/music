@@ -31,14 +31,9 @@ command_type_map: dict[str, CommandType] = {
 class Lexer:
     def scan(self, source: TextIO) -> Generator[Line]:
         for i, line in enumerate(source):
-            yield self.scan_line(command_type_map, i + 1, line.strip('\n'))
+            yield self.scan_line(i + 1, line.strip('\n'))
 
-    def scan_line(
-        self,
-        command_type_map: dict[str, CommandType],
-        line_number: int,
-        line: str,
-    ) -> Line:
+    def scan_line(self, line_number: int, line: str) -> Line:
         tokens = split_tokens(line)
 
         if not tokens:
