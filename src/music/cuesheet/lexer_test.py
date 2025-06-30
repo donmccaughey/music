@@ -13,8 +13,8 @@ def test_scan():
         '\n'
         'REM This is a reminder'
     )
-    lexer = Lexer(StringIO(s))
-    commands = lexer.scan()
+    lexer = Lexer()
+    commands = lexer.scan(StringIO(s))
     assert list(commands) == [
         Title(1, '  TITLE "Gimme Shelter"', 'Gimme Shelter'),
         Error(2, 'BARF "Unknown command"'),
@@ -33,7 +33,7 @@ def command_type_map() -> dict[str, CommandType]:
 
 def test_scan_line_for_known_command(command_type_map):
     line_str = 'TITLE "Gimme Shelter"'
-    lexer = Lexer(StringIO(line_str))
+    lexer = Lexer()
     line = lexer.scan_line(command_type_map, 42, line_str)
 
     assert line.line_number == 42
@@ -44,7 +44,7 @@ def test_scan_line_for_known_command(command_type_map):
 
 def test_scan_line_for_unknown_command(command_type_map):
     line_str = 'BARF "Unknown command"'
-    lexer = Lexer(StringIO(line_str))
+    lexer = Lexer()
     line = lexer.scan_line(command_type_map, 42, line_str)
 
     assert line.line_number == 42

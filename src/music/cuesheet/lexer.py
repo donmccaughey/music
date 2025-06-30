@@ -29,11 +29,8 @@ command_type_map: dict[str, CommandType] = {
 
 
 class Lexer:
-    def __init__(self, source: TextIO):
-        self.source = source
-
-    def scan(self) -> Generator[Line]:
-        for i, line in enumerate(self.source):
+    def scan(self, source: TextIO) -> Generator[Line]:
+        for i, line in enumerate(source):
             yield self.scan_line(command_type_map, i + 1, line.strip('\n'))
 
     def scan_line(

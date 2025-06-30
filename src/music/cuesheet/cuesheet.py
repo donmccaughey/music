@@ -29,8 +29,8 @@ class CueSheet:
     @classmethod
     def parse(cls, s: str) -> CueSheet:
         cue_sheet = cls()
-        lexer = Lexer(StringIO(s))
-        for line in lexer.scan():
+        lexer = Lexer()
+        for line in lexer.scan(StringIO(s)):
             match line:
                 case Blank() as blank:
                     cue_sheet.parse_blank(blank)
