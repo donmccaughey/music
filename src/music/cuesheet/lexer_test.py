@@ -1,8 +1,6 @@
 from io import StringIO
 
-from pytest import fixture
-
-from .commands import Blank, CommandType, Error, Rem, Title
+from .commands import Blank, Error, Rem, Title
 from .lexer import Lexer
 
 

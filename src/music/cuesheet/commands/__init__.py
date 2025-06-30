@@ -1,5 +1,4 @@
 from .command import Command
-from .command import CommandType
 from .file import File
 from .index import Index
 from .lines import Blank

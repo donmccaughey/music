@@ -2,7 +2,7 @@ from typing import TextIO, Generator
 
 from .commands import (
     Blank,
-    CommandType,
+    Command,
     Error,
     File,
     Index,
@@ -16,7 +16,7 @@ from .commands import (
 
 
 class Lexer:
-    commands: dict[str, CommandType] = {
+    commands: dict[str, type[Command]] = {
         'FILE': File,
         'INDEX': Index,
         'PERFORMER': Performer,

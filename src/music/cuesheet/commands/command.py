@@ -1,14 +1,11 @@
 from dataclasses import dataclass
-from typing import Type, TypeVar
+from typing import Self
 
 from .lines import Line
-
-C = TypeVar('C', bound='Command')
-CommandType = Type[C]
 
 
 @dataclass
 class Command(Line):
     @classmethod
-    def parse(cls: Type[C], line_number: int, line: str) -> C | None:
+    def parse(cls, line_number: int, line: str) -> Self | None:
         raise NotImplementedError()
