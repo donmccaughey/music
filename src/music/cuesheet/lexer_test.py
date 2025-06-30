@@ -3,7 +3,7 @@ from io import StringIO
 from pytest import fixture
 
 from .commands import Blank, CommandType, Error, Rem, Title
-from .lexer import Lexer, parse_line, parse_lines
+from .lexer import Lexer, parse_line
 
 
 def test_commands():
@@ -48,19 +48,3 @@ def test_parse_line_for_unknown_command(command_type_map):
     assert line.line_number == 42
     assert line.line == line_str
     assert isinstance(line, Error)
-
-
-def test_parse_lines(command_type_map):
-    s = (
-        'TITLE "Gimme Shelter"\n'
-        'BARF "Unknown command"\n'
-        '\n'
-        'REM This is a reminder'
-    )
-    lines = parse_lines(command_type_map, s)
-    assert lines == [
-        Title(1, 'TITLE "Gimme Shelter"', 'Gimme Shelter'),
-        Error(2, 'BARF "Unknown command"'),
-        Blank(3, ''),
-        Rem(4, 'REM This is a reminder', 'This is a reminder'),
-    ]

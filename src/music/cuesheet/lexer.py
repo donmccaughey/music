@@ -37,13 +37,6 @@ class Lexer:
             yield parse_line(command_type_map, i + 1, line.strip('\n'))
 
 
-def parse_lines(command_type_map: dict[str, CommandType], s: str) -> list[Line]:
-    return [
-        parse_line(command_type_map, i + 1, line)
-        for (i, line) in enumerate(s.splitlines())
-    ]
-
-
 def parse_line(
     command_type_map: dict[str, CommandType], line_number: int, line: str
 ) -> Line:
