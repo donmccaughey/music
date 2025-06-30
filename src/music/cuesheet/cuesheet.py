@@ -77,7 +77,7 @@ class CueSheet:
         if self.file and self.file.tracks:
             self.file.tracks[-1].indices.append(index)
         else:
-            self.errors.append(Error.from_line(index))
+            self.errors.append(Error(index.line_number, index.line))
 
     def parse_performer(self, performer: Performer):
         if not self.performer:
@@ -85,7 +85,7 @@ class CueSheet:
         elif self.file and self.file.tracks:
             self.file.tracks[-1].performer = performer
         else:
-            self.errors.append(Error.from_line(performer))
+            self.errors.append(Error(performer.line_number, performer.line))
 
     def parse_rem(self, rem: Rem):
         if self.file:
@@ -100,7 +100,7 @@ class CueSheet:
         if not self.title:
             self.title = title
         elif not self.file or not self.file.tracks:
-            self.errors.append(Error.from_line(title))
+            self.errors.append(Error(title.line_number, title.line))
         else:
             self.file.tracks[-1].title = title
 
@@ -108,4 +108,4 @@ class CueSheet:
         if self.file:
             self.file.tracks.append(track)
         else:
-            self.errors.append(Error.from_line(track))
+            self.errors.append(Error(track.line_number, track.line))
