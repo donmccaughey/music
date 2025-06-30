@@ -34,10 +34,10 @@ class Lexer:
 
     def commands(self) -> Generator[Line]:
         for i, line in enumerate(self.source):
-            yield parse_line(command_type_map, i + 1, line.strip('\n'))
+            yield scan_line(command_type_map, i + 1, line.strip('\n'))
 
 
-def parse_line(
+def scan_line(
     command_type_map: dict[str, CommandType], line_number: int, line: str
 ) -> Line:
     tokens = split_tokens(line)

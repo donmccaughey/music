@@ -3,7 +3,7 @@ from io import StringIO
 from pytest import fixture
 
 from .commands import Blank, CommandType, Error, Rem, Title
-from .lexer import Lexer, parse_line
+from .lexer import Lexer, scan_line
 
 
 def test_commands():
@@ -31,9 +31,9 @@ def command_type_map() -> dict[str, CommandType]:
     }
 
 
-def test_parse_line_for_known_command(command_type_map):
+def test_scan_line_for_known_command(command_type_map):
     line_str = 'TITLE "Gimme Shelter"'
-    line = parse_line(command_type_map, 42, line_str)
+    line = scan_line(command_type_map, 42, line_str)
 
     assert line.line_number == 42
     assert line.line == line_str
@@ -41,9 +41,9 @@ def test_parse_line_for_known_command(command_type_map):
     assert line.title == 'Gimme Shelter'
 
 
-def test_parse_line_for_unknown_command(command_type_map):
+def test_scan_line_for_unknown_command(command_type_map):
     line_str = 'BARF "Unknown command"'
-    line = parse_line(command_type_map, 42, line_str)
+    line = scan_line(command_type_map, 42, line_str)
 
     assert line.line_number == 42
     assert line.line == line_str
