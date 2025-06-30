@@ -3,10 +3,10 @@ from io import StringIO
 from pytest import fixture
 
 from .commands import Blank, CommandType, Error, Rem, Title
-from .lexer import Lexer, scan_line
+from .lexer import Lexer
 
 
-def test_commands():
+def test_scan():
     s = (
         '  TITLE "Gimme Shelter"\n'
         'BARF "Unknown command"\n'
@@ -14,7 +14,7 @@ def test_commands():
         'REM This is a reminder'
     )
     lexer = Lexer(StringIO(s))
-    commands = lexer.commands()
+    commands = lexer.scan()
     assert list(commands) == [
         Title(1, '  TITLE "Gimme Shelter"', 'Gimme Shelter'),
         Error(2, 'BARF "Unknown command"'),
@@ -33,7 +33,8 @@ def command_type_map() -> dict[str, CommandType]:
 
 def test_scan_line_for_known_command(command_type_map):
     line_str = 'TITLE "Gimme Shelter"'
-    line = scan_line(command_type_map, 42, line_str)
+    lexer = Lexer(StringIO(line_str))
+    line = lexer.scan_line(command_type_map, 42, line_str)
 
     assert line.line_number == 42
     assert line.line == line_str
@@ -43,7 +44,8 @@ def test_scan_line_for_known_command(command_type_map):
 
 def test_scan_line_for_unknown_command(command_type_map):
     line_str = 'BARF "Unknown command"'
-    line = scan_line(command_type_map, 42, line_str)
+    lexer = Lexer(StringIO(line_str))
+    line = lexer.scan_line(command_type_map, 42, line_str)
 
     assert line.line_number == 42
     assert line.line == line_str

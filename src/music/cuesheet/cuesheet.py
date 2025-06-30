@@ -30,7 +30,7 @@ class CueSheet:
     def parse(cls, s: str) -> CueSheet:
         cue_sheet = cls()
         lexer = Lexer(StringIO(s))
-        for line in lexer.commands():
+        for line in lexer.scan():
             match line:
                 case Blank() as blank:
                     cue_sheet.parse_blank(blank)
