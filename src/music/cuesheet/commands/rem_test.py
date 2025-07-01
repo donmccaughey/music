@@ -15,8 +15,7 @@ from .rem import Rem
 def test_rem_parse(rem_string, expected_remark):
     rem = Rem.parse(Line(42, rem_string))
     assert rem
-    assert rem.line_number == 42
-    assert rem.line == rem_string
+    assert rem.line == Line(42, rem_string)
     assert rem.remark == expected_remark
 
 

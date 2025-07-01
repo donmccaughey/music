@@ -15,8 +15,7 @@ from .performer import Performer
 def test_performer_parse(performer_string, expected_name):
     performer = Performer.parse(Line(42, performer_string))
     assert performer
-    assert performer.line_number == 42
-    assert performer.line == performer_string
+    assert performer.line == Line(42, performer_string)
     assert performer.name == expected_name
 
 

@@ -15,8 +15,7 @@ from .title import Title
 def test_title_parse(title_string, expected_title):
     title = Title.parse(Line(42, title_string))
     assert title
-    assert title.line_number == 42
-    assert title.line == title_string
+    assert title.line == Line(42, title_string)
     assert title.title == expected_title
 
 

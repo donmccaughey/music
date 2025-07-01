@@ -23,4 +23,4 @@ class Rem(Command):
 
         remark = ' '.join(tokens[1:])
 
-        return cls(line.line_number, line.line, remark)
+        return cls(line, remark)

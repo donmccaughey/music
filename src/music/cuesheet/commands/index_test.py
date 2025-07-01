@@ -22,8 +22,7 @@ def test_index_parse(
 ):
     index = Index.parse(Line(42, index_string))
     assert index
-    assert index.line_number == 42
-    assert index.line == index_string
+    assert index.line == Line(42, index_string)
     assert index.number == expected_number
     assert index.minutes == expected_minutes
     assert index.seconds == expected_seconds

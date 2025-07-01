@@ -14,8 +14,7 @@ from .track import Track
 def test_track_parse(track_string, expected_number, expected_track_type):
     track = Track.parse(Line(42, track_string))
     assert track
-    assert track.line_number == 42
-    assert track.line == track_string
+    assert track.line == Line(42, track_string)
     assert track.number == expected_number
     assert track.track_type == expected_track_type
     assert not track.title

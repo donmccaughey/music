@@ -15,4 +15,4 @@ class Title(Command):
     @classmethod
     def parse(cls, line: Line) -> Self | None:
         name = split_quoted_string('TITLE', line.line)
-        return cls(line.line_number, line.line, name) if name else None
+        return cls(line, name) if name else None

@@ -17,8 +17,7 @@ from .lines import Line
 def test_file_parse(file_string, expected_filename, expected_file_type):
     file = File.parse(Line(42, file_string))
     assert file
-    assert file.line_number == 42
-    assert file.line == file_string
+    assert file.line == Line(42, file_string)
     assert file.filename == expected_filename
     assert file.file_type == expected_file_type
     assert file.tracks == []

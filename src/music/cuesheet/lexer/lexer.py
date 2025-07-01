@@ -25,11 +25,11 @@ class Lexer:
         'TRACK': Track,
     }
 
-    def scan(self, source: TextIO) -> Generator[Line]:
+    def scan(self, source: TextIO) -> Generator[Line | Command]:
         for i, line in enumerate(source):
             yield self.scan_line(i + 1, line.strip('\n'))
 
-    def scan_line(self, line_number: int, line: str) -> Line:
+    def scan_line(self, line_number: int, line: str) -> Line | Command:
         tokens = split_tokens(line)
 
         if not tokens:

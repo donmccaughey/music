@@ -1,6 +1,6 @@
 from io import StringIO
 
-from music.cuesheet.commands import Blank, Error, Rem, Title
+from music.cuesheet.commands import Blank, Error, Line, Rem, Title
 
 from .lexer import Lexer
 
@@ -15,10 +15,10 @@ def test_scan():
     lexer = Lexer()
     commands = lexer.scan(StringIO(s))
     assert list(commands) == [
-        Title(1, '  TITLE "Gimme Shelter"', 'Gimme Shelter'),
+        Title(Line(1, '  TITLE "Gimme Shelter"'), 'Gimme Shelter'),
         Error(2, 'BARF "Unknown command"'),
         Blank(3, ''),
-        Rem(4, 'REM This is a reminder', 'This is a reminder'),
+        Rem(Line(4, 'REM This is a reminder'), 'This is a reminder'),
     ]
 
 
@@ -27,8 +27,7 @@ def test_scan_line_for_known_command():
     lexer = Lexer()
     line = lexer.scan_line(42, line_str)
 
-    assert line.line_number == 42
-    assert line.line == line_str
+    assert line.line == Line(42, line_str)
     assert isinstance(line, Title)
     assert line.title == 'Gimme Shelter'
 
@@ -38,6 +37,4 @@ def test_scan_line_for_unknown_command():
     lexer = Lexer()
     line = lexer.scan_line(42, line_str)
 
-    assert line.line_number == 42
-    assert line.line == line_str
-    assert isinstance(line, Error)
+    assert line == Error(42, line_str)

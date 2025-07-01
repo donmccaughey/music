@@ -37,6 +37,4 @@ class Index(Command):
         minutes, seconds, frames = times
         # TODO: validate ranges
 
-        return cls(
-            line.line_number, line.line, number, minutes, seconds, frames
-        )
+        return cls(line, number, minutes, seconds, frames)
