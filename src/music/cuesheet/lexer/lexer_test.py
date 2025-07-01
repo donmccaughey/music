@@ -17,7 +17,7 @@ def test_scan():
     assert list(commands) == [
         Title(Line(1, '  TITLE "Gimme Shelter"'), 'Gimme Shelter'),
         Error(2, 'BARF "Unknown command"'),
-        Blank(3, ''),
+        Blank(Line(3, '')),
         Rem(Line(4, 'REM This is a reminder'), 'This is a reminder'),
     ]
 

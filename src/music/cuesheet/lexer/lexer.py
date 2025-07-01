@@ -33,7 +33,7 @@ class Lexer:
         tokens = split_tokens(line)
 
         if not tokens:
-            return Blank(line_number, line)
+            return Blank(Line(line_number, line))
 
         command_name = tokens[0]
         if command_name in self.commands:

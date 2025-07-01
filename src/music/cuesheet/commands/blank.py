@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from .line import Line
+from .command import Command
 
 
 @dataclass
-class Blank(Line):
+class Blank(Command):
     pass
