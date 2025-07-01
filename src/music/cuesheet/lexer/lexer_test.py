@@ -1,6 +1,7 @@
 from io import StringIO
 
-from .commands import Blank, Error, Rem, Title
+from music.cuesheet.commands import Blank, Error, Rem, Title
+
 from .lexer import Lexer
 
 

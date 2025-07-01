@@ -1,6 +1,6 @@
 from typing import TextIO, Generator
 
-from .commands import (
+from music.cuesheet.commands import (
     Blank,
     Command,
     Error,
