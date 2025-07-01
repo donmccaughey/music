@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Self
 
-from .lines import Line
+from music.cuesheet.lexer.line import Line
 
 
 @dataclass

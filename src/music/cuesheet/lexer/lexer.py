@@ -6,13 +6,14 @@ from music.cuesheet.commands import (
     Error,
     File,
     Index,
-    Line,
     Performer,
     Rem,
     split_tokens,
     Title,
     Track,
 )
+
+from .line import Line
 
 
 class Lexer:
@@ -25,11 +26,11 @@ class Lexer:
         'TRACK': Track,
     }
 
-    def scan(self, source: TextIO) -> Generator[Line | Command]:
+    def scan(self, source: TextIO) -> Generator[Command]:
         for i, line in enumerate(source):
             yield self.scan_line(i + 1, line.strip('\n'))
 
-    def scan_line(self, line_number: int, line: str) -> Line | Command:
+    def scan_line(self, line_number: int, line: str) -> Command:
         tokens = split_tokens(line)
 
         if not tokens:

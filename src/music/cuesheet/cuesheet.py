@@ -2,15 +2,8 @@ from __future__ import annotations
 
 from io import StringIO
 
-from .commands import Blank
-from .commands import Error
-from .commands import File
-from .commands import Index
-from .commands import Performer
-from .commands import Rem
-from .commands import Title
-from .commands import Track
-from .lexer import Lexer
+from .commands import Blank, Error, File, Index, Performer, Rem, Title, Track
+from .lexer.lexer import Lexer
 
 
 class CueSheet:

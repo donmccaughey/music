@@ -3,8 +3,9 @@ from typing import Self
 
 from dataclasses import dataclass
 
+from music.cuesheet.lexer.line import Line
+
 from .command import Command
-from .lines import Line
 from .split import split_ints
 from .split import split_tokens
 

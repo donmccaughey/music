@@ -2,8 +2,9 @@ from pathlib import Path
 
 import pytest
 
+from music.cuesheet.lexer.line import Line
+
 from .file import File
-from .lines import Line
 
 
 @pytest.mark.parametrize(

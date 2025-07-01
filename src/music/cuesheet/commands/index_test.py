@@ -1,7 +1,8 @@
 import pytest
 
+from music.cuesheet.lexer.line import Line
+
 from .index import Index
-from .lines import Line
 
 
 @pytest.mark.parametrize(

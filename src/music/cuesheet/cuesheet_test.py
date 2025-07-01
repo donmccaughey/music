@@ -4,7 +4,8 @@ from textwrap import dedent
 import pytest
 
 from .cuesheet import CueSheet
-from .commands import Error, Line
+from .commands import Error
+from .lexer.line import Line
 
 
 TEST_DATA_DIR = Path(__file__).resolve().parent / 'test_data'

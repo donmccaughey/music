@@ -1,8 +1,9 @@
 from io import StringIO
 
-from music.cuesheet.commands import Blank, Error, Line, Rem, Title
+from music.cuesheet.commands import Blank, Error, Rem, Title
 
 from .lexer import Lexer
+from .line import Line
 
 
 def test_scan():

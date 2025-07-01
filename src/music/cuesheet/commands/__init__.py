@@ -1,9 +1,9 @@
-from .blank import Blank
 from .command import Command
+
+from .blank import Blank
 from .error import Error
 from .file import File
 from .index import Index
-from .lines import Line
 from .performer import Performer
 from .rem import Rem
 from .split import split_tokens

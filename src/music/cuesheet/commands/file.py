@@ -4,8 +4,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Self
 
+from music.cuesheet.lexer.line import Line
+
 from .command import Command
-from .lines import Line
 from .rem import Rem
 from .split import split_tokens
 from .track import Track
