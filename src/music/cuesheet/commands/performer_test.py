@@ -1,5 +1,6 @@
 import pytest
 
+from .lines import Line
 from .performer import Performer
 
 
@@ -12,7 +13,7 @@ from .performer import Performer
     ],
 )
 def test_performer_parse(performer_string, expected_name):
-    performer = Performer.parse(42, performer_string)
+    performer = Performer.parse(Line(42, performer_string))
     assert performer
     assert performer.line_number == 42
     assert performer.line == performer_string
@@ -32,5 +33,5 @@ def test_performer_parse(performer_string, expected_name):
     ],
 )
 def test_performer_parse_fails(performer_string):
-    performer = Performer.parse(42, performer_string)
+    performer = Performer.parse(Line(42, performer_string))
     assert not performer

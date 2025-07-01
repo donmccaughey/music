@@ -1,5 +1,6 @@
 import pytest
 
+from .lines import Line
 from .title import Title
 
 
@@ -12,7 +13,7 @@ from .title import Title
     ],
 )
 def test_title_parse(title_string, expected_title):
-    title = Title.parse(42, title_string)
+    title = Title.parse(Line(42, title_string))
     assert title
     assert title.line_number == 42
     assert title.line == title_string
@@ -32,5 +33,5 @@ def test_title_parse(title_string, expected_title):
     ],
 )
 def test_title_parse_fails(title_string):
-    title = Title.parse(42, title_string)
+    title = Title.parse(Line(42, title_string))
     assert not title

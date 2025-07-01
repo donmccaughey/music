@@ -3,6 +3,7 @@ from pathlib import Path
 import pytest
 
 from .file import File
+from .lines import Line
 
 
 @pytest.mark.parametrize(
@@ -14,7 +15,7 @@ from .file import File
     ],
 )
 def test_file_parse(file_string, expected_filename, expected_file_type):
-    file = File.parse(42, file_string)
+    file = File.parse(Line(42, file_string))
     assert file
     assert file.line_number == 42
     assert file.line == file_string
@@ -35,5 +36,5 @@ def test_file_parse(file_string, expected_filename, expected_file_type):
     ],
 )
 def test_file_parse_fails(file_string):
-    file = File.parse(42, file_string)
+    file = File.parse(Line(42, file_string))
     assert not file

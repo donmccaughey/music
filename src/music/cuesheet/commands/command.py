@@ -7,5 +7,5 @@ from .lines import Line
 @dataclass
 class Command(Line):
     @classmethod
-    def parse(cls, line_number: int, line: str) -> Self | None:
+    def parse(cls, line: Line) -> Self | None:
         raise NotImplementedError()

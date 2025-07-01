@@ -1,5 +1,6 @@
 import pytest
 
+from .lines import Line
 from .track import Track
 
 
@@ -11,7 +12,7 @@ from .track import Track
     ],
 )
 def test_track_parse(track_string, expected_number, expected_track_type):
-    track = Track.parse(42, track_string)
+    track = Track.parse(Line(42, track_string))
     assert track
     assert track.line_number == 42
     assert track.line == track_string
@@ -33,5 +34,5 @@ def test_track_parse(track_string, expected_number, expected_track_type):
     ],
 )
 def test_track_parse_fails(track_string):
-    track = Track.parse(42, track_string)
+    track = Track.parse(Line(42, track_string))
     assert not track

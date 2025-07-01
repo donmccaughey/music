@@ -1,5 +1,6 @@
 import pytest
 
+from .lines import Line
 from .rem import Rem
 
 
@@ -12,7 +13,7 @@ from .rem import Rem
     ],
 )
 def test_rem_parse(rem_string, expected_remark):
-    rem = Rem.parse(42, rem_string)
+    rem = Rem.parse(Line(42, rem_string))
     assert rem
     assert rem.line_number == 42
     assert rem.line == rem_string
@@ -30,5 +31,5 @@ def test_rem_parse(rem_string, expected_remark):
     ],
 )
 def test_rem_parse_fails(rem_string):
-    rem = Rem.parse(42, rem_string)
+    rem = Rem.parse(Line(42, rem_string))
     assert not rem

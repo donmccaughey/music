@@ -1,6 +1,7 @@
 import pytest
 
 from .index import Index
+from .lines import Line
 
 
 @pytest.mark.parametrize(
@@ -19,7 +20,7 @@ def test_index_parse(
     expected_seconds,
     expected_frames,
 ):
-    index = Index.parse(42, index_string)
+    index = Index.parse(Line(42, index_string))
     assert index
     assert index.line_number == 42
     assert index.line == index_string
@@ -45,5 +46,5 @@ def test_index_parse(
     ],
 )
 def test_index_parse_fails(index_string):
-    index = Index.parse(42, index_string)
+    index = Index.parse(Line(42, index_string))
     assert not index

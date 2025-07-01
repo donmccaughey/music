@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Self
 
 from .command import Command
+from .lines import Line
 from .rem import Rem
 from .split import split_tokens
 from .track import Track
@@ -17,8 +19,8 @@ class File(Command):
     tracks: list[Track]
 
     @classmethod
-    def parse(cls, line_number: int, line: str) -> File | None:
-        tokens = split_tokens(line)
+    def parse(cls, line: Line) -> Self | None:
+        tokens = split_tokens(line.line)
         if len(tokens) not in (2, 3):
             # TODO: handle any filename, not just "album.wav"
             return None
@@ -34,4 +36,6 @@ class File(Command):
         file_type = tokens[2] if len(tokens) > 2 else None
         # TODO: is WAVE the only valid type?
 
-        return cls(line_number, line, Path(filename), file_type, [], [])
+        return cls(
+            line.line_number, line.line, Path(filename), file_type, [], []
+        )

@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Self
 
 from .command import Command
 from .index import Index
+from .lines import Line
 from .performer import Performer
 from .rem import Rem
 from .split import split_tokens
@@ -20,8 +22,8 @@ class Track(Command):
     remarks: list[Rem]
 
     @classmethod
-    def parse(cls, line_number: int, line: str) -> Track | None:
-        tokens = split_tokens(line)
+    def parse(cls, line: Line) -> Self | None:
+        tokens = split_tokens(line.line)
         if len(tokens) != 3:
             return None
 
@@ -35,4 +37,6 @@ class Track(Command):
 
         track_type = tokens[2]
 
-        return cls(line_number, line, number, track_type, None, None, [], [])
+        return cls(
+            line.line_number, line.line, number, track_type, None, None, [], []
+        )

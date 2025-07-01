@@ -38,7 +38,7 @@ class Lexer:
         command_name = tokens[0]
         if command_name in self.commands:
             command_type = self.commands[command_name]
-            command = command_type.parse(line_number, line)
+            command = command_type.parse(Line(line_number, line))
             return command if command else Error(line_number, line)
 
         return Error(line_number, line)
