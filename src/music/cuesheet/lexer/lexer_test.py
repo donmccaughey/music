@@ -16,7 +16,7 @@ def test_scan():
     commands = lexer.scan(StringIO(s))
     assert list(commands) == [
         Title(Line(1, '  TITLE "Gimme Shelter"'), 'Gimme Shelter'),
-        Error(2, 'BARF "Unknown command"'),
+        Error(Line(2, 'BARF "Unknown command"')),
         Blank(Line(3, '')),
         Rem(Line(4, 'REM This is a reminder'), 'This is a reminder'),
     ]
@@ -37,4 +37,4 @@ def test_scan_line_for_unknown_command():
     lexer = Lexer()
     line = lexer.scan_line(42, line_str)
 
-    assert line == Error(42, line_str)
+    assert line == Error(Line(42, line_str))

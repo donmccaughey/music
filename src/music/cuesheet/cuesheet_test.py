@@ -4,6 +4,8 @@ from textwrap import dedent
 import pytest
 
 from .cuesheet import CueSheet
+from .commands import Error, Line
+
 
 TEST_DATA_DIR = Path(__file__).resolve().parent / 'test_data'
 
@@ -75,8 +77,7 @@ def test_parse_error():
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
-    assert cue_sheet.errors[0].line_number == 3
-    assert cue_sheet.errors[0].line == 'NOTACOMMAND fnord'
+    assert cue_sheet.errors[0] == Error(Line(3, 'NOTACOMMAND fnord'))
 
 
 def test_parse_index():
@@ -128,8 +129,7 @@ def test_parse_index_duplicate_number():
     assert index0.seconds == 20
     assert index0.frames == 38
 
-    assert cue_sheet.errors[0].line_number == 6
-    assert cue_sheet.errors[0].line == 'INDEX 00 04:21:66'
+    assert cue_sheet.errors[0] == Error(Line(6, 'INDEX 00 04:21:66'))
 
 
 def test_parse_index_misplaced_in_head():
@@ -142,8 +142,7 @@ def test_parse_index_misplaced_in_head():
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
-    assert cue_sheet.errors[0].line_number == 3
-    assert cue_sheet.errors[0].line == 'INDEX 01 00:00:00'
+    assert cue_sheet.errors[0] == Error(Line(3, 'INDEX 01 00:00:00'))
 
 
 def test_parse_index_misplaced_in_file():
@@ -156,8 +155,7 @@ def test_parse_index_misplaced_in_file():
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
-    assert cue_sheet.errors[0].line_number == 4
-    assert cue_sheet.errors[0].line == '    INDEX 01 00:00:00'
+    assert cue_sheet.errors[0] == Error(Line(4, '    INDEX 01 00:00:00'))
 
 
 def test_parse_performer_misplaced():
@@ -170,8 +168,7 @@ def test_parse_performer_misplaced():
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
-    assert cue_sheet.errors[0].line_number == 4
-    assert cue_sheet.errors[0].line == '    PERFORMER "3 Doors Down"'
+    assert cue_sheet.errors[0] == Error(Line(4, '    PERFORMER "3 Doors Down"'))
 
 
 def test_parse_remark():
@@ -231,8 +228,9 @@ def test_parse_title_misplaced():
     assert cue_sheet.title.title == 'Away From The Sun'
 
     assert len(cue_sheet.errors) == 1
-    assert cue_sheet.errors[0].line_number == 4
-    assert cue_sheet.errors[0].line == '    TITLE "Away From The Sun"'
+    assert cue_sheet.errors[0] == Error(
+        Line(4, '    TITLE "Away From The Sun"')
+    )
 
 
 def test_parse_track_misplaced():
@@ -244,8 +242,7 @@ def test_parse_track_misplaced():
     cue_sheet = CueSheet.parse(s)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
-    assert cue_sheet.errors[0].line_number == 2
-    assert cue_sheet.errors[0].line == 'TRACK 01 AUDIO'
+    assert cue_sheet.errors[0] == Error(Line(2, 'TRACK 01 AUDIO'))
 
 
 def read_test_data(filename: str) -> str:

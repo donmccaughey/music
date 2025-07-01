@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .line import Line
+from .command import Command
 
 
 @dataclass
-class Error(Line):
+class Error(Command):
     pass

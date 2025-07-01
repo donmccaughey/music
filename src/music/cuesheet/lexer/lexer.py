@@ -39,6 +39,6 @@ class Lexer:
         if command_name in self.commands:
             command_type = self.commands[command_name]
             command = command_type.parse(Line(line_number, line))
-            return command if command else Error(line_number, line)
+            return command if command else Error(Line(line_number, line))
 
-        return Error(line_number, line)
+        return Error(Line(line_number, line))
