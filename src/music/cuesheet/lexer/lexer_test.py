@@ -1,9 +1,57 @@
 from io import StringIO
 
+import pytest
+
 from music.cuesheet.commands import Blank, Error, Rem, Title
 
 from .lexer import Lexer
 from .line import Line
+from .token import Token
+from .token_type import TokenType
+
+
+@pytest.mark.parametrize(
+    'source, expected_tokens',
+    [
+        (
+            'FILE "album.wav" WAVE\n',
+            [
+                Token(1, TokenType.NAME, 'FILE'),
+                Token(1, TokenType.WS, ' '),
+                Token(1, TokenType.QSTR, 'album.wav'),
+                Token(1, TokenType.WS, ' '),
+                Token(1, TokenType.NAME, 'WAVE'),
+                Token(1, TokenType.EOL, '\n'),
+            ],
+        ),
+        (
+            '  TRACK  01  AUDIO  ',
+            [
+                Token(1, TokenType.WS, '  '),
+                Token(1, TokenType.NAME, 'TRACK'),
+                Token(1, TokenType.WS, '  '),
+                Token(1, TokenType.INT, 1),
+                Token(1, TokenType.WS, '  '),
+                Token(1, TokenType.NAME, 'AUDIO'),
+                Token(1, TokenType.WS, '  '),
+            ],
+        ),
+        (
+            'TITLE "Gimme Shelter"\n',
+            [
+                Token(1, TokenType.NAME, 'TITLE'),
+                Token(1, TokenType.WS, ' '),
+                Token(1, TokenType.QSTR, 'Gimme Shelter'),
+                Token(1, TokenType.EOL, '\n'),
+            ],
+        ),
+    ],
+)
+def test_lex(source, expected_tokens):
+    lexer = Lexer()
+    tokens = list(lexer.lex(StringIO(source)))
+
+    assert tokens == expected_tokens
 
 
 def test_scan():

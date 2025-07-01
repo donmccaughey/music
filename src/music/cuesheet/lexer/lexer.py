@@ -14,6 +14,8 @@ from music.cuesheet.commands import (
 )
 
 from .line import Line
+from .token import Token
+from .token_type import TokenType
 
 
 class Lexer:
@@ -25,6 +27,92 @@ class Lexer:
         'TITLE': Title,
         'TRACK': Track,
     }
+
+    def lex(self, source: TextIO) -> Generator[Token]:
+        n = 1
+        for line in source:
+            start = i = 0
+            end = len(line)
+            scanning = TokenType.WS
+            while i < end:
+                ch = line[i]
+
+                if scanning == TokenType.EOL:
+                    assert '\n' == ch
+                    i += 1
+                    assert i == end
+                    yield Token(n, TokenType.EOL, line[start:i])
+                    start = i
+
+                elif scanning == TokenType.INT:
+                    if ch.isdigit():
+                        i += 1
+                    elif ':' == ch:
+                        scanning = TokenType.INDEX_PT
+                        i += 1
+                    elif ch.isspace():
+                        if start < i:
+                            yield Token(n, TokenType.INT, int(line[start:i]))
+                        scanning = TokenType.EOL if '\n' == ch else TokenType.WS
+                        start = i
+                    else:
+                        scanning = TokenType.STR
+                        i += 1
+
+                elif scanning == TokenType.NAME:
+                    if ch.isalpha():
+                        i += 1
+                    elif ch.isspace():
+                        if start < i:
+                            yield Token(n, TokenType.NAME, line[start:i])
+                        scanning = TokenType.EOL if '\n' == ch else TokenType.WS
+                        start = i
+                    else:
+                        scanning = TokenType.STR
+                        i += 1
+
+                elif scanning == TokenType.QSTR:
+                    if '"' == ch:
+                        if i == start:
+                            i += 1
+                        else:
+                            i += 1
+                            yield Token(
+                                n, TokenType.QSTR, line[start + 1 : i - 1]
+                            )
+                            scanning = TokenType.WS
+                            start = i
+                    elif '\n' == ch:
+                        yield Token(n, TokenType.STR, line[start:i])
+                        scanning = TokenType.EOL
+                        start = i
+                    else:
+                        i += 1
+
+                elif scanning == TokenType.WS:
+                    if ch.isspace() and '\n' != ch:
+                        i += 1
+                    else:
+                        if start < i:
+                            yield Token(n, TokenType.WS, line[start:i])
+
+                        if ch.isalpha():
+                            scanning = TokenType.NAME
+                        elif ch.isdigit():
+                            scanning = TokenType.INT
+                        elif '"' == ch:
+                            scanning = TokenType.QSTR
+                        elif '\n' == ch:
+                            scanning = TokenType.EOL
+                        else:
+                            scanning = TokenType.STR
+                        start = i
+
+                else:
+                    raise RuntimeError(f'Unexpected lexer state: {scanning}')
+            if start < i:
+                yield Token(n, scanning, line[start:i])
+            n += 1
 
     def scan(self, source: TextIO) -> Generator[Command]:
         for i, line in enumerate(source):

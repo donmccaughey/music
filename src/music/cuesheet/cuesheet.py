@@ -3,7 +3,6 @@ from __future__ import annotations
 from io import StringIO
 
 from .commands import Blank, Error, File, Index, Performer, Rem, Title, Track
-from .lexer.lexer import Lexer
 
 
 class CueSheet:
@@ -21,6 +20,8 @@ class CueSheet:
 
     @classmethod
     def parse(cls, s: str) -> CueSheet:
+        from .lexer.lexer import Lexer
+
         cue_sheet = cls()
         lexer = Lexer()
         for line in lexer.scan(StringIO(s)):
