@@ -3,7 +3,7 @@ from enum import auto, Enum
 
 class TokenType(Enum):
     EOL = auto()
-    INDEX_PT = auto()
+    IDX_PT = auto()
     INT = auto()
     NAME = auto()
     QSTR = auto()

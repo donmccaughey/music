@@ -28,6 +28,17 @@ class Lexer:
         'TRACK': Track,
     }
 
+    names = [
+        'AUDIO',
+        'FILE',
+        'INDEX',
+        'PERFORMER',
+        'REM',
+        'TITLE',
+        'TRACK',
+        'WAVE',
+    ]
+
     def lex(self, source: TextIO) -> Generator[Token]:
         n = 1
         for line in source:
@@ -48,7 +59,7 @@ class Lexer:
                     if ch.isdigit():
                         i += 1
                     elif ':' == ch:
-                        scanning = TokenType.INDEX_PT
+                        scanning = TokenType.IDX_PT
                         i += 1
                     elif ch.isspace():
                         if start < i:
@@ -64,7 +75,13 @@ class Lexer:
                         i += 1
                     elif ch.isspace():
                         if start < i:
-                            yield Token(n, TokenType.NAME, line[start:i])
+                            text = line[start:i]
+                            token_type = (
+                                TokenType.NAME
+                                if text in self.names
+                                else TokenType.STR
+                            )
+                            yield Token(n, token_type, text)
                         scanning = TokenType.EOL if '\n' == ch else TokenType.WS
                         start = i
                     else:
