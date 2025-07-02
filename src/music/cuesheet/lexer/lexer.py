@@ -1,5 +1,6 @@
 from typing import TextIO, Generator
 
+from music.cuesheet import IndexPoint
 from music.cuesheet.commands import (
     Blank,
     Command,
@@ -54,6 +55,21 @@ class Lexer:
                     assert i == end
                     yield Token(n, TokenType.EOL, line[start:i])
                     start = i
+
+                elif scanning == TokenType.IDX_PT:
+                    if ch.isdigit() or ':' == ch:
+                        i += 1
+                    elif ch.isspace():
+                        text = line[start:i]
+                        if index_point := IndexPoint.parse(text):
+                            yield Token(n, TokenType.IDX_PT, index_point)
+                        else:
+                            yield Token(n, TokenType.STR, text)
+                        scanning = TokenType.EOL if '\n' == ch else TokenType.WS
+                        start = i
+                    else:
+                        scanning = TokenType.STR
+                        i += 1
 
                 elif scanning == TokenType.INT:
                     if ch.isdigit():
@@ -128,7 +144,18 @@ class Lexer:
                 else:
                     raise RuntimeError(f'Unexpected lexer state: {scanning}')
             if start < i:
-                yield Token(n, scanning, line[start:i])
+                text = line[start:i]
+                value: str | int | IndexPoint = text
+                if scanning == TokenType.IDX_PT:
+                    if index_point := IndexPoint.parse(text):
+                        value = index_point
+                    else:
+                        scanning = TokenType.STR
+                elif scanning == TokenType.INT:
+                    value = int(text)
+                elif scanning == TokenType.QSTR:
+                    scanning = TokenType.STR
+                yield Token(n, scanning, value)
             n += 1
 
     def scan(self, source: TextIO) -> Generator[Command]:

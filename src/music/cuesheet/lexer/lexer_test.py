@@ -2,6 +2,7 @@ from io import StringIO
 
 import pytest
 
+from music.cuesheet import IndexPoint
 from music.cuesheet.commands import Blank, Error, Rem, Title
 
 from .lexer import Lexer
@@ -35,6 +36,26 @@ from .token_type import TokenType
             ],
         ),
         (
+            'INDEX 01 04:32:38',
+            [
+                Token(1, TokenType.NAME, 'INDEX'),
+                Token(1, TokenType.WS, ' '),
+                Token(1, TokenType.INT, 1),
+                Token(1, TokenType.WS, ' '),
+                Token(1, TokenType.IDX_PT, IndexPoint(4, 32, 38)),
+            ],
+        ),
+        (
+            'INDEX 01 04:32',
+            [
+                Token(1, TokenType.NAME, 'INDEX'),
+                Token(1, TokenType.WS, ' '),
+                Token(1, TokenType.INT, 1),
+                Token(1, TokenType.WS, ' '),
+                Token(1, TokenType.STR, '04:32'),
+            ],
+        ),
+        (
             'PERFORMER "Alice and Bob"',
             [
                 Token(1, TokenType.NAME, 'PERFORMER'),
@@ -65,6 +86,14 @@ from .token_type import TokenType
             ],
         ),
         (
+            'TITLE "No closing quote',
+            [
+                Token(1, TokenType.NAME, 'TITLE'),
+                Token(1, TokenType.WS, ' '),
+                Token(1, TokenType.STR, '"No closing quote'),
+            ],
+        ),
+        (
             '  TRACK  01  AUDIO  ',
             [
                 Token(1, TokenType.WS, '  '),
@@ -74,6 +103,14 @@ from .token_type import TokenType
                 Token(1, TokenType.WS, '  '),
                 Token(1, TokenType.NAME, 'AUDIO'),
                 Token(1, TokenType.WS, '  '),
+            ],
+        ),
+        (
+            'TRACK 11',
+            [
+                Token(1, TokenType.NAME, 'TRACK'),
+                Token(1, TokenType.WS, ' '),
+                Token(1, TokenType.INT, 11),
             ],
         ),
     ],
