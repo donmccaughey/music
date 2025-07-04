@@ -1,6 +1,5 @@
 from typing import TextIO, Generator
 
-from music.cuesheet import IndexPoint
 from music.cuesheet.commands import (
     Blank,
     Command,
@@ -58,14 +57,14 @@ class Lexer:
                 assert '\n' == buf.ch
                 buf.next_ch()
                 assert buf.at_end
-                yield self._make_token(n, TokenType.EOL, buf.token)
+                yield Token.make(n, TokenType.EOL, buf.token)
                 buf.start_token()
 
             elif scanning == TokenType.IDX_PT:
                 if buf.ch.isdigit() or ':' == buf.ch:
                     buf.next_ch()
                 elif buf.ch.isspace():
-                    yield self._make_token(n, TokenType.IDX_PT, buf.token)
+                    yield Token.make(n, TokenType.IDX_PT, buf.token)
                     scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
                     buf.start_token()
                 else:
@@ -79,7 +78,7 @@ class Lexer:
                     scanning = TokenType.IDX_PT
                     buf.next_ch()
                 elif buf.ch.isspace():
-                    yield self._make_token(n, TokenType.INT, buf.token)
+                    yield Token.make(n, TokenType.INT, buf.token)
                     scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
                     buf.start_token()
                 else:
@@ -90,7 +89,7 @@ class Lexer:
                 if buf.ch.isalpha():
                     buf.next_ch()
                 elif buf.ch.isspace():
-                    yield self._make_token(n, TokenType.NAME, buf.token)
+                    yield Token.make(n, TokenType.NAME, buf.token)
                     scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
                     buf.start_token()
                 else:
@@ -103,11 +102,11 @@ class Lexer:
                         buf.next_ch()
                     else:
                         buf.next_ch()
-                        yield self._make_token(n, TokenType.QSTR, buf.token)
+                        yield Token.make(n, TokenType.QSTR, buf.token)
                         scanning = TokenType.WS
                         buf.start_token()
                 elif '\n' == buf.ch:
-                    yield self._make_token(n, TokenType.STR, buf.token)
+                    yield Token.make(n, TokenType.STR, buf.token)
                     scanning = TokenType.EOL
                     buf.start_token()
                 else:
@@ -118,7 +117,7 @@ class Lexer:
                     buf.next_ch()
                 else:
                     if buf.has_token:
-                        yield self._make_token(n, TokenType.WS, buf.token)
+                        yield Token.make(n, TokenType.WS, buf.token)
 
                     if buf.ch.isalpha():
                         scanning = TokenType.NAME
@@ -137,27 +136,9 @@ class Lexer:
 
         if buf.has_token:
             if scanning == TokenType.QSTR:
-                yield self._make_token(n, TokenType.STR, buf.token)
+                yield Token.make(n, TokenType.STR, buf.token)
             else:
-                yield self._make_token(n, scanning, buf.token)
-
-    def _make_token(self, n: int, token_type: TokenType, text: str) -> Token:
-        if TokenType.IDX_PT == token_type:
-            if index_point := IndexPoint.parse(text):
-                return Token(n, TokenType.IDX_PT, index_point)
-            else:
-                return Token(n, TokenType.STR, text)
-        elif TokenType.INT == token_type:
-            return Token(n, TokenType.INT, int(text))
-        elif TokenType.NAME == token_type:
-            if text in self.names:
-                return Token(n, TokenType.NAME, text)
-            else:
-                return Token(n, TokenType.STR, text)
-        elif TokenType.QSTR == token_type:
-            return Token(n, TokenType.QSTR, text.strip('"'))
-        else:
-            return Token(n, token_type, text)
+                yield Token.make(n, scanning, buf.token)
 
     def scan(self) -> Generator[Command]:
         for i, line in enumerate(self.source):
