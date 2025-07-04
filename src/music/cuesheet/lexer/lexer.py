@@ -137,8 +137,9 @@ class Lexer:
 
         if buf.has_text:
             if scanning == TokenType.QSTR:
-                scanning = TokenType.STR
-            yield self._make_token(n, scanning, buf.text)
+                yield self._make_token(n, TokenType.STR, buf.text)
+            else:
+                yield self._make_token(n, scanning, buf.text)
 
     def _make_token(self, n: int, token_type: TokenType, text: str) -> Token:
         if TokenType.IDX_PT == token_type:
