@@ -121,20 +121,30 @@ class Lexer:
             elif scanning == TokenType.WS:
                 if buf.ch in LWS:
                     buf.next_ch()
+                elif buf.ch.isalpha():
+                    if buf.has_token:
+                        yield Token.make(n, TokenType.WS, buf.token)
+                    scanning = TokenType.NAME
+                    buf.start_token()
+                elif buf.ch.isdigit():
+                    if buf.has_token:
+                        yield Token.make(n, TokenType.WS, buf.token)
+                    scanning = TokenType.INT
+                    buf.start_token()
+                elif '"' == buf.ch:
+                    if buf.has_token:
+                        yield Token.make(n, TokenType.WS, buf.token)
+                    scanning = TokenType.QSTR
+                    buf.start_token()
+                elif '\n' == buf.ch:
+                    if buf.has_token:
+                        yield Token.make(n, TokenType.WS, buf.token)
+                    scanning = TokenType.EOL
+                    buf.start_token()
                 else:
                     if buf.has_token:
                         yield Token.make(n, TokenType.WS, buf.token)
-
-                    if buf.ch.isalpha():
-                        scanning = TokenType.NAME
-                    elif buf.ch.isdigit():
-                        scanning = TokenType.INT
-                    elif '"' == buf.ch:
-                        scanning = TokenType.QSTR
-                    elif '\n' == buf.ch:
-                        scanning = TokenType.EOL
-                    else:
-                        scanning = TokenType.STR
+                    scanning = TokenType.STR
                     buf.start_token()
 
             else:
