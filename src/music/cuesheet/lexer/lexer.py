@@ -50,11 +50,17 @@ class Lexer:
                 buf.start_token()
 
             elif scanning == TokenType.IDX_PT:
-                if buf.ch.isdigit() or ':' == buf.ch:
+                if buf.ch.isdigit():
                     buf.next_ch()
+                elif ':' == buf.ch:
+                    buf.next_ch()
+                elif '\n' == buf.ch:
+                    yield Token.make(n, TokenType.IDX_PT, buf.token)
+                    scanning = TokenType.EOL
+                    buf.start_token()
                 elif buf.ch.isspace():
                     yield Token.make(n, TokenType.IDX_PT, buf.token)
-                    scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
+                    scanning = TokenType.WS
                     buf.start_token()
                 else:
                     scanning = TokenType.STR
@@ -66,9 +72,13 @@ class Lexer:
                 elif ':' == buf.ch:
                     scanning = TokenType.IDX_PT
                     buf.next_ch()
+                elif '\n' == buf.ch:
+                    yield Token.make(n, TokenType.INT, buf.token)
+                    scanning = TokenType.EOL
+                    buf.start_token()
                 elif buf.ch.isspace():
                     yield Token.make(n, TokenType.INT, buf.token)
-                    scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
+                    scanning = TokenType.WS
                     buf.start_token()
                 else:
                     scanning = TokenType.STR
@@ -77,9 +87,13 @@ class Lexer:
             elif scanning == TokenType.NAME:
                 if buf.ch.isalpha():
                     buf.next_ch()
+                elif '\n' == buf.ch:
+                    yield Token.make(n, TokenType.NAME, buf.token)
+                    scanning = TokenType.EOL
+                    buf.start_token()
                 elif buf.ch.isspace():
                     yield Token.make(n, TokenType.NAME, buf.token)
-                    scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
+                    scanning = TokenType.WS
                     buf.start_token()
                 else:
                     scanning = TokenType.STR
