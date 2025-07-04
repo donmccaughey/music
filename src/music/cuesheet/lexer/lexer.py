@@ -46,122 +46,123 @@ class Lexer:
 
     def lex(self) -> Generator[Token]:
         for line in self.source:
-            start = i = 0
-            end = len(line)
-            scanning = TokenType.WS
-            while i < end:
-                ch = line[i]
+            yield from self._lex_line(line)
+            self.n += 1
 
-                if scanning == TokenType.EOL:
-                    assert '\n' == ch
+    def _lex_line(self, line) -> Generator[Token]:
+        start = i = 0
+        end = len(line)
+        scanning = TokenType.WS
+        while i < end:
+            ch = line[i]
+
+            if scanning == TokenType.EOL:
+                assert '\n' == ch
+                i += 1
+                assert i == end
+                yield Token(self.n, TokenType.EOL, line[start:i])
+                start = i
+
+            elif scanning == TokenType.IDX_PT:
+                if ch.isdigit() or ':' == ch:
                     i += 1
-                    assert i == end
-                    yield Token(self.n, TokenType.EOL, line[start:i])
+                elif ch.isspace():
+                    text = line[start:i]
+                    if index_point := IndexPoint.parse(text):
+                        yield Token(self.n, TokenType.IDX_PT, index_point)
+                    else:
+                        yield Token(self.n, TokenType.STR, text)
+                    scanning = TokenType.EOL if '\n' == ch else TokenType.WS
+                    start = i
+                else:
+                    scanning = TokenType.STR
+                    i += 1
+
+            elif scanning == TokenType.INT:
+                if ch.isdigit():
+                    i += 1
+                elif ':' == ch:
+                    scanning = TokenType.IDX_PT
+                    i += 1
+                elif ch.isspace():
+                    if start < i:
+                        yield Token(self.n, TokenType.INT, int(line[start:i]))
+                    scanning = TokenType.EOL if '\n' == ch else TokenType.WS
+                    start = i
+                else:
+                    scanning = TokenType.STR
+                    i += 1
+
+            elif scanning == TokenType.NAME:
+                if ch.isalpha():
+                    i += 1
+                elif ch.isspace():
+                    if start < i:
+                        text = line[start:i]
+                        token_type = (
+                            TokenType.NAME
+                            if text in self.names
+                            else TokenType.STR
+                        )
+                        yield Token(self.n, token_type, text)
+                    scanning = TokenType.EOL if '\n' == ch else TokenType.WS
+                    start = i
+                else:
+                    scanning = TokenType.STR
+                    i += 1
+
+            elif scanning == TokenType.QSTR:
+                if '"' == ch:
+                    if i == start:
+                        i += 1
+                    else:
+                        i += 1
+                        yield Token(
+                            self.n, TokenType.QSTR, line[start + 1 : i - 1]
+                        )
+                        scanning = TokenType.WS
+                        start = i
+                elif '\n' == ch:
+                    yield Token(self.n, TokenType.STR, line[start:i])
+                    scanning = TokenType.EOL
+                    start = i
+                else:
+                    i += 1
+
+            elif scanning == TokenType.WS:
+                if ch.isspace() and '\n' != ch:
+                    i += 1
+                else:
+                    if start < i:
+                        yield Token(self.n, TokenType.WS, line[start:i])
+
+                    if ch.isalpha():
+                        scanning = TokenType.NAME
+                    elif ch.isdigit():
+                        scanning = TokenType.INT
+                    elif '"' == ch:
+                        scanning = TokenType.QSTR
+                    elif '\n' == ch:
+                        scanning = TokenType.EOL
+                    else:
+                        scanning = TokenType.STR
                     start = i
 
-                elif scanning == TokenType.IDX_PT:
-                    if ch.isdigit() or ':' == ch:
-                        i += 1
-                    elif ch.isspace():
-                        text = line[start:i]
-                        if index_point := IndexPoint.parse(text):
-                            yield Token(self.n, TokenType.IDX_PT, index_point)
-                        else:
-                            yield Token(self.n, TokenType.STR, text)
-                        scanning = TokenType.EOL if '\n' == ch else TokenType.WS
-                        start = i
-                    else:
-                        scanning = TokenType.STR
-                        i += 1
-
-                elif scanning == TokenType.INT:
-                    if ch.isdigit():
-                        i += 1
-                    elif ':' == ch:
-                        scanning = TokenType.IDX_PT
-                        i += 1
-                    elif ch.isspace():
-                        if start < i:
-                            yield Token(
-                                self.n, TokenType.INT, int(line[start:i])
-                            )
-                        scanning = TokenType.EOL if '\n' == ch else TokenType.WS
-                        start = i
-                    else:
-                        scanning = TokenType.STR
-                        i += 1
-
-                elif scanning == TokenType.NAME:
-                    if ch.isalpha():
-                        i += 1
-                    elif ch.isspace():
-                        if start < i:
-                            text = line[start:i]
-                            token_type = (
-                                TokenType.NAME
-                                if text in self.names
-                                else TokenType.STR
-                            )
-                            yield Token(self.n, token_type, text)
-                        scanning = TokenType.EOL if '\n' == ch else TokenType.WS
-                        start = i
-                    else:
-                        scanning = TokenType.STR
-                        i += 1
-
-                elif scanning == TokenType.QSTR:
-                    if '"' == ch:
-                        if i == start:
-                            i += 1
-                        else:
-                            i += 1
-                            yield Token(
-                                self.n, TokenType.QSTR, line[start + 1 : i - 1]
-                            )
-                            scanning = TokenType.WS
-                            start = i
-                    elif '\n' == ch:
-                        yield Token(self.n, TokenType.STR, line[start:i])
-                        scanning = TokenType.EOL
-                        start = i
-                    else:
-                        i += 1
-
-                elif scanning == TokenType.WS:
-                    if ch.isspace() and '\n' != ch:
-                        i += 1
-                    else:
-                        if start < i:
-                            yield Token(self.n, TokenType.WS, line[start:i])
-
-                        if ch.isalpha():
-                            scanning = TokenType.NAME
-                        elif ch.isdigit():
-                            scanning = TokenType.INT
-                        elif '"' == ch:
-                            scanning = TokenType.QSTR
-                        elif '\n' == ch:
-                            scanning = TokenType.EOL
-                        else:
-                            scanning = TokenType.STR
-                        start = i
-
+            else:
+                raise RuntimeError(f'Unexpected lexer state: {scanning}')
+        if start < i:
+            text = line[start:i]
+            value: str | int | IndexPoint = text
+            if scanning == TokenType.IDX_PT:
+                if index_point := IndexPoint.parse(text):
+                    value = index_point
                 else:
-                    raise RuntimeError(f'Unexpected lexer state: {scanning}')
-            if start < i:
-                text = line[start:i]
-                value: str | int | IndexPoint = text
-                if scanning == TokenType.IDX_PT:
-                    if index_point := IndexPoint.parse(text):
-                        value = index_point
-                    else:
-                        scanning = TokenType.STR
-                elif scanning == TokenType.INT:
-                    value = int(text)
-                elif scanning == TokenType.QSTR:
                     scanning = TokenType.STR
-                yield Token(self.n, scanning, value)
-            self.n += 1
+            elif scanning == TokenType.INT:
+                value = int(text)
+            elif scanning == TokenType.QSTR:
+                scanning = TokenType.STR
+            yield Token(self.n, scanning, value)
 
     def scan(self) -> Generator[Command]:
         for i, line in enumerate(self.source):
