@@ -40,9 +40,12 @@ class Lexer:
         'WAVE',
     ]
 
-    def lex(self, source: TextIO) -> Generator[Token]:
+    def __init__(self, source: TextIO):
+        self.source = source
+
+    def lex(self) -> Generator[Token]:
         n = 1
-        for line in source:
+        for line in self.source:
             start = i = 0
             end = len(line)
             scanning = TokenType.WS
@@ -158,8 +161,8 @@ class Lexer:
                 yield Token(n, scanning, value)
             n += 1
 
-    def scan(self, source: TextIO) -> Generator[Command]:
-        for i, line in enumerate(source):
+    def scan(self) -> Generator[Command]:
+        for i, line in enumerate(self.source):
             yield self.scan_line(i + 1, line.strip('\n'))
 
     def scan_line(self, line_number: int, line: str) -> Command:

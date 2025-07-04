@@ -23,8 +23,8 @@ class CueSheet:
         from .lexer.lexer import Lexer
 
         cue_sheet = cls()
-        lexer = Lexer()
-        for line in lexer.scan(StringIO(s)):
+        lexer = Lexer(StringIO(s))
+        for line in lexer.scan():
             match line:
                 case Blank() as blank:
                     cue_sheet.parse_blank(blank)

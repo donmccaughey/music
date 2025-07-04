@@ -116,21 +116,21 @@ from .token_type import TokenType
     ],
 )
 def test_lex(source, expected_tokens):
-    lexer = Lexer()
-    tokens = list(lexer.lex(StringIO(source)))
+    lexer = Lexer(StringIO(source))
+    tokens = list(lexer.lex())
 
     assert tokens == expected_tokens
 
 
 def test_scan():
-    s = (
+    source = (
         '  TITLE "Gimme Shelter"\n'
         'BARF "Unknown command"\n'
         '\n'
         'REM This is a reminder'
     )
-    lexer = Lexer()
-    commands = lexer.scan(StringIO(s))
+    lexer = Lexer(StringIO(source))
+    commands = lexer.scan()
     assert list(commands) == [
         Title(Line(1, '  TITLE "Gimme Shelter"'), 'Gimme Shelter'),
         Error(Line(2, 'BARF "Unknown command"')),
@@ -141,7 +141,7 @@ def test_scan():
 
 def test_scan_line_for_known_command():
     line_str = 'TITLE "Gimme Shelter"'
-    lexer = Lexer()
+    lexer = Lexer(StringIO(line_str))
     line = lexer.scan_line(42, line_str)
 
     assert line.line == Line(42, line_str)
@@ -151,7 +151,7 @@ def test_scan_line_for_known_command():
 
 def test_scan_line_for_unknown_command():
     line_str = 'BARF "Unknown command"'
-    lexer = Lexer()
+    lexer = Lexer(StringIO(line_str))
     line = lexer.scan_line(42, line_str)
 
     assert line == Error(Line(42, line_str))
