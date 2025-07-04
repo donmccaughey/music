@@ -14,6 +14,7 @@ from music.cuesheet.commands import (
     Track,
 )
 
+from .buffer import Buffer
 from .line import Line
 from .token import Token
 from .token_type import TokenType
@@ -50,106 +51,103 @@ class Lexer:
             n += 1
 
     def _lex_line(self, n: int, line: str) -> Generator[Token]:
-        start = i = 0
-        end = len(line)
+        buf = Buffer(n, line)
         scanning = TokenType.WS
-        while i < end:
-            ch = line[i]
-
+        while buf.has_more:
             if scanning == TokenType.EOL:
-                assert '\n' == ch
-                i += 1
-                assert i == end
-                yield Token(n, TokenType.EOL, line[start:i])
-                start = i
+                assert '\n' == buf.ch
+                buf.next_ch()
+                assert buf.at_end
+                yield Token(buf.n, TokenType.EOL, buf.text)
+                buf.start_next()
 
             elif scanning == TokenType.IDX_PT:
-                if ch.isdigit() or ':' == ch:
-                    i += 1
-                elif ch.isspace():
-                    text = line[start:i]
+                if buf.ch.isdigit() or ':' == buf.ch:
+                    buf.next_ch()
+                elif buf.ch.isspace():
+                    text = buf.text
                     if index_point := IndexPoint.parse(text):
                         yield Token(n, TokenType.IDX_PT, index_point)
                     else:
                         yield Token(n, TokenType.STR, text)
-                    scanning = TokenType.EOL if '\n' == ch else TokenType.WS
-                    start = i
+                    scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
+                    buf.start_next()
                 else:
                     scanning = TokenType.STR
-                    i += 1
+                    buf.next_ch()
 
             elif scanning == TokenType.INT:
-                if ch.isdigit():
-                    i += 1
-                elif ':' == ch:
+                if buf.ch.isdigit():
+                    buf.next_ch()
+                elif ':' == buf.ch:
                     scanning = TokenType.IDX_PT
-                    i += 1
-                elif ch.isspace():
-                    if start < i:
-                        yield Token(n, TokenType.INT, int(line[start:i]))
-                    scanning = TokenType.EOL if '\n' == ch else TokenType.WS
-                    start = i
+                    buf.next_ch()
+                elif buf.ch.isspace():
+                    if buf.has_text:
+                        yield Token(n, TokenType.INT, int(buf.text))
+                    scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
+                    buf.start_next()
                 else:
                     scanning = TokenType.STR
-                    i += 1
+                    buf.next_ch()
 
             elif scanning == TokenType.NAME:
-                if ch.isalpha():
-                    i += 1
-                elif ch.isspace():
-                    if start < i:
-                        text = line[start:i]
+                if buf.ch.isalpha():
+                    buf.next_ch()
+                elif buf.ch.isspace():
+                    if buf.has_text:
+                        text = buf.text
                         token_type = (
                             TokenType.NAME
                             if text in self.names
                             else TokenType.STR
                         )
                         yield Token(n, token_type, text)
-                    scanning = TokenType.EOL if '\n' == ch else TokenType.WS
-                    start = i
+                    scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
+                    buf.start_next()
                 else:
                     scanning = TokenType.STR
-                    i += 1
+                    buf.next_ch()
 
             elif scanning == TokenType.QSTR:
-                if '"' == ch:
-                    if i == start:
-                        i += 1
+                if '"' == buf.ch:
+                    if buf.at_start:
+                        buf.next_ch()
                     else:
-                        i += 1
-                        yield Token(n, TokenType.QSTR, line[start + 1 : i - 1])
+                        buf.next_ch()
+                        yield Token(n, TokenType.QSTR, buf.text.strip('"'))
                         scanning = TokenType.WS
-                        start = i
-                elif '\n' == ch:
-                    yield Token(n, TokenType.STR, line[start:i])
+                        buf.start_next()
+                elif '\n' == buf.ch:
+                    yield Token(n, TokenType.STR, buf.text)
                     scanning = TokenType.EOL
-                    start = i
+                    buf.start_next()
                 else:
-                    i += 1
+                    buf.next_ch()
 
             elif scanning == TokenType.WS:
-                if ch.isspace() and '\n' != ch:
-                    i += 1
+                if buf.ch.isspace() and '\n' != buf.ch:
+                    buf.next_ch()
                 else:
-                    if start < i:
-                        yield Token(n, TokenType.WS, line[start:i])
+                    if buf.has_text:
+                        yield Token(n, TokenType.WS, buf.text)
 
-                    if ch.isalpha():
+                    if buf.ch.isalpha():
                         scanning = TokenType.NAME
-                    elif ch.isdigit():
+                    elif buf.ch.isdigit():
                         scanning = TokenType.INT
-                    elif '"' == ch:
+                    elif '"' == buf.ch:
                         scanning = TokenType.QSTR
-                    elif '\n' == ch:
+                    elif '\n' == buf.ch:
                         scanning = TokenType.EOL
                     else:
                         scanning = TokenType.STR
-                    start = i
+                    buf.start_next()
 
             else:
                 raise RuntimeError(f'Unexpected lexer state: {scanning}')
-        if start < i:
-            text = line[start:i]
+        if buf.has_text:
+            text = buf.text
             value: str | int | IndexPoint = text
             if scanning == TokenType.IDX_PT:
                 if index_point := IndexPoint.parse(text):
