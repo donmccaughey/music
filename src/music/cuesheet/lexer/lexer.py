@@ -58,16 +58,16 @@ class Lexer:
                 assert '\n' == buf.ch
                 buf.next_ch()
                 assert buf.at_end
-                yield self._make_token(n, TokenType.EOL, buf.text)
-                buf.start_next()
+                yield self._make_token(n, TokenType.EOL, buf.token)
+                buf.start_token()
 
             elif scanning == TokenType.IDX_PT:
                 if buf.ch.isdigit() or ':' == buf.ch:
                     buf.next_ch()
                 elif buf.ch.isspace():
-                    yield self._make_token(n, TokenType.IDX_PT, buf.text)
+                    yield self._make_token(n, TokenType.IDX_PT, buf.token)
                     scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
-                    buf.start_next()
+                    buf.start_token()
                 else:
                     scanning = TokenType.STR
                     buf.next_ch()
@@ -79,9 +79,9 @@ class Lexer:
                     scanning = TokenType.IDX_PT
                     buf.next_ch()
                 elif buf.ch.isspace():
-                    yield self._make_token(n, TokenType.INT, buf.text)
+                    yield self._make_token(n, TokenType.INT, buf.token)
                     scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
-                    buf.start_next()
+                    buf.start_token()
                 else:
                     scanning = TokenType.STR
                     buf.next_ch()
@@ -90,26 +90,26 @@ class Lexer:
                 if buf.ch.isalpha():
                     buf.next_ch()
                 elif buf.ch.isspace():
-                    yield self._make_token(n, TokenType.NAME, buf.text)
+                    yield self._make_token(n, TokenType.NAME, buf.token)
                     scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
-                    buf.start_next()
+                    buf.start_token()
                 else:
                     scanning = TokenType.STR
                     buf.next_ch()
 
             elif scanning == TokenType.QSTR:
                 if '"' == buf.ch:
-                    if buf.at_start:
+                    if buf.at_token_start:
                         buf.next_ch()
                     else:
                         buf.next_ch()
-                        yield self._make_token(n, TokenType.QSTR, buf.text)
+                        yield self._make_token(n, TokenType.QSTR, buf.token)
                         scanning = TokenType.WS
-                        buf.start_next()
+                        buf.start_token()
                 elif '\n' == buf.ch:
-                    yield self._make_token(n, TokenType.STR, buf.text)
+                    yield self._make_token(n, TokenType.STR, buf.token)
                     scanning = TokenType.EOL
-                    buf.start_next()
+                    buf.start_token()
                 else:
                     buf.next_ch()
 
@@ -117,8 +117,8 @@ class Lexer:
                 if buf.ch.isspace() and '\n' != buf.ch:
                     buf.next_ch()
                 else:
-                    if buf.has_text:
-                        yield self._make_token(n, TokenType.WS, buf.text)
+                    if buf.has_token:
+                        yield self._make_token(n, TokenType.WS, buf.token)
 
                     if buf.ch.isalpha():
                         scanning = TokenType.NAME
@@ -130,16 +130,16 @@ class Lexer:
                         scanning = TokenType.EOL
                     else:
                         scanning = TokenType.STR
-                    buf.start_next()
+                    buf.start_token()
 
             else:
                 raise RuntimeError(f'Unexpected lexer state: {scanning}')
 
-        if buf.has_text:
+        if buf.has_token:
             if scanning == TokenType.QSTR:
-                yield self._make_token(n, TokenType.STR, buf.text)
+                yield self._make_token(n, TokenType.STR, buf.token)
             else:
-                yield self._make_token(n, scanning, buf.text)
+                yield self._make_token(n, scanning, buf.token)
 
     def _make_token(self, n: int, token_type: TokenType, text: str) -> Token:
         if TokenType.IDX_PT == token_type:

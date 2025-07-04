@@ -11,7 +11,7 @@ class Buffer:
         return self.i == self.end
 
     @property
-    def at_start(self) -> bool:
+    def at_token_start(self) -> bool:
         return self.start == self.i
 
     @property
@@ -23,15 +23,15 @@ class Buffer:
         return self.i < self.end
 
     @property
-    def has_text(self) -> bool:
+    def has_token(self) -> bool:
         return self.start < self.i
 
     @property
-    def text(self) -> str:
+    def token(self) -> str:
         return self.line[self.start : self.i]
 
     def next_ch(self):
         self.i += 1
 
-    def start_next(self):
+    def start_token(self):
         self.start = self.i
