@@ -170,7 +170,7 @@ def test_lex(source, expected_tokens):
 )
 def test_lex_line(line, expected_tokens):
     lexer = Lexer(StringIO(line))
-    tokens = list(lexer._lex_line(line))
+    tokens = list(lexer._lex_line(1, line))
 
     assert tokens == expected_tokens
 
