@@ -1,9 +1,9 @@
 class Buffer:
-    def __init__(self, line: str):
-        self.line = line
+    def __init__(self, chars: str):
+        self.line = chars
 
         self.start = self.i = 0
-        self.end = len(line)
+        self.end = len(chars)
 
     @property
     def at_end(self) -> bool:
