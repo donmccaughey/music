@@ -15,6 +15,59 @@ from .token_type import TokenType
     'source, expected_tokens',
     [
         (
+            (
+                'FILE "album.wav" WAVE\n'
+                '  TRACK 01 AUDIO\n'
+                '    TITLE "Gimme Shelter"\n'
+                '    PERFORMER "The Rolling Stones"\n'
+                '    INDEX 01 04:32:38\n'
+            ),
+            [
+                Token(1, TokenType.NAME, 'FILE'),
+                Token(1, TokenType.WS, ' '),
+                Token(1, TokenType.QSTR, 'album.wav'),
+                Token(1, TokenType.WS, ' '),
+                Token(1, TokenType.NAME, 'WAVE'),
+                Token(1, TokenType.EOL, '\n'),
+                Token(2, TokenType.WS, '  '),
+                Token(2, TokenType.NAME, 'TRACK'),
+                Token(2, TokenType.WS, ' '),
+                Token(2, TokenType.INT, 1),
+                Token(2, TokenType.WS, ' '),
+                Token(2, TokenType.NAME, 'AUDIO'),
+                Token(2, TokenType.EOL, '\n'),
+                Token(3, TokenType.WS, '    '),
+                Token(3, TokenType.NAME, 'TITLE'),
+                Token(3, TokenType.WS, ' '),
+                Token(3, TokenType.QSTR, 'Gimme Shelter'),
+                Token(3, TokenType.EOL, '\n'),
+                Token(4, TokenType.WS, '    '),
+                Token(4, TokenType.NAME, 'PERFORMER'),
+                Token(4, TokenType.WS, ' '),
+                Token(4, TokenType.QSTR, 'The Rolling Stones'),
+                Token(4, TokenType.EOL, '\n'),
+                Token(5, TokenType.WS, '    '),
+                Token(5, TokenType.NAME, 'INDEX'),
+                Token(5, TokenType.WS, ' '),
+                Token(5, TokenType.INT, 1),
+                Token(5, TokenType.WS, ' '),
+                Token(5, TokenType.IDX_PT, IndexPoint(4, 32, 38)),
+                Token(5, TokenType.EOL, '\n'),
+            ],
+        ),
+    ],
+)
+def test_lex(source, expected_tokens):
+    lexer = Lexer(StringIO(source))
+    tokens = list(lexer.lex())
+
+    assert tokens == expected_tokens
+
+
+@pytest.mark.parametrize(
+    'line, expected_tokens',
+    [
+        (
             'FILE "album.wav" WAVE\n',
             [
                 Token(1, TokenType.NAME, 'FILE'),
@@ -115,9 +168,9 @@ from .token_type import TokenType
         ),
     ],
 )
-def test_lex(source, expected_tokens):
-    lexer = Lexer(StringIO(source))
-    tokens = list(lexer.lex())
+def test_lex_line(line, expected_tokens):
+    lexer = Lexer(StringIO(line))
+    tokens = list(lexer._lex_line(line))
 
     assert tokens == expected_tokens
 
