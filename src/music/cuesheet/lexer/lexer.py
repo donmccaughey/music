@@ -19,6 +19,9 @@ from .token import Token
 from .token_type import TokenType
 
 
+LWS = '\t '
+
+
 class Lexer:
     commands: dict[str, type[Command]] = {
         'FILE': File,
@@ -58,7 +61,7 @@ class Lexer:
                     yield Token.make(n, TokenType.IDX_PT, buf.token)
                     scanning = TokenType.EOL
                     buf.start_token()
-                elif buf.ch.isspace():
+                elif buf.ch in LWS:
                     yield Token.make(n, TokenType.IDX_PT, buf.token)
                     scanning = TokenType.WS
                     buf.start_token()
@@ -76,7 +79,7 @@ class Lexer:
                     yield Token.make(n, TokenType.INT, buf.token)
                     scanning = TokenType.EOL
                     buf.start_token()
-                elif buf.ch.isspace():
+                elif buf.ch in LWS:
                     yield Token.make(n, TokenType.INT, buf.token)
                     scanning = TokenType.WS
                     buf.start_token()
@@ -91,7 +94,7 @@ class Lexer:
                     yield Token.make(n, TokenType.NAME, buf.token)
                     scanning = TokenType.EOL
                     buf.start_token()
-                elif buf.ch.isspace():
+                elif buf.ch in LWS:
                     yield Token.make(n, TokenType.NAME, buf.token)
                     scanning = TokenType.WS
                     buf.start_token()
@@ -116,7 +119,7 @@ class Lexer:
                     buf.next_ch()
 
             elif scanning == TokenType.WS:
-                if buf.ch.isspace() and '\n' != buf.ch:
+                if buf.ch in LWS:
                     buf.next_ch()
                 else:
                     if buf.has_token:
