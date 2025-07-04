@@ -29,17 +29,6 @@ class Lexer:
         'TRACK': Track,
     }
 
-    names = [
-        'AUDIO',
-        'FILE',
-        'INDEX',
-        'PERFORMER',
-        'REM',
-        'TITLE',
-        'TRACK',
-        'WAVE',
-    ]
-
     def __init__(self, source: TextIO):
         self.source = source
 
