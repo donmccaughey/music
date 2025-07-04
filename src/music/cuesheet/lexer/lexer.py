@@ -42,9 +42,9 @@ class Lexer:
 
     def __init__(self, source: TextIO):
         self.source = source
+        self.n = 1
 
     def lex(self) -> Generator[Token]:
-        n = 1
         for line in self.source:
             start = i = 0
             end = len(line)
@@ -56,7 +56,7 @@ class Lexer:
                     assert '\n' == ch
                     i += 1
                     assert i == end
-                    yield Token(n, TokenType.EOL, line[start:i])
+                    yield Token(self.n, TokenType.EOL, line[start:i])
                     start = i
 
                 elif scanning == TokenType.IDX_PT:
@@ -65,9 +65,9 @@ class Lexer:
                     elif ch.isspace():
                         text = line[start:i]
                         if index_point := IndexPoint.parse(text):
-                            yield Token(n, TokenType.IDX_PT, index_point)
+                            yield Token(self.n, TokenType.IDX_PT, index_point)
                         else:
-                            yield Token(n, TokenType.STR, text)
+                            yield Token(self.n, TokenType.STR, text)
                         scanning = TokenType.EOL if '\n' == ch else TokenType.WS
                         start = i
                     else:
@@ -82,7 +82,9 @@ class Lexer:
                         i += 1
                     elif ch.isspace():
                         if start < i:
-                            yield Token(n, TokenType.INT, int(line[start:i]))
+                            yield Token(
+                                self.n, TokenType.INT, int(line[start:i])
+                            )
                         scanning = TokenType.EOL if '\n' == ch else TokenType.WS
                         start = i
                     else:
@@ -100,7 +102,7 @@ class Lexer:
                                 if text in self.names
                                 else TokenType.STR
                             )
-                            yield Token(n, token_type, text)
+                            yield Token(self.n, token_type, text)
                         scanning = TokenType.EOL if '\n' == ch else TokenType.WS
                         start = i
                     else:
@@ -114,12 +116,12 @@ class Lexer:
                         else:
                             i += 1
                             yield Token(
-                                n, TokenType.QSTR, line[start + 1 : i - 1]
+                                self.n, TokenType.QSTR, line[start + 1 : i - 1]
                             )
                             scanning = TokenType.WS
                             start = i
                     elif '\n' == ch:
-                        yield Token(n, TokenType.STR, line[start:i])
+                        yield Token(self.n, TokenType.STR, line[start:i])
                         scanning = TokenType.EOL
                         start = i
                     else:
@@ -130,7 +132,7 @@ class Lexer:
                         i += 1
                     else:
                         if start < i:
-                            yield Token(n, TokenType.WS, line[start:i])
+                            yield Token(self.n, TokenType.WS, line[start:i])
 
                         if ch.isalpha():
                             scanning = TokenType.NAME
@@ -158,8 +160,8 @@ class Lexer:
                     value = int(text)
                 elif scanning == TokenType.QSTR:
                     scanning = TokenType.STR
-                yield Token(n, scanning, value)
-            n += 1
+                yield Token(self.n, scanning, value)
+            self.n += 1
 
     def scan(self) -> Generator[Command]:
         for i, line in enumerate(self.source):
