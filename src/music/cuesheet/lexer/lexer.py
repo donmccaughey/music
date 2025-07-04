@@ -83,8 +83,7 @@ class Lexer:
                     scanning = TokenType.IDX_PT
                     buf.next_ch()
                 elif buf.ch.isspace():
-                    if buf.has_text:
-                        yield Token(n, TokenType.INT, int(buf.text))
+                    yield Token(n, TokenType.INT, int(buf.text))
                     scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
                     buf.start_next()
                 else:
@@ -95,14 +94,11 @@ class Lexer:
                 if buf.ch.isalpha():
                     buf.next_ch()
                 elif buf.ch.isspace():
-                    if buf.has_text:
-                        text = buf.text
-                        token_type = (
-                            TokenType.NAME
-                            if text in self.names
-                            else TokenType.STR
-                        )
-                        yield Token(n, token_type, text)
+                    text = buf.text
+                    token_type = (
+                        TokenType.NAME if text in self.names else TokenType.STR
+                    )
+                    yield Token(n, token_type, text)
                     scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
                     buf.start_next()
                 else:
