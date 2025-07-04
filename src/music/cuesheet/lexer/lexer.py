@@ -39,7 +39,7 @@ class Lexer:
             n += 1
 
     def _lex_line(self, n: int, line: str) -> Generator[Token]:
-        buf = Buffer(n, line)
+        buf = Buffer(line)
         scanning = TokenType.WS
         while buf.has_more:
             if scanning == TokenType.EOL:

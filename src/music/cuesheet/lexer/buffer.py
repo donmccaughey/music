@@ -1,6 +1,5 @@
 class Buffer:
-    def __init__(self, n: int, line: str):
-        self.n = n
+    def __init__(self, line: str):
         self.line = line
 
         self.start = self.i = 0
