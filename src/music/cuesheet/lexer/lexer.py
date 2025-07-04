@@ -58,18 +58,14 @@ class Lexer:
                 assert '\n' == buf.ch
                 buf.next_ch()
                 assert buf.at_end
-                yield Token(buf.n, TokenType.EOL, buf.text)
+                yield self._make_token(n, TokenType.EOL, buf.text)
                 buf.start_next()
 
             elif scanning == TokenType.IDX_PT:
                 if buf.ch.isdigit() or ':' == buf.ch:
                     buf.next_ch()
                 elif buf.ch.isspace():
-                    text = buf.text
-                    if index_point := IndexPoint.parse(text):
-                        yield Token(n, TokenType.IDX_PT, index_point)
-                    else:
-                        yield Token(n, TokenType.STR, text)
+                    yield self._make_token(n, TokenType.IDX_PT, buf.text)
                     scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
                     buf.start_next()
                 else:
@@ -83,7 +79,7 @@ class Lexer:
                     scanning = TokenType.IDX_PT
                     buf.next_ch()
                 elif buf.ch.isspace():
-                    yield Token(n, TokenType.INT, int(buf.text))
+                    yield self._make_token(n, TokenType.INT, buf.text)
                     scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
                     buf.start_next()
                 else:
@@ -94,11 +90,7 @@ class Lexer:
                 if buf.ch.isalpha():
                     buf.next_ch()
                 elif buf.ch.isspace():
-                    text = buf.text
-                    token_type = (
-                        TokenType.NAME if text in self.names else TokenType.STR
-                    )
-                    yield Token(n, token_type, text)
+                    yield self._make_token(n, TokenType.NAME, buf.text)
                     scanning = TokenType.EOL if '\n' == buf.ch else TokenType.WS
                     buf.start_next()
                 else:
@@ -111,11 +103,11 @@ class Lexer:
                         buf.next_ch()
                     else:
                         buf.next_ch()
-                        yield Token(n, TokenType.QSTR, buf.text.strip('"'))
+                        yield self._make_token(n, TokenType.QSTR, buf.text)
                         scanning = TokenType.WS
                         buf.start_next()
                 elif '\n' == buf.ch:
-                    yield Token(n, TokenType.STR, buf.text)
+                    yield self._make_token(n, TokenType.STR, buf.text)
                     scanning = TokenType.EOL
                     buf.start_next()
                 else:
@@ -126,7 +118,7 @@ class Lexer:
                     buf.next_ch()
                 else:
                     if buf.has_text:
-                        yield Token(n, TokenType.WS, buf.text)
+                        yield self._make_token(n, TokenType.WS, buf.text)
 
                     if buf.ch.isalpha():
                         scanning = TokenType.NAME
@@ -142,19 +134,29 @@ class Lexer:
 
             else:
                 raise RuntimeError(f'Unexpected lexer state: {scanning}')
+
         if buf.has_text:
-            text = buf.text
-            value: str | int | IndexPoint = text
-            if scanning == TokenType.IDX_PT:
-                if index_point := IndexPoint.parse(text):
-                    value = index_point
-                else:
-                    scanning = TokenType.STR
-            elif scanning == TokenType.INT:
-                value = int(text)
-            elif scanning == TokenType.QSTR:
+            if scanning == TokenType.QSTR:
                 scanning = TokenType.STR
-            yield Token(n, scanning, value)
+            yield self._make_token(n, scanning, buf.text)
+
+    def _make_token(self, n: int, token_type: TokenType, text: str) -> Token:
+        if TokenType.IDX_PT == token_type:
+            if index_point := IndexPoint.parse(text):
+                return Token(n, TokenType.IDX_PT, index_point)
+            else:
+                return Token(n, TokenType.STR, text)
+        elif TokenType.INT == token_type:
+            return Token(n, TokenType.INT, int(text))
+        elif TokenType.NAME == token_type:
+            if text in self.names:
+                return Token(n, TokenType.NAME, text)
+            else:
+                return Token(n, TokenType.STR, text)
+        elif TokenType.QSTR == token_type:
+            return Token(n, TokenType.QSTR, text.strip('"'))
+        else:
+            return Token(n, token_type, text)
 
     def scan(self) -> Generator[Command]:
         for i, line in enumerate(self.source):
