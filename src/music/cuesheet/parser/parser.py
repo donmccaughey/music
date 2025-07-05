@@ -75,7 +75,7 @@ class Parser:
         ] == types and tokens[2].value in ['WAVE']:
             if isinstance(self.parent, File):
                 self.stack.pop()
-            file = File(tokens=tokens, children=[])
+            file = File(tokens=tokens[1:-1], children=[])
             self.parent.children.append(file)
             self.stack.append(file)
             self.next_token(4)
@@ -99,7 +99,7 @@ class Parser:
         tokens = self.peek_tokens(3)
         types = [t.type for t in tokens]
         if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
-            self.parent.children.append(Performer(tokens))
+            self.parent.children.append(Performer(tokens[1:-1]))
             self.next_token(3)
         else:
             self.error()
@@ -108,7 +108,7 @@ class Parser:
         tokens = self.peek_tokens(3)
         types = [t.type for t in tokens]
         if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
-            self.parent.children.append(Title(tokens))
+            self.parent.children.append(Title(tokens[1:-1]))
             self.next_token(3)
         else:
             self.error()
@@ -124,7 +124,7 @@ class Parser:
         ] == types and tokens[2].value in ['AUDIO']:
             if isinstance(self.parent, Track):
                 self.stack.pop()
-            track = Track(tokens=tokens, children=[])
+            track = Track(tokens=tokens[1:-1], children=[])
             self.parent.children.append(track)
             self.stack.append(track)
             self.next_token(4)
