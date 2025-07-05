@@ -10,6 +10,7 @@ from .rem import Rem
 from .root import Root
 from .title import Title
 from .track import Track
+from .year import Year
 
 
 def test_parser_for_normal_file():
@@ -129,9 +130,8 @@ def test_parser_for_normal_file():
                 ],
                 children=[],
             ),
-            Rem(
+            Year(
                 tokens=[
-                    Token(3, TokenType.NAME, 'YEAR'),
                     Token(3, TokenType.INT, 1969),
                 ],
                 children=[],

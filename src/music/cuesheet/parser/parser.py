@@ -14,6 +14,7 @@ from .rem import Rem
 from .root import Root
 from .title import Title
 from .track import Track
+from .year import Year
 
 
 class Parser:
@@ -127,6 +128,10 @@ class Parser:
 
     def rem(self):
         self.next_token()
+        if self.peek_token:
+            if 'YEAR' == self.peek_token.value:
+                self.year()
+                return
         rem = Rem([], [])
         self.parent.children.append(rem)
         while token := self.next_token():
@@ -159,5 +164,14 @@ class Parser:
             self.parent.children.append(track)
             self.stack.append(track)
             self.next_token(4)
+        else:
+            self.error()
+
+    def year(self):
+        tokens = self.peek_tokens(3)
+        types = [t.type for t in tokens]
+        if [TokenType.NAME, TokenType.INT, TokenType.EOL] == types:
+            self.parent.children.append(Year(tokens[1:-1], []))
+            self.next_token(3)
         else:
             self.error()
