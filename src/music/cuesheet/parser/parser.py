@@ -6,9 +6,12 @@ from music.cuesheet.lexer.token import Token
 from music.cuesheet.lexer.token_type import TokenType
 
 from .error import Error
+from .file import File
 from .parent import Parent
 from .performer import Performer
 from .root import Root
+from .title import Title
+from .track import Track
 
 
 class Parser:
@@ -62,10 +65,34 @@ class Parser:
             if TokenType.EOL == token.type:
                 return
 
+    def file(self):
+        tokens = self.peek_tokens(4)
+        types = [t.type for t in tokens]
+        if [
+            TokenType.NAME,
+            TokenType.QSTR,
+            TokenType.NAME,
+            TokenType.EOL,
+        ] == types and tokens[2].value in ['WAVE']:
+            if isinstance(self.parent, File):
+                self.stack.pop()
+            file = File(tokens=tokens, children=[])
+            self.parent.children.append(file)
+            self.stack.append(file)
+            self.next_token(4)
+        else:
+            self.error()
+
     def name(self):
         assert self.peek_token
-        if 'PERFORMER' == self.peek_token.value:
+        if 'FILE' == self.peek_token.value:
+            self.file()
+        elif 'PERFORMER' == self.peek_token.value:
             self.performer()
+        elif 'TITLE' == self.peek_token.value:
+            self.title()
+        elif 'TRACK' == self.peek_token.value:
+            self.track()
         else:
             self.error()
 
@@ -75,5 +102,32 @@ class Parser:
         if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
             self.parent.children.append(Performer(tokens))
             self.next_token(3)
+        else:
+            self.error()
+
+    def title(self):
+        tokens = self.peek_tokens(3)
+        types = [t.type for t in tokens]
+        if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
+            self.parent.children.append(Title(tokens))
+            self.next_token(3)
+        else:
+            self.error()
+
+    def track(self):
+        tokens = self.peek_tokens(4)
+        types = [t.type for t in tokens]
+        if [
+            TokenType.NAME,
+            TokenType.INT,
+            TokenType.NAME,
+            TokenType.EOL,
+        ] == types and tokens[2].value in ['AUDIO']:
+            if isinstance(self.parent, Track):
+                self.stack.pop()
+            track = Track(tokens=tokens, children=[])
+            self.parent.children.append(track)
+            self.stack.append(track)
+            self.next_token(4)
         else:
             self.error()
