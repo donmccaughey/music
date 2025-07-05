@@ -7,6 +7,7 @@ from music.cuesheet.lexer.token_type import TokenType
 
 from .error import Error
 from .file import File
+from .index import Index
 from .node import Node
 from .performer import Performer
 from .root import Root
@@ -56,6 +57,21 @@ class Parser:
                 self.error()
         return self.root
 
+    def command(self):
+        assert self.peek_token
+        if 'FILE' == self.peek_token.value:
+            self.file()
+        elif 'INDEX' == self.peek_token.value:
+            self.index()
+        elif 'PERFORMER' == self.peek_token.value:
+            self.performer()
+        elif 'TITLE' == self.peek_token.value:
+            self.title()
+        elif 'TRACK' == self.peek_token.value:
+            self.track()
+        else:
+            self.error()
+
     def error(self):
         error = Error([], [])
         self.parent.children.append(error)
@@ -82,16 +98,18 @@ class Parser:
         else:
             self.error()
 
-    def command(self):
-        assert self.peek_token
-        if 'FILE' == self.peek_token.value:
-            self.file()
-        elif 'PERFORMER' == self.peek_token.value:
-            self.performer()
-        elif 'TITLE' == self.peek_token.value:
-            self.title()
-        elif 'TRACK' == self.peek_token.value:
-            self.track()
+    def index(self):
+        tokens = self.peek_tokens(4)
+        types = [t.type for t in tokens]
+        if [
+            TokenType.NAME,
+            TokenType.INT,
+            TokenType.IDX_PT,
+            TokenType.EOL,
+        ] == types:
+            index = Index(tokens=tokens[1:-1], children=[])
+            self.parent.children.append(index)
+            self.next_token(4)
         else:
             self.error()
 

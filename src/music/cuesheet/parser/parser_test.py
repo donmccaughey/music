@@ -1,7 +1,9 @@
+from music.cuesheet import IndexPoint
 from music.cuesheet.lexer.token import Token
 from music.cuesheet.lexer.token_type import TokenType
 
 from .file import File
+from .index import Index
 from .parser import Parser
 from .performer import Performer
 from .root import Root
@@ -51,6 +53,14 @@ def test_parser_for_normal_file():
         Token(7, TokenType.QSTR, 'The Rolling Stones'),
         Token(7, TokenType.EOL, '\n'),
         #
+        Token(8, TokenType.WS, '    '),
+        Token(8, TokenType.NAME, 'INDEX'),
+        Token(8, TokenType.WS, ' '),
+        Token(8, TokenType.INT, 1),
+        Token(8, TokenType.WS, ' '),
+        Token(8, TokenType.IDX_PT, IndexPoint(0, 0, 0)),
+        Token(8, TokenType.EOL, '\n'),
+        #
         Token(9, TokenType.WS, '  '),
         Token(9, TokenType.NAME, 'TRACK'),
         Token(9, TokenType.WS, ' '),
@@ -70,6 +80,22 @@ def test_parser_for_normal_file():
         Token(11, TokenType.WS, ' '),
         Token(11, TokenType.QSTR, 'The Rolling Stones'),
         Token(11, TokenType.EOL, '\n'),
+        #
+        Token(12, TokenType.WS, '    '),
+        Token(12, TokenType.NAME, 'INDEX'),
+        Token(12, TokenType.WS, ' '),
+        Token(12, TokenType.INT, 0),
+        Token(12, TokenType.WS, ' '),
+        Token(12, TokenType.IDX_PT, IndexPoint(4, 31, 12)),
+        Token(12, TokenType.EOL, '\n'),
+        #
+        Token(13, TokenType.WS, '    '),
+        Token(13, TokenType.NAME, 'INDEX'),
+        Token(13, TokenType.WS, ' '),
+        Token(13, TokenType.INT, 1),
+        Token(13, TokenType.WS, ' '),
+        Token(13, TokenType.IDX_PT, IndexPoint(4, 32, 34)),
+        Token(13, TokenType.EOL, '\n'),
     ]
     parser = Parser(iter(tokens))
 
@@ -114,6 +140,15 @@ def test_parser_for_normal_file():
                                 ],
                                 children=[],
                             ),
+                            Index(
+                                tokens=[
+                                    Token(8, TokenType.INT, 1),
+                                    Token(
+                                        8, TokenType.IDX_PT, IndexPoint(0, 0, 0)
+                                    ),
+                                ],
+                                children=[],
+                            ),
                         ],
                     ),
                     Track(
@@ -132,6 +167,28 @@ def test_parser_for_normal_file():
                                 tokens=[
                                     Token(
                                         11, TokenType.QSTR, 'The Rolling Stones'
+                                    ),
+                                ],
+                                children=[],
+                            ),
+                            Index(
+                                tokens=[
+                                    Token(12, TokenType.INT, 0),
+                                    Token(
+                                        12,
+                                        TokenType.IDX_PT,
+                                        IndexPoint(4, 31, 12),
+                                    ),
+                                ],
+                                children=[],
+                            ),
+                            Index(
+                                tokens=[
+                                    Token(13, TokenType.INT, 1),
+                                    Token(
+                                        13,
+                                        TokenType.IDX_PT,
+                                        IndexPoint(4, 32, 34),
                                     ),
                                 ],
                                 children=[],
