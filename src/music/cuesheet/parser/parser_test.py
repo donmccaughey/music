@@ -39,79 +39,100 @@ def test_parser_for_normal_file():
         Token(4, TokenType.QSTR, 'Classic Rock'),
         Token(4, TokenType.EOL, '\n'),
         #
+        Token(5, TokenType.NAME, 'REM'),
         Token(5, TokenType.WS, ' '),
+        Token(5, TokenType.NAME, 'ASIN'),
+        Token(5, TokenType.WS, ' '),
+        Token(5, TokenType.STR, 'B00006ZCFG'),
         Token(5, TokenType.EOL, '\n'),
         #
-        Token(6, TokenType.NAME, 'FILE'),
+        Token(6, TokenType.NAME, 'REM'),
         Token(6, TokenType.WS, ' '),
-        Token(6, TokenType.QSTR, 'album.wav'),
+        Token(6, TokenType.NAME, 'DISCID'),
         Token(6, TokenType.WS, ' '),
-        Token(6, TokenType.NAME, 'WAVE'),
+        Token(6, TokenType.STR, '9E0B010C'),
         Token(6, TokenType.EOL, '\n'),
         #
-        Token(7, TokenType.WS, '  '),
-        Token(7, TokenType.NAME, 'TRACK'),
+        Token(7, TokenType.NAME, 'REM'),
         Token(7, TokenType.WS, ' '),
-        Token(7, TokenType.INT, 1),
+        Token(7, TokenType.NAME, 'COMMENT'),
         Token(7, TokenType.WS, ' '),
-        Token(7, TokenType.NAME, 'AUDIO'),
+        Token(7, TokenType.QSTR, 'ExactAudioCopy v0.95b4'),
         Token(7, TokenType.EOL, '\n'),
         #
-        Token(8, TokenType.WS, '    '),
-        Token(8, TokenType.NAME, 'TITLE'),
         Token(8, TokenType.WS, ' '),
-        Token(8, TokenType.QSTR, 'Gimme Shelter'),
         Token(8, TokenType.EOL, '\n'),
         #
-        Token(9, TokenType.WS, '    '),
-        Token(9, TokenType.NAME, 'PERFORMER'),
+        Token(9, TokenType.NAME, 'FILE'),
         Token(9, TokenType.WS, ' '),
-        Token(9, TokenType.QSTR, 'The Rolling Stones'),
+        Token(9, TokenType.QSTR, 'album.wav'),
+        Token(9, TokenType.WS, ' '),
+        Token(9, TokenType.NAME, 'WAVE'),
         Token(9, TokenType.EOL, '\n'),
         #
-        Token(10, TokenType.WS, '    '),
-        Token(10, TokenType.NAME, 'INDEX'),
+        Token(10, TokenType.WS, '  '),
+        Token(10, TokenType.NAME, 'TRACK'),
         Token(10, TokenType.WS, ' '),
         Token(10, TokenType.INT, 1),
         Token(10, TokenType.WS, ' '),
-        Token(10, TokenType.IDX_PT, IndexPoint(0, 0, 0)),
+        Token(10, TokenType.NAME, 'AUDIO'),
         Token(10, TokenType.EOL, '\n'),
         #
-        Token(11, TokenType.WS, '  '),
-        Token(11, TokenType.NAME, 'TRACK'),
+        Token(11, TokenType.WS, '    '),
+        Token(11, TokenType.NAME, 'TITLE'),
         Token(11, TokenType.WS, ' '),
-        Token(11, TokenType.INT, 2),
-        Token(11, TokenType.WS, ' '),
-        Token(11, TokenType.NAME, 'AUDIO'),
+        Token(11, TokenType.QSTR, 'Gimme Shelter'),
         Token(11, TokenType.EOL, '\n'),
         #
         Token(12, TokenType.WS, '    '),
-        Token(12, TokenType.NAME, 'TITLE'),
+        Token(12, TokenType.NAME, 'PERFORMER'),
         Token(12, TokenType.WS, ' '),
-        Token(12, TokenType.QSTR, 'Love in Vain'),
+        Token(12, TokenType.QSTR, 'The Rolling Stones'),
         Token(12, TokenType.EOL, '\n'),
         #
         Token(13, TokenType.WS, '    '),
-        Token(13, TokenType.NAME, 'PERFORMER'),
+        Token(13, TokenType.NAME, 'INDEX'),
         Token(13, TokenType.WS, ' '),
-        Token(13, TokenType.QSTR, 'The Rolling Stones'),
+        Token(13, TokenType.INT, 1),
+        Token(13, TokenType.WS, ' '),
+        Token(13, TokenType.IDX_PT, IndexPoint(0, 0, 0)),
         Token(13, TokenType.EOL, '\n'),
         #
-        Token(14, TokenType.WS, '    '),
-        Token(14, TokenType.NAME, 'INDEX'),
+        Token(14, TokenType.WS, '  '),
+        Token(14, TokenType.NAME, 'TRACK'),
         Token(14, TokenType.WS, ' '),
-        Token(14, TokenType.INT, 0),
+        Token(14, TokenType.INT, 2),
         Token(14, TokenType.WS, ' '),
-        Token(14, TokenType.IDX_PT, IndexPoint(4, 31, 12)),
+        Token(14, TokenType.NAME, 'AUDIO'),
         Token(14, TokenType.EOL, '\n'),
         #
         Token(15, TokenType.WS, '    '),
-        Token(15, TokenType.NAME, 'INDEX'),
+        Token(15, TokenType.NAME, 'TITLE'),
         Token(15, TokenType.WS, ' '),
-        Token(15, TokenType.INT, 1),
-        Token(15, TokenType.WS, ' '),
-        Token(15, TokenType.IDX_PT, IndexPoint(4, 32, 34)),
+        Token(15, TokenType.QSTR, 'Love in Vain'),
         Token(15, TokenType.EOL, '\n'),
+        #
+        Token(16, TokenType.WS, '    '),
+        Token(16, TokenType.NAME, 'PERFORMER'),
+        Token(16, TokenType.WS, ' '),
+        Token(16, TokenType.QSTR, 'The Rolling Stones'),
+        Token(16, TokenType.EOL, '\n'),
+        #
+        Token(17, TokenType.WS, '    '),
+        Token(17, TokenType.NAME, 'INDEX'),
+        Token(17, TokenType.WS, ' '),
+        Token(17, TokenType.INT, 0),
+        Token(17, TokenType.WS, ' '),
+        Token(17, TokenType.IDX_PT, IndexPoint(4, 31, 12)),
+        Token(17, TokenType.EOL, '\n'),
+        #
+        Token(18, TokenType.WS, '    '),
+        Token(18, TokenType.NAME, 'INDEX'),
+        Token(18, TokenType.WS, ' '),
+        Token(18, TokenType.INT, 1),
+        Token(18, TokenType.WS, ' '),
+        Token(18, TokenType.IDX_PT, IndexPoint(4, 32, 34)),
+        Token(18, TokenType.EOL, '\n'),
     ]
     parser = Parser(iter(tokens))
 
@@ -143,37 +164,58 @@ def test_parser_for_normal_file():
                 ],
                 children=[],
             ),
+            Rem(
+                tokens=[
+                    Token(5, TokenType.NAME, 'ASIN'),
+                    Token(5, TokenType.STR, 'B00006ZCFG'),
+                ],
+                children=[],
+            ),
+            Rem(
+                tokens=[
+                    Token(6, TokenType.NAME, 'DISCID'),
+                    Token(6, TokenType.STR, '9E0B010C'),
+                ],
+                children=[],
+            ),
+            Rem(
+                tokens=[
+                    Token(7, TokenType.NAME, 'COMMENT'),
+                    Token(7, TokenType.QSTR, 'ExactAudioCopy v0.95b4'),
+                ],
+                children=[],
+            ),
             File(
                 tokens=[
-                    Token(6, TokenType.QSTR, 'album.wav'),
-                    Token(6, TokenType.NAME, 'WAVE'),
+                    Token(9, TokenType.QSTR, 'album.wav'),
+                    Token(9, TokenType.NAME, 'WAVE'),
                 ],
                 children=[
                     Track(
                         tokens=[
-                            Token(7, TokenType.INT, 1),
-                            Token(7, TokenType.NAME, 'AUDIO'),
+                            Token(10, TokenType.INT, 1),
+                            Token(10, TokenType.NAME, 'AUDIO'),
                         ],
                         children=[
                             Title(
                                 tokens=[
-                                    Token(8, TokenType.QSTR, 'Gimme Shelter'),
+                                    Token(11, TokenType.QSTR, 'Gimme Shelter'),
                                 ],
                                 children=[],
                             ),
                             Performer(
                                 tokens=[
                                     Token(
-                                        9, TokenType.QSTR, 'The Rolling Stones'
+                                        12, TokenType.QSTR, 'The Rolling Stones'
                                     ),
                                 ],
                                 children=[],
                             ),
                             Index(
                                 tokens=[
-                                    Token(10, TokenType.INT, 1),
+                                    Token(13, TokenType.INT, 1),
                                     Token(
-                                        10,
+                                        13,
                                         TokenType.IDX_PT,
                                         IndexPoint(0, 0, 0),
                                     ),
@@ -184,29 +226,29 @@ def test_parser_for_normal_file():
                     ),
                     Track(
                         tokens=[
-                            Token(11, TokenType.INT, 2),
-                            Token(11, TokenType.NAME, 'AUDIO'),
+                            Token(14, TokenType.INT, 2),
+                            Token(14, TokenType.NAME, 'AUDIO'),
                         ],
                         children=[
                             Title(
                                 tokens=[
-                                    Token(12, TokenType.QSTR, 'Love in Vain'),
+                                    Token(15, TokenType.QSTR, 'Love in Vain'),
                                 ],
                                 children=[],
                             ),
                             Performer(
                                 tokens=[
                                     Token(
-                                        13, TokenType.QSTR, 'The Rolling Stones'
+                                        16, TokenType.QSTR, 'The Rolling Stones'
                                     ),
                                 ],
                                 children=[],
                             ),
                             Index(
                                 tokens=[
-                                    Token(14, TokenType.INT, 0),
+                                    Token(17, TokenType.INT, 0),
                                     Token(
-                                        14,
+                                        17,
                                         TokenType.IDX_PT,
                                         IndexPoint(4, 31, 12),
                                     ),
@@ -215,9 +257,9 @@ def test_parser_for_normal_file():
                             ),
                             Index(
                                 tokens=[
-                                    Token(15, TokenType.INT, 1),
+                                    Token(18, TokenType.INT, 1),
                                     Token(
-                                        15,
+                                        18,
                                         TokenType.IDX_PT,
                                         IndexPoint(4, 32, 34),
                                     ),
