@@ -7,14 +7,18 @@ from .token_type import TokenType
 
 
 NAMES = [
+    'ASIN',
     'AUDIO',
+    'COMMENTDISCID',
     'FILE',
+    'GENRE',
     'INDEX',
     'PERFORMER',
     'REM',
     'TITLE',
     'TRACK',
     'WAVE',
+    'YEAR',
 ]
 
 
