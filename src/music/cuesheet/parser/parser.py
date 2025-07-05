@@ -47,15 +47,14 @@ class Parser:
 
     def parse(self) -> Root:
         while self.peek_token:
-            self.command()
+            assert self.peek_token
+            if TokenType.NAME == self.peek_token.type:
+                self.command()
+            elif TokenType.EOL == self.peek_token.type:
+                self.next_token()
+            else:
+                self.error()
         return self.root
-
-    def command(self):
-        assert self.peek_token
-        if TokenType.NAME == self.peek_token.type:
-            self.name()
-        else:
-            self.error()
 
     def error(self):
         error = Error([])
@@ -83,7 +82,7 @@ class Parser:
         else:
             self.error()
 
-    def name(self):
+    def command(self):
         assert self.peek_token
         if 'FILE' == self.peek_token.value:
             self.file()
