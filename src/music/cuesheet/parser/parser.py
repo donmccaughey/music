@@ -10,6 +10,7 @@ from .file import File
 from .index import Index
 from .node import Node
 from .performer import Performer
+from .rem import Rem
 from .root import Root
 from .title import Title
 from .track import Track
@@ -65,6 +66,8 @@ class Parser:
             self.index()
         elif 'PERFORMER' == self.peek_token.value:
             self.performer()
+        elif 'REM' == self.peek_token.value:
+            self.rem()
         elif 'TITLE' == self.peek_token.value:
             self.title()
         elif 'TRACK' == self.peek_token.value:
@@ -121,6 +124,16 @@ class Parser:
             self.next_token(3)
         else:
             self.error()
+
+    def rem(self):
+        self.next_token()
+        rem = Rem([], [])
+        self.parent.children.append(rem)
+        while token := self.next_token():
+            if TokenType.EOL == token.type:
+                return
+            else:
+                rem.tokens.append(token)
 
     def title(self):
         tokens = self.peek_tokens(3)
