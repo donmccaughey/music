@@ -7,7 +7,7 @@ from music.cuesheet.lexer.token_type import TokenType
 
 from .error import Error
 from .file import File
-from .parent import Parent
+from .node import Node
 from .performer import Performer
 from .root import Root
 from .title import Title
@@ -16,14 +16,14 @@ from .track import Track
 
 class Parser:
     def __init__(self, tokens: Iterator[Token]):
-        self.root = Root([])
+        self.root = Root([], [])
         self.tokens = [token for token in tokens if TokenType.WS != token.type]
         self.end = len(self.tokens)
         self.i = 0
-        self.stack: list[Parent] = [self.root]
+        self.stack: list[Node] = [self.root]
 
     @property
-    def parent(self) -> Parent:
+    def parent(self) -> Node:
         return self.stack[-1]
 
     @property
@@ -57,7 +57,7 @@ class Parser:
         return self.root
 
     def error(self):
-        error = Error([])
+        error = Error([], [])
         self.parent.children.append(error)
         while token := self.next_token():
             error.tokens.append(token)
@@ -99,7 +99,7 @@ class Parser:
         tokens = self.peek_tokens(3)
         types = [t.type for t in tokens]
         if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
-            self.parent.children.append(Performer(tokens[1:-1]))
+            self.parent.children.append(Performer(tokens[1:-1], []))
             self.next_token(3)
         else:
             self.error()
@@ -108,7 +108,7 @@ class Parser:
         tokens = self.peek_tokens(3)
         types = [t.type for t in tokens]
         if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
-            self.parent.children.append(Title(tokens[1:-1]))
+            self.parent.children.append(Title(tokens[1:-1], []))
             self.next_token(3)
         else:
             self.error()

@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from .command import Command
+from .node import Node
 
 
 @dataclass
-class Title(Command):
+class Title(Node):
     pass

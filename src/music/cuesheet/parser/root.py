@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from .parent import Parent
+from .node import Node
 
 
 @dataclass
-class Root(Parent):
+class Root(Node):
     pass

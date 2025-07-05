@@ -46,16 +46,19 @@ from .track import Track
                 Token(9, TokenType.EOL, '\n'),
             ],
             Root(
-                [
+                tokens=[],
+                children=[
                     Performer(
-                        [
+                        tokens=[
                             Token(1, TokenType.QSTR, 'The Rolling Stones'),
                         ],
+                        children=[],
                     ),
                     Title(
-                        [
+                        tokens=[
                             Token(2, TokenType.QSTR, 'Gimme Shelter'),
-                        ]
+                        ],
+                        children=[],
                     ),
                     File(
                         tokens=[
@@ -79,7 +82,7 @@ from .track import Track
                             ),
                         ],
                     ),
-                ]
+                ],
             ),
         ),
     ],

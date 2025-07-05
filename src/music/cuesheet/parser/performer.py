@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from .command import Command
+from .node import Node
 
 
 @dataclass
-class Performer(Command):
+class Performer(Node):
     pass
