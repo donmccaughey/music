@@ -64,7 +64,9 @@ def test_parser_for_normal_file():
         Token(7, TokenType.QSTR, 'ExactAudioCopy v0.95b4'),
         Token(7, TokenType.EOL, '\n'),
         #
+        Token(8, TokenType.NAME, 'REM'),
         Token(8, TokenType.WS, ' '),
+        Token(8, TokenType.QSTR, 'This is a remark'),
         Token(8, TokenType.EOL, '\n'),
         #
         Token(9, TokenType.NAME, 'FILE'),
@@ -137,6 +139,12 @@ def test_parser_for_normal_file():
         Token(18, TokenType.WS, ' '),
         Token(18, TokenType.IDX_PT, IndexPoint(4, 32, 34)),
         Token(18, TokenType.EOL, '\n'),
+        #
+        Token(19, TokenType.WS, ' '),
+        Token(19, TokenType.EOL, '\n'),
+        #
+        Token(20, TokenType.WS, ' '),
+        Token(20, TokenType.EOL, '\n'),
     ]
     parser = Parser(iter(tokens))
 
@@ -182,6 +190,12 @@ def test_parser_for_normal_file():
             Comment(
                 tokens=[
                     Token(7, TokenType.QSTR, 'ExactAudioCopy v0.95b4'),
+                ],
+                children=[],
+            ),
+            Rem(
+                tokens=[
+                    Token(8, TokenType.QSTR, 'This is a remark'),
                 ],
                 children=[],
             ),
