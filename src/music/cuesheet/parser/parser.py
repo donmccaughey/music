@@ -23,7 +23,7 @@ from .year import Year
 
 class Parser:
     def __init__(self, tokens: Iterator[Token]):
-        self.root = Root([], [])
+        self.root = Root([])
         self.tokens = [token for token in tokens if TokenType.WS != token.type]
         self.end = len(self.tokens)
         self.i = 0
@@ -81,7 +81,7 @@ class Parser:
             self.error()
 
     def error(self):
-        error = Error([], [])
+        error = Error([])
         self.parent.children.append(error)
         while token := self.next_token():
             error.tokens.append(token)
@@ -92,7 +92,7 @@ class Parser:
         tokens = self.peek_tokens(3)
         types = [t.type for t in tokens]
         if [TokenType.NAME, TokenType.STR, TokenType.EOL] == types:
-            self.parent.children.append(ASIN(tokens[1:-1], []))
+            self.parent.children.append(ASIN(tokens[1:-1]))
             self.next_token(3)
         else:
             self.error()
@@ -101,7 +101,7 @@ class Parser:
         tokens = self.peek_tokens(3)
         types = [t.type for t in tokens]
         if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
-            self.parent.children.append(Comment(tokens[1:-1], []))
+            self.parent.children.append(Comment(tokens[1:-1]))
             self.next_token(3)
         else:
             self.error()
@@ -110,7 +110,7 @@ class Parser:
         tokens = self.peek_tokens(3)
         types = [t.type for t in tokens]
         if [TokenType.NAME, TokenType.STR, TokenType.EOL] == types:
-            self.parent.children.append(DiscID(tokens[1:-1], []))
+            self.parent.children.append(DiscID(tokens[1:-1]))
             self.next_token(3)
         else:
             self.error()
@@ -137,7 +137,7 @@ class Parser:
         tokens = self.peek_tokens(3)
         types = [t.type for t in tokens]
         if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
-            self.parent.children.append(Genre(tokens[1:-1], []))
+            self.parent.children.append(Genre(tokens[1:-1]))
             self.next_token(3)
         else:
             self.error()
@@ -151,7 +151,7 @@ class Parser:
             TokenType.IDX_PT,
             TokenType.EOL,
         ] == types:
-            index = Index(tokens=tokens[1:-1], children=[])
+            index = Index(tokens[1:-1])
             self.parent.children.append(index)
             self.next_token(4)
         else:
@@ -161,7 +161,7 @@ class Parser:
         tokens = self.peek_tokens(3)
         types = [t.type for t in tokens]
         if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
-            self.parent.children.append(Performer(tokens[1:-1], []))
+            self.parent.children.append(Performer(tokens[1:-1]))
             self.next_token(3)
         else:
             self.error()
@@ -184,7 +184,7 @@ class Parser:
             elif 'YEAR' == self.peek_token.value:
                 self.year()
                 return
-        rem = Rem([], [])
+        rem = Rem([])
         self.parent.children.append(rem)
         while token := self.next_token():
             if TokenType.EOL == token.type:
@@ -196,7 +196,7 @@ class Parser:
         tokens = self.peek_tokens(3)
         types = [t.type for t in tokens]
         if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
-            self.parent.children.append(Title(tokens[1:-1], []))
+            self.parent.children.append(Title(tokens[1:-1]))
             self.next_token(3)
         else:
             self.error()
@@ -223,7 +223,7 @@ class Parser:
         tokens = self.peek_tokens(3)
         types = [t.type for t in tokens]
         if [TokenType.NAME, TokenType.INT, TokenType.EOL] == types:
-            self.parent.children.append(Year(tokens[1:-1], []))
+            self.parent.children.append(Year(tokens[1:-1]))
             self.next_token(3)
         else:
             self.error()

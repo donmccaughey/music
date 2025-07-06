@@ -1,8 +1,8 @@
-from dataclasses import dataclass
+from music.cuesheet.lexer.token import Token
 
 from .node import Node
 
 
-@dataclass
 class Year(Node):
-    pass
+    def __init__(self, tokens: list[Token]):
+        super().__init__(tokens, [])

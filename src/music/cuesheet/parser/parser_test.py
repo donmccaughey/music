@@ -149,55 +149,46 @@ def test_parser_for_normal_file():
     parser = Parser(iter(tokens))
 
     assert parser.parse() == Root(
-        tokens=[],
-        children=[
+        [
             Performer(
                 tokens=[
                     Token(1, TokenType.QSTR, 'The Rolling Stones'),
                 ],
-                children=[],
             ),
             Title(
                 tokens=[
                     Token(2, TokenType.QSTR, 'Let It Bleed'),
                 ],
-                children=[],
             ),
             Year(
                 tokens=[
                     Token(3, TokenType.INT, 1969),
                 ],
-                children=[],
             ),
             Genre(
                 tokens=[
                     Token(4, TokenType.QSTR, 'Classic Rock'),
                 ],
-                children=[],
             ),
             ASIN(
                 tokens=[
                     Token(5, TokenType.STR, 'B00006ZCFG'),
                 ],
-                children=[],
             ),
             DiscID(
                 tokens=[
                     Token(6, TokenType.STR, '9E0B010C'),
                 ],
-                children=[],
             ),
             Comment(
                 tokens=[
                     Token(7, TokenType.QSTR, 'ExactAudioCopy v0.95b4'),
                 ],
-                children=[],
             ),
             Rem(
                 tokens=[
                     Token(8, TokenType.QSTR, 'This is a remark'),
                 ],
-                children=[],
             ),
             File(
                 tokens=[
@@ -215,7 +206,6 @@ def test_parser_for_normal_file():
                                 tokens=[
                                     Token(11, TokenType.QSTR, 'Gimme Shelter'),
                                 ],
-                                children=[],
                             ),
                             Performer(
                                 tokens=[
@@ -223,7 +213,6 @@ def test_parser_for_normal_file():
                                         12, TokenType.QSTR, 'The Rolling Stones'
                                     ),
                                 ],
-                                children=[],
                             ),
                             Index(
                                 tokens=[
@@ -234,7 +223,6 @@ def test_parser_for_normal_file():
                                         IndexPoint(0, 0, 0),
                                     ),
                                 ],
-                                children=[],
                             ),
                         ],
                     ),
@@ -248,7 +236,6 @@ def test_parser_for_normal_file():
                                 tokens=[
                                     Token(15, TokenType.QSTR, 'Love in Vain'),
                                 ],
-                                children=[],
                             ),
                             Performer(
                                 tokens=[
@@ -256,7 +243,6 @@ def test_parser_for_normal_file():
                                         16, TokenType.QSTR, 'The Rolling Stones'
                                     ),
                                 ],
-                                children=[],
                             ),
                             Index(
                                 tokens=[
@@ -267,7 +253,6 @@ def test_parser_for_normal_file():
                                         IndexPoint(4, 31, 12),
                                     ),
                                 ],
-                                children=[],
                             ),
                             Index(
                                 tokens=[
@@ -278,7 +263,6 @@ def test_parser_for_normal_file():
                                         IndexPoint(4, 32, 34),
                                     ),
                                 ],
-                                children=[],
                             ),
                         ],
                     ),
