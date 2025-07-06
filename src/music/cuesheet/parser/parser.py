@@ -6,6 +6,8 @@ from music.cuesheet.lexer.token import Token
 from music.cuesheet.lexer.token_type import TokenType
 
 from .asin import ASIN
+from .comment import Comment
+from .disc_id import DiscID
 from .error import Error
 from .file import File
 from .genre import Genre
@@ -95,6 +97,24 @@ class Parser:
         else:
             self.error()
 
+    def comment(self):
+        tokens = self.peek_tokens(3)
+        types = [t.type for t in tokens]
+        if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
+            self.parent.children.append(Comment(tokens[1:-1], []))
+            self.next_token(3)
+        else:
+            self.error()
+
+    def disc_id(self):
+        tokens = self.peek_tokens(3)
+        types = [t.type for t in tokens]
+        if [TokenType.NAME, TokenType.STR, TokenType.EOL] == types:
+            self.parent.children.append(DiscID(tokens[1:-1], []))
+            self.next_token(3)
+        else:
+            self.error()
+
     def file(self):
         tokens = self.peek_tokens(4)
         types = [t.type for t in tokens]
@@ -151,6 +171,12 @@ class Parser:
         if self.peek_token:
             if 'ASIN' == self.peek_token.value:
                 self.asin()
+                return
+            elif 'COMMENT' == self.peek_token.value:
+                self.comment()
+                return
+            elif 'DISCID' == self.peek_token.value:
+                self.disc_id()
                 return
             elif 'GENRE' == self.peek_token.value:
                 self.genre()

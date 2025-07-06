@@ -3,6 +3,8 @@ from music.cuesheet.lexer.token import Token
 from music.cuesheet.lexer.token_type import TokenType
 
 from .asin import ASIN
+from .comment import Comment
+from .disc_id import DiscID
 from .file import File
 from .genre import Genre
 from .index import Index
@@ -171,16 +173,14 @@ def test_parser_for_normal_file():
                 ],
                 children=[],
             ),
-            Rem(
+            DiscID(
                 tokens=[
-                    Token(6, TokenType.NAME, 'DISCID'),
                     Token(6, TokenType.STR, '9E0B010C'),
                 ],
                 children=[],
             ),
-            Rem(
+            Comment(
                 tokens=[
-                    Token(7, TokenType.NAME, 'COMMENT'),
                     Token(7, TokenType.QSTR, 'ExactAudioCopy v0.95b4'),
                 ],
                 children=[],
