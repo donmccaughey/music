@@ -5,8 +5,10 @@ from typing import Iterator
 from music.cuesheet.lexer.token import Token
 from music.cuesheet.lexer.token_type import TokenType
 
+from .asin import ASIN
 from .error import Error
 from .file import File
+from .genre import Genre
 from .index import Index
 from .node import Node
 from .performer import Performer
@@ -84,6 +86,15 @@ class Parser:
             if TokenType.EOL == token.type:
                 return
 
+    def asin(self):
+        tokens = self.peek_tokens(3)
+        types = [t.type for t in tokens]
+        if [TokenType.NAME, TokenType.STR, TokenType.EOL] == types:
+            self.parent.children.append(ASIN(tokens[1:-1], []))
+            self.next_token(3)
+        else:
+            self.error()
+
     def file(self):
         tokens = self.peek_tokens(4)
         types = [t.type for t in tokens]
@@ -99,6 +110,15 @@ class Parser:
             self.parent.children.append(file)
             self.stack.append(file)
             self.next_token(4)
+        else:
+            self.error()
+
+    def genre(self):
+        tokens = self.peek_tokens(3)
+        types = [t.type for t in tokens]
+        if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
+            self.parent.children.append(Genre(tokens[1:-1], []))
+            self.next_token(3)
         else:
             self.error()
 
@@ -129,7 +149,13 @@ class Parser:
     def rem(self):
         self.next_token()
         if self.peek_token:
-            if 'YEAR' == self.peek_token.value:
+            if 'ASIN' == self.peek_token.value:
+                self.asin()
+                return
+            elif 'GENRE' == self.peek_token.value:
+                self.genre()
+                return
+            elif 'YEAR' == self.peek_token.value:
                 self.year()
                 return
         rem = Rem([], [])

@@ -2,7 +2,9 @@ from music.cuesheet import IndexPoint
 from music.cuesheet.lexer.token import Token
 from music.cuesheet.lexer.token_type import TokenType
 
+from .asin import ASIN
 from .file import File
+from .genre import Genre
 from .index import Index
 from .parser import Parser
 from .performer import Performer
@@ -157,16 +159,14 @@ def test_parser_for_normal_file():
                 ],
                 children=[],
             ),
-            Rem(
+            Genre(
                 tokens=[
-                    Token(4, TokenType.NAME, 'GENRE'),
                     Token(4, TokenType.QSTR, 'Classic Rock'),
                 ],
                 children=[],
             ),
-            Rem(
+            ASIN(
                 tokens=[
-                    Token(5, TokenType.NAME, 'ASIN'),
                     Token(5, TokenType.STR, 'B00006ZCFG'),
                 ],
                 children=[],
