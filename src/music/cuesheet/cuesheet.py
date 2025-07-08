@@ -1,8 +1,42 @@
 from __future__ import annotations
 
 from io import StringIO
+from pathlib import Path
 
 from .commands import Blank, Error, File, Index, Performer, Rem, Title, Track
+from .index_point import IndexPoint
+
+
+class Track2:
+    def __init__(self, number: int, track_type: str):
+        self.number = number
+        self.type = track_type
+        self.title: str | None = None
+        self.performer: str | None = None
+        self.indices: dict[int, IndexPoint] = {}
+        self.remarks: list[str] = []
+
+
+class File2:
+    def __init__(self, filename: Path, file_type: str):
+        self.filename = filename
+        self.type = file_type
+        self.remarks: list[str] = []
+        self.tracks: list[Track2] = []
+
+
+class CueSheet2:
+    def __init__(self):
+        self.performer: str | None = None
+        self.title: str | None = None
+        self.year: int | None = None
+        self.genre: str | None = None
+        self.asin: str | None = None
+        self.disc_id: str | None = None
+        self.comment: str | None = None
+        self.remarks: list[str] = []
+        self.file: File2 | None = None
+        self.errors: list[str] = []
 
 
 class CueSheet:

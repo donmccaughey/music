@@ -9,6 +9,9 @@ class IndexPoint:
     seconds: int
     frames: int
 
+    def __str__(self) -> str:
+        return f'{self.minutes:02d}:{self.seconds:02d}:{self.frames:02d}'
+
     @classmethod
     def parse(cls, text: str) -> IndexPoint | None:
         if (
