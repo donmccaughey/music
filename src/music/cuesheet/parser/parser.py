@@ -54,7 +54,6 @@ class Parser:
 
     def parse(self) -> Root:
         while self.peek_token:
-            assert self.peek_token
             if TokenType.NAME == self.peek_token.type:
                 self.command()
             elif TokenType.EOL == self.peek_token.type:
@@ -81,7 +80,8 @@ class Parser:
             self.error()
 
     def error(self):
-        error = Error([])
+        assert self.peek_token
+        error = Error(self.peek_token.line)
         self.parent.children.append(error)
         while token := self.next_token():
             error.tokens.append(token)

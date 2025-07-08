@@ -95,6 +95,16 @@ class Lexer:
                     scanning = TokenType.STR
                     buf.next_ch()
 
+            elif scanning == TokenType.STR:
+                if '\n' == buf.ch:
+                    yield self._next_token(n, TokenType.NAME, buf)
+                    scanning = TokenType.EOL
+                elif buf.ch in LWS:
+                    yield self._next_token(n, TokenType.NAME, buf)
+                    scanning = TokenType.WS
+                else:
+                    buf.next_ch()
+
             elif scanning == TokenType.QSTR:
                 if '"' == buf.ch:
                     if buf.at_token_start:

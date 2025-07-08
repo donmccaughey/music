@@ -1,19 +1,26 @@
+from io import StringIO
 from pathlib import Path
 from typing import TextIO
 
-from .cuesheet import CueSheet
+from .cuesheet.builder import Builder
+from .cuesheet.cuesheet import CueSheet2
+from .cuesheet.lexer.lexer import Lexer
+from .cuesheet.parser.parser import Parser
 
 
 def write_report(root: Path, paths: list[Path], out: TextIO, verbose: bool):
     good_cue_sheets: list[Path] = []
     unicode_errors: list[Path] = []
-    parse_errors: list[tuple[Path, CueSheet]] = []
+    parse_errors: list[tuple[Path, CueSheet2]] = []
     for path in paths:
         relative_path = path.relative_to(root)
 
         try:
             s = path.read_text()
-            cue_sheet = CueSheet.parse(s)
+            lexer = Lexer(StringIO(s))
+            parser = Parser(lexer.lex())
+            builder = Builder(parser.parse())
+            cue_sheet = builder.build_cue_sheet()
 
             if cue_sheet.errors:
                 parse_errors.append((relative_path, cue_sheet))

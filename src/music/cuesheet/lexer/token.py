@@ -9,7 +9,8 @@ from .token_type import TokenType
 NAMES = [
     'ASIN',
     'AUDIO',
-    'COMMENTDISCID',
+    'COMMENT',
+    'DISCID',
     'FILE',
     'GENRE',
     'INDEX',
