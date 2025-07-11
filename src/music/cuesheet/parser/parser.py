@@ -71,7 +71,7 @@ class Parser:
 
     def error(self, tokens: list[Token]) -> None:
         assert tokens
-        error = Error(tokens[0].line)
+        error = Error(tokens[0].line_num)
         self.parent.children.append(error)
 
     def asin(self, tokens: list[Token]):

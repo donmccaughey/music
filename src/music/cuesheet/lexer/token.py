@@ -25,7 +25,7 @@ NAMES = [
 
 @dataclass(frozen=True, slots=True)
 class Token:
-    line: int
+    line_num: int
     type: TokenType
     value: str | int | IndexPoint
 
