@@ -20,10 +20,10 @@ class Node:
 
     def __repr__(self) -> str:
         lines: list[str] = []
-        self._formatted_repr(depth=0, lines=lines)
+        self._indented_representation(depth=0, lines=lines)
         return '\n'.join(lines)
 
-    def _formatted_repr(self, depth: int, lines: list[str]):
+    def _indented_representation(self, depth: int, lines: list[str]):
         indent = '    '
         lines.append(f'{indent * depth}{self.__class__.__name__}(')
         depth += 1
@@ -32,7 +32,7 @@ class Node:
             lines.append(f'{indent * depth}children=[')
             depth += 1
             for child in self.children:
-                child._formatted_repr(depth, lines)
+                child._indented_representation(depth, lines)
             depth -= 1
         else:
             lines.append(f'{indent * depth}children=[]')

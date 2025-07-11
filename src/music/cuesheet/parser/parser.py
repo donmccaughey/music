@@ -111,16 +111,9 @@ class Parser:
             self.error(tokens)
 
     def file(self, tokens: list[Token]):
-        types = [t.type for t in tokens]
-        if [
-            TokenType.NAME,
-            TokenType.QSTR,
-            TokenType.NAME,
-            TokenType.EOL,
-        ] == types and tokens[2].value in ['WAVE']:
+        if file := File.parse(tokens):
             if isinstance(self.parent, File):
                 self.stack.pop()
-            file = File(tokens=tokens, children=[])
             self.parent.children.append(file)
             self.stack.append(file)
         else:
@@ -139,22 +132,14 @@ class Parser:
             self.error(tokens)
 
     def index(self, tokens: list[Token]):
-        types = [t.type for t in tokens]
-        if [
-            TokenType.NAME,
-            TokenType.INT,
-            TokenType.IDX_PT,
-            TokenType.EOL,
-        ] == types:
-            index = Index(tokens)
+        if index := Index.parse(tokens):
             self.parent.children.append(index)
         else:
             self.error(tokens)
 
     def performer(self, tokens: list[Token]):
-        types = [t.type for t in tokens]
-        if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
-            self.parent.children.append(Performer(tokens))
+        if performer := Performer.parse(tokens):
+            self.parent.children.append(performer)
         else:
             self.error(tokens)
 
@@ -179,23 +164,15 @@ class Parser:
         self.parent.children.append(rem)
 
     def title(self, tokens: list[Token]):
-        types = [t.type for t in tokens]
-        if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
-            self.parent.children.append(Title(tokens))
+        if title := Title.parse(tokens):
+            self.parent.children.append(title)
         else:
             self.error(tokens)
 
     def track(self, tokens: list[Token]):
-        types = [t.type for t in tokens]
-        if [
-            TokenType.NAME,
-            TokenType.INT,
-            TokenType.NAME,
-            TokenType.EOL,
-        ] == types and tokens[2].value in ['AUDIO']:
+        if track := Track.parse(tokens):
             if isinstance(self.parent, Track):
                 self.stack.pop()
-            track = Track(tokens=tokens, children=[])
             self.parent.children.append(track)
             self.stack.append(track)
         else:
