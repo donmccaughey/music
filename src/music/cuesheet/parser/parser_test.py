@@ -196,8 +196,10 @@ def test_parser_for_normal_file():
             ),
             File(
                 tokens=[
+                    Token(9, TokenType.NAME, 'FILE'),
                     Token(9, TokenType.QSTR, 'album.wav'),
                     Token(9, TokenType.NAME, 'WAVE'),
+                    Token(9, TokenType.EOL, '\n'),
                 ],
                 children=[
                     Track(

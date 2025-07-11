@@ -120,7 +120,7 @@ class Parser:
         ] == types and tokens[2].value in ['WAVE']:
             if isinstance(self.parent, File):
                 self.stack.pop()
-            file = File(tokens=tokens[1:-1], children=[])
+            file = File(tokens=tokens, children=[])
             self.parent.children.append(file)
             self.stack.append(file)
         else:
