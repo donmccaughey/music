@@ -204,8 +204,10 @@ def test_parser_for_normal_file():
                 children=[
                     Track(
                         tokens=[
+                            Token(10, TokenType.NAME, 'TRACK'),
                             Token(10, TokenType.INT, 1),
                             Token(10, TokenType.NAME, 'AUDIO'),
+                            Token(10, TokenType.EOL, '\n'),
                         ],
                         children=[
                             Title(
@@ -240,8 +242,10 @@ def test_parser_for_normal_file():
                     ),
                     Track(
                         tokens=[
+                            Token(14, TokenType.NAME, 'TRACK'),
                             Token(14, TokenType.INT, 2),
                             Token(14, TokenType.NAME, 'AUDIO'),
+                            Token(14, TokenType.EOL, '\n'),
                         ],
                         children=[
                             Title(

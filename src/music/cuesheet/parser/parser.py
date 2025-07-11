@@ -195,7 +195,7 @@ class Parser:
         ] == types and tokens[2].value in ['AUDIO']:
             if isinstance(self.parent, Track):
                 self.stack.pop()
-            track = Track(tokens=tokens[1:-1], children=[])
+            track = Track(tokens=tokens, children=[])
             self.parent.children.append(track)
             self.stack.append(track)
         else:
