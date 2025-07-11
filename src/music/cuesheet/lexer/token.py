@@ -29,6 +29,14 @@ class Token:
     type: TokenType
     value: str | int | IndexPoint
 
+    @property
+    def is_end_of_line(self) -> bool:
+        return self.type == TokenType.EOL
+
+    @property
+    def is_whitespace(self) -> bool:
+        return self.type == TokenType.WS
+
     @classmethod
     def make(cls, n: int, token_type: TokenType, text: str) -> Self:
         if TokenType.IDX_PT == token_type:

@@ -34,9 +34,9 @@ class Parser:
     def next_line(self) -> list[Token]:
         tokens = []
         while token := next(self.token_iter, None):
-            if TokenType.WS != token.type:
+            if not token.is_whitespace:
                 tokens.append(token)
-            if TokenType.EOL == token.type:
+            if token.is_end_of_line:
                 break
 
         assert not tokens or TokenType.EOL == tokens[-1].type
