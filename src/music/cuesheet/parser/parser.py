@@ -33,17 +33,6 @@ class Parser:
     def parent(self) -> Node:
         return self.stack[-1]
 
-    @property
-    def peek_token(self) -> Token | None:
-        return self.tokens[self.i] if self.i < self.end else None
-
-    def peek_tokens(self, count: int) -> list[Token]:
-        tokens = []
-        for i in range(self.i, self.i + count):
-            if i < self.end:
-                tokens.append(self.tokens[i])
-        return tokens
-
     def next_line(self) -> list[Token]:
         tokens = []
         while token := self.next_token():
