@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from itertools import filterfalse as filter_out
 from typing import Iterator
 
 from music.cuesheet.lexer.token import Token
@@ -33,9 +34,9 @@ class Parser:
 
     def next_line(self) -> list[Token]:
         tokens = []
-        while token := next(self.token_iter, None):
-            if not token.is_whitespace:
-                tokens.append(token)
+        it = filter_out(lambda t: t.is_whitespace, self.token_iter)
+        while token := next(it, None):
+            tokens.append(token)
             if token.is_end_of_line:
                 break
 
