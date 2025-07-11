@@ -75,38 +75,20 @@ class Parser:
         self.parent.children.append(error)
 
     def asin(self, tokens: list[Token]):
-        types = [t.type for t in tokens]
-        if [
-            TokenType.NAME,
-            TokenType.NAME,
-            TokenType.STR,
-            TokenType.EOL,
-        ] == types:
-            self.parent.children.append(ASIN(tokens))
+        if asin := ASIN.parse(tokens):
+            self.parent.children.append(asin)
         else:
             self.error(tokens)
 
     def comment(self, tokens: list[Token]):
-        types = [t.type for t in tokens]
-        if [
-            TokenType.NAME,
-            TokenType.NAME,
-            TokenType.QSTR,
-            TokenType.EOL,
-        ] == types:
-            self.parent.children.append(Comment(tokens))
+        if comment := Comment.parse(tokens):
+            self.parent.children.append(comment)
         else:
             self.error(tokens)
 
     def disc_id(self, tokens: list[Token]):
-        types = [t.type for t in tokens]
-        if [
-            TokenType.NAME,
-            TokenType.NAME,
-            TokenType.STR,
-            TokenType.EOL,
-        ] == types:
-            self.parent.children.append(DiscID(tokens))
+        if disc_id := DiscID.parse(tokens):
+            self.parent.children.append(disc_id)
         else:
             self.error(tokens)
 
@@ -120,14 +102,8 @@ class Parser:
             self.error(tokens)
 
     def genre(self, tokens: list[Token]):
-        types = [t.type for t in tokens]
-        if [
-            TokenType.NAME,
-            TokenType.NAME,
-            TokenType.QSTR,
-            TokenType.EOL,
-        ] == types:
-            self.parent.children.append(Genre(tokens))
+        if genre := Genre.parse(tokens):
+            self.parent.children.append(genre)
         else:
             self.error(tokens)
 
@@ -160,8 +136,10 @@ class Parser:
             elif 'YEAR' == tokens[1].value:
                 self.year(tokens)
                 return
-        rem = Rem(tokens)
-        self.parent.children.append(rem)
+        if rem := Rem.parse(tokens):
+            self.parent.children.append(rem)
+        else:
+            self.error(tokens)
 
     def title(self, tokens: list[Token]):
         if title := Title.parse(tokens):
@@ -179,13 +157,7 @@ class Parser:
             self.error(tokens)
 
     def year(self, tokens: list[Token]):
-        types = [t.type for t in tokens]
-        if [
-            TokenType.NAME,
-            TokenType.NAME,
-            TokenType.INT,
-            TokenType.EOL,
-        ] == types:
-            self.parent.children.append(Year(tokens))
+        if year := Year.parse(tokens):
+            self.parent.children.append(year)
         else:
             self.error(tokens)
