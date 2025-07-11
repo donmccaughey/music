@@ -24,9 +24,7 @@ from .year import Year
 class Parser:
     def __init__(self, tokens: Iterator[Token]):
         self.root = Root([])
-        self.tokens = [token for token in tokens if TokenType.WS != token.type]
-        self.end = len(self.tokens)
-        self.i = 0
+        self.tokens = tokens
         self.stack: list[Node] = [self.root]
 
     @property
@@ -35,7 +33,7 @@ class Parser:
 
     def next_line(self) -> list[Token]:
         tokens = []
-        while token := self.next_token():
+        while token := next(self.tokens, None):
             if TokenType.WS != token.type:
                 tokens.append(token)
             if TokenType.EOL == token.type:
@@ -43,14 +41,6 @@ class Parser:
 
         assert not tokens or TokenType.EOL == tokens[-1].type
         return tokens
-
-    def next_token(self, step: int = 1) -> Token | None:
-        if self.i < self.end:
-            token = self.tokens[self.i]
-            self.i += step
-            return token
-        else:
-            return None
 
     def parse(self) -> Root:
         while tokens := self.next_line():
