@@ -166,32 +166,49 @@ def test_parser_for_normal_file():
             ),
             Year(
                 tokens=[
+                    Token(3, TokenType.NAME, 'REM'),
+                    Token(3, TokenType.NAME, 'YEAR'),
                     Token(3, TokenType.INT, 1969),
+                    Token(3, TokenType.EOL, '\n'),
                 ],
             ),
             Genre(
                 tokens=[
+                    Token(4, TokenType.NAME, 'REM'),
+                    Token(4, TokenType.NAME, 'GENRE'),
                     Token(4, TokenType.QSTR, 'Classic Rock'),
+                    Token(4, TokenType.EOL, '\n'),
                 ],
             ),
             ASIN(
                 tokens=[
+                    Token(5, TokenType.NAME, 'REM'),
+                    Token(5, TokenType.NAME, 'ASIN'),
                     Token(5, TokenType.STR, 'B00006ZCFG'),
+                    Token(5, TokenType.EOL, '\n'),
                 ],
             ),
             DiscID(
                 tokens=[
+                    Token(6, TokenType.NAME, 'REM'),
+                    Token(6, TokenType.NAME, 'DISCID'),
                     Token(6, TokenType.STR, '9E0B010C'),
+                    Token(6, TokenType.EOL, '\n'),
                 ],
             ),
             Comment(
                 tokens=[
+                    Token(7, TokenType.NAME, 'REM'),
+                    Token(7, TokenType.NAME, 'COMMENT'),
                     Token(7, TokenType.QSTR, 'ExactAudioCopy v0.95b4'),
+                    Token(7, TokenType.EOL, '\n'),
                 ],
             ),
             Rem(
                 tokens=[
+                    Token(8, TokenType.NAME, 'REM'),
                     Token(8, TokenType.QSTR, 'This is a remark'),
+                    Token(8, TokenType.EOL, '\n'),
                 ],
             ),
             File(

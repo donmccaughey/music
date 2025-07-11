@@ -5,7 +5,7 @@ from .node import Node
 
 class Year(Node):
     def __init__(self, tokens: list[Token]):
-        assert len(tokens) == 1
-        assert isinstance(tokens[0].value, int)
+        assert len(tokens) == 4
+        assert isinstance(tokens[2].value, int)
         super().__init__(tokens, [])
-        self.value = tokens[0].value
+        self.value = tokens[2].value

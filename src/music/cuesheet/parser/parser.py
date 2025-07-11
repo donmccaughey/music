@@ -82,7 +82,7 @@ class Parser:
             TokenType.STR,
             TokenType.EOL,
         ] == types:
-            self.parent.children.append(ASIN(tokens[2:-1]))
+            self.parent.children.append(ASIN(tokens))
         else:
             self.error(tokens)
 
@@ -94,7 +94,7 @@ class Parser:
             TokenType.QSTR,
             TokenType.EOL,
         ] == types:
-            self.parent.children.append(Comment(tokens[2:-1]))
+            self.parent.children.append(Comment(tokens))
         else:
             self.error(tokens)
 
@@ -106,7 +106,7 @@ class Parser:
             TokenType.STR,
             TokenType.EOL,
         ] == types:
-            self.parent.children.append(DiscID(tokens[2:-1]))
+            self.parent.children.append(DiscID(tokens))
         else:
             self.error(tokens)
 
@@ -134,7 +134,7 @@ class Parser:
             TokenType.QSTR,
             TokenType.EOL,
         ] == types:
-            self.parent.children.append(Genre(tokens[2:-1]))
+            self.parent.children.append(Genre(tokens))
         else:
             self.error(tokens)
 
@@ -175,7 +175,7 @@ class Parser:
             elif 'YEAR' == tokens[1].value:
                 self.year(tokens)
                 return
-        rem = Rem(tokens[1:-1])
+        rem = Rem(tokens)
         self.parent.children.append(rem)
 
     def title(self, tokens: list[Token]):
@@ -209,6 +209,6 @@ class Parser:
             TokenType.INT,
             TokenType.EOL,
         ] == types:
-            self.parent.children.append(Year(tokens[2:-1]))
+            self.parent.children.append(Year(tokens))
         else:
             self.error(tokens)
