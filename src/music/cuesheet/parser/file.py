@@ -17,15 +17,18 @@ class File(Node):
         assert isinstance(tokens[2].value, str)
         self.type = tokens[2].value
 
+    type_pattern = [
+        TokenType.NAME,
+        TokenType.QSTR,
+        TokenType.NAME,
+        TokenType.EOL,
+    ]
+
+    @classmethod
+    def is_file(cls, tokens: list[Token]) -> bool:
+        types = [token.type for token in tokens]
+        return types == cls.type_pattern and tokens[2].value in ['WAVE']
+
     @classmethod
     def parse(cls, tokens: list[Token]) -> Self | None:
-        types = [t.type for t in tokens]
-        if [
-            TokenType.NAME,
-            TokenType.QSTR,
-            TokenType.NAME,
-            TokenType.EOL,
-        ] == types and tokens[2].value in ['WAVE']:
-            return cls(tokens, children=[])
-        else:
-            return None
+        return cls(tokens, children=[]) if cls.is_file(tokens) else None

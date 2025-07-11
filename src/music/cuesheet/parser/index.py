@@ -17,15 +17,18 @@ class Index(Node):
         assert isinstance(tokens[2].value, IndexPoint)
         self.index_point = tokens[2].value
 
+    type_pattern = [
+        TokenType.NAME,
+        TokenType.INT,
+        TokenType.IDX_PT,
+        TokenType.EOL,
+    ]
+
+    @classmethod
+    def is_index(cls, tokens: list[Token]) -> bool:
+        types = [token.type for token in tokens]
+        return types == cls.type_pattern
+
     @classmethod
     def parse(cls, tokens: list[Token]) -> Self | None:
-        types = [t.type for t in tokens]
-        if [
-            TokenType.NAME,
-            TokenType.INT,
-            TokenType.IDX_PT,
-            TokenType.EOL,
-        ] == types:
-            return cls(tokens)
-        else:
-            return None
+        return cls(tokens) if cls.is_index(tokens) else None

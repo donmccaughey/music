@@ -13,10 +13,13 @@ class Title(Node):
         assert isinstance(tokens[1].value, str)
         self.value = tokens[1].value
 
+    type_pattern = [TokenType.NAME, TokenType.QSTR, TokenType.EOL]
+
+    @classmethod
+    def is_title(cls, tokens: list[Token]) -> bool:
+        types = [tokens.type for tokens in tokens]
+        return types == cls.type_pattern
+
     @classmethod
     def parse(cls, tokens: list[Token]) -> Self | None:
-        types = [t.type for t in tokens]
-        if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
-            return cls(tokens)
-        else:
-            return None
+        return cls(tokens) if cls.is_title(tokens) else None

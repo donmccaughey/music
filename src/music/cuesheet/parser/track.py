@@ -16,15 +16,18 @@ class Track(Node):
         assert isinstance(tokens[2].value, str)
         self.type = tokens[2].value
 
+    type_pattern = [
+        TokenType.NAME,
+        TokenType.INT,
+        TokenType.NAME,
+        TokenType.EOL,
+    ]
+
+    @classmethod
+    def is_track(cls, tokens: list[Token]) -> bool:
+        types = [tokens.type for tokens in tokens]
+        return types == cls.type_pattern and tokens[2].value in ['AUDIO']
+
     @classmethod
     def parse(cls, tokens: list[Token]) -> Self | None:
-        types = [t.type for t in tokens]
-        if [
-            TokenType.NAME,
-            TokenType.INT,
-            TokenType.NAME,
-            TokenType.EOL,
-        ] == types and tokens[2].value in ['AUDIO']:
-            return cls(tokens, children=[])
-        else:
-            return None
+        return cls(tokens, children=[]) if cls.is_track(tokens) else None
