@@ -146,7 +146,7 @@ class Parser:
             TokenType.IDX_PT,
             TokenType.EOL,
         ] == types:
-            index = Index(tokens[1:-1])
+            index = Index(tokens)
             self.parent.children.append(index)
         else:
             self.error(tokens)

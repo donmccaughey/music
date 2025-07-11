@@ -226,12 +226,14 @@ def test_parser_for_normal_file():
                             ),
                             Index(
                                 tokens=[
+                                    Token(13, TokenType.NAME, 'INDEX'),
                                     Token(13, TokenType.INT, 1),
                                     Token(
                                         13,
                                         TokenType.IDX_PT,
                                         IndexPoint(0, 0, 0),
                                     ),
+                                    Token(13, TokenType.EOL, '\n'),
                                 ],
                             ),
                         ],
@@ -260,22 +262,26 @@ def test_parser_for_normal_file():
                             ),
                             Index(
                                 tokens=[
+                                    Token(17, TokenType.NAME, 'INDEX'),
                                     Token(17, TokenType.INT, 0),
                                     Token(
                                         17,
                                         TokenType.IDX_PT,
                                         IndexPoint(4, 31, 12),
                                     ),
+                                    Token(17, TokenType.EOL, '\n'),
                                 ],
                             ),
                             Index(
                                 tokens=[
+                                    Token(18, TokenType.NAME, 'INDEX'),
                                     Token(18, TokenType.INT, 1),
                                     Token(
                                         18,
                                         TokenType.IDX_PT,
                                         IndexPoint(4, 32, 34),
                                     ),
+                                    Token(18, TokenType.EOL, '\n'),
                                 ],
                             ),
                         ],
