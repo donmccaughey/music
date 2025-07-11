@@ -152,7 +152,9 @@ def test_parser_for_normal_file():
         [
             Performer(
                 tokens=[
+                    Token(1, TokenType.NAME, 'PERFORMER'),
                     Token(1, TokenType.QSTR, 'The Rolling Stones'),
+                    Token(1, TokenType.EOL, '\n'),
                 ],
             ),
             Title(
@@ -213,9 +215,11 @@ def test_parser_for_normal_file():
                             ),
                             Performer(
                                 tokens=[
+                                    Token(12, TokenType.NAME, 'PERFORMER'),
                                     Token(
                                         12, TokenType.QSTR, 'The Rolling Stones'
                                     ),
+                                    Token(12, TokenType.EOL, '\n'),
                                 ],
                             ),
                             Index(
@@ -245,9 +249,11 @@ def test_parser_for_normal_file():
                             ),
                             Performer(
                                 tokens=[
+                                    Token(16, TokenType.NAME, 'PERFORMER'),
                                     Token(
                                         16, TokenType.QSTR, 'The Rolling Stones'
                                     ),
+                                    Token(16, TokenType.EOL, '\n'),
                                 ],
                             ),
                             Index(

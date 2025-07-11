@@ -154,7 +154,7 @@ class Parser:
     def performer(self, tokens: list[Token]):
         types = [t.type for t in tokens]
         if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
-            self.parent.children.append(Performer(tokens[1:-1]))
+            self.parent.children.append(Performer(tokens))
         else:
             self.error(tokens)
 
