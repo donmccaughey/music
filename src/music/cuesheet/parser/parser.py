@@ -44,6 +44,17 @@ class Parser:
                 tokens.append(self.tokens[i])
         return tokens
 
+    def next_line(self) -> list[Token]:
+        tokens = []
+        while token := self.next_token():
+            if TokenType.WS != token.type:
+                tokens.append(token)
+            if TokenType.EOL == token.type:
+                break
+
+        assert not tokens or TokenType.EOL == tokens[-1].type
+        return tokens
+
     def next_token(self, step: int = 1) -> Token | None:
         if self.i < self.end:
             token = self.tokens[self.i]
@@ -53,70 +64,74 @@ class Parser:
             return None
 
     def parse(self) -> Root:
-        while self.peek_token:
-            if TokenType.NAME == self.peek_token.type:
-                self.command()
-            elif TokenType.EOL == self.peek_token.type:
-                self.next_token()
+        while tokens := self.next_line():
+            if TokenType.NAME == tokens[0].type:
+                self.command(tokens)
+            elif TokenType.EOL == tokens[0].type:
+                pass
             else:
-                self.error()
+                self.error(tokens)
         return self.root
 
-    def command(self):
-        assert self.peek_token
-        if 'FILE' == self.peek_token.value:
-            self.file()
-        elif 'INDEX' == self.peek_token.value:
-            self.index()
-        elif 'PERFORMER' == self.peek_token.value:
-            self.performer()
-        elif 'REM' == self.peek_token.value:
-            self.rem()
-        elif 'TITLE' == self.peek_token.value:
-            self.title()
-        elif 'TRACK' == self.peek_token.value:
-            self.track()
+    def command(self, tokens: list[Token]):
+        assert tokens
+        if 'FILE' == tokens[0].value:
+            self.file(tokens)
+        elif 'INDEX' == tokens[0].value:
+            self.index(tokens)
+        elif 'PERFORMER' == tokens[0].value:
+            self.performer(tokens)
+        elif 'REM' == tokens[0].value:
+            self.rem(tokens)
+        elif 'TITLE' == tokens[0].value:
+            self.title(tokens)
+        elif 'TRACK' == tokens[0].value:
+            self.track(tokens)
         else:
-            self.error()
+            self.error(tokens)
 
-    def error(self):
-        assert self.peek_token
-        error = Error(self.peek_token.line)
+    def error(self, tokens: list[Token]) -> None:
+        assert tokens
+        error = Error(tokens[0].line)
         self.parent.children.append(error)
-        while token := self.next_token():
-            error.tokens.append(token)
-            if TokenType.EOL == token.type:
-                return
 
-    def asin(self):
-        tokens = self.peek_tokens(3)
+    def asin(self, tokens: list[Token]):
         types = [t.type for t in tokens]
-        if [TokenType.NAME, TokenType.STR, TokenType.EOL] == types:
-            self.parent.children.append(ASIN(tokens[1:-1]))
-            self.next_token(3)
+        if [
+            TokenType.NAME,
+            TokenType.NAME,
+            TokenType.STR,
+            TokenType.EOL,
+        ] == types:
+            self.parent.children.append(ASIN(tokens[2:-1]))
         else:
-            self.error()
+            self.error(tokens)
 
-    def comment(self):
-        tokens = self.peek_tokens(3)
+    def comment(self, tokens: list[Token]):
         types = [t.type for t in tokens]
-        if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
-            self.parent.children.append(Comment(tokens[1:-1]))
-            self.next_token(3)
+        if [
+            TokenType.NAME,
+            TokenType.NAME,
+            TokenType.QSTR,
+            TokenType.EOL,
+        ] == types:
+            self.parent.children.append(Comment(tokens[2:-1]))
         else:
-            self.error()
+            self.error(tokens)
 
-    def disc_id(self):
-        tokens = self.peek_tokens(3)
+    def disc_id(self, tokens: list[Token]):
         types = [t.type for t in tokens]
-        if [TokenType.NAME, TokenType.STR, TokenType.EOL] == types:
-            self.parent.children.append(DiscID(tokens[1:-1]))
-            self.next_token(3)
+        if [
+            TokenType.NAME,
+            TokenType.NAME,
+            TokenType.STR,
+            TokenType.EOL,
+        ] == types:
+            self.parent.children.append(DiscID(tokens[2:-1]))
         else:
-            self.error()
+            self.error(tokens)
 
-    def file(self):
-        tokens = self.peek_tokens(4)
+    def file(self, tokens: list[Token]):
         types = [t.type for t in tokens]
         if [
             TokenType.NAME,
@@ -129,21 +144,22 @@ class Parser:
             file = File(tokens=tokens[1:-1], children=[])
             self.parent.children.append(file)
             self.stack.append(file)
-            self.next_token(4)
         else:
-            self.error()
+            self.error(tokens)
 
-    def genre(self):
-        tokens = self.peek_tokens(3)
+    def genre(self, tokens: list[Token]):
         types = [t.type for t in tokens]
-        if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
-            self.parent.children.append(Genre(tokens[1:-1]))
-            self.next_token(3)
+        if [
+            TokenType.NAME,
+            TokenType.NAME,
+            TokenType.QSTR,
+            TokenType.EOL,
+        ] == types:
+            self.parent.children.append(Genre(tokens[2:-1]))
         else:
-            self.error()
+            self.error(tokens)
 
-    def index(self):
-        tokens = self.peek_tokens(4)
+    def index(self, tokens: list[Token]):
         types = [t.type for t in tokens]
         if [
             TokenType.NAME,
@@ -153,56 +169,44 @@ class Parser:
         ] == types:
             index = Index(tokens[1:-1])
             self.parent.children.append(index)
-            self.next_token(4)
         else:
-            self.error()
+            self.error(tokens)
 
-    def performer(self):
-        tokens = self.peek_tokens(3)
+    def performer(self, tokens: list[Token]):
         types = [t.type for t in tokens]
         if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
             self.parent.children.append(Performer(tokens[1:-1]))
-            self.next_token(3)
         else:
-            self.error()
+            self.error(tokens)
 
-    def rem(self):
-        self.next_token()
-        if self.peek_token:
-            if 'ASIN' == self.peek_token.value:
-                self.asin()
+    def rem(self, tokens: list[Token]):
+        if len(tokens) > 1:
+            if 'ASIN' == tokens[1].value:
+                self.asin(tokens)
                 return
-            elif 'COMMENT' == self.peek_token.value:
-                self.comment()
+            elif 'COMMENT' == tokens[1].value:
+                self.comment(tokens)
                 return
-            elif 'DISCID' == self.peek_token.value:
-                self.disc_id()
+            elif 'DISCID' == tokens[1].value:
+                self.disc_id(tokens)
                 return
-            elif 'GENRE' == self.peek_token.value:
-                self.genre()
+            elif 'GENRE' == tokens[1].value:
+                self.genre(tokens)
                 return
-            elif 'YEAR' == self.peek_token.value:
-                self.year()
+            elif 'YEAR' == tokens[1].value:
+                self.year(tokens)
                 return
-        rem = Rem([])
+        rem = Rem(tokens[1:-1])
         self.parent.children.append(rem)
-        while token := self.next_token():
-            if TokenType.EOL == token.type:
-                return
-            else:
-                rem.tokens.append(token)
 
-    def title(self):
-        tokens = self.peek_tokens(3)
+    def title(self, tokens: list[Token]):
         types = [t.type for t in tokens]
         if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
             self.parent.children.append(Title(tokens[1:-1]))
-            self.next_token(3)
         else:
-            self.error()
+            self.error(tokens)
 
-    def track(self):
-        tokens = self.peek_tokens(4)
+    def track(self, tokens: list[Token]):
         types = [t.type for t in tokens]
         if [
             TokenType.NAME,
@@ -215,15 +219,17 @@ class Parser:
             track = Track(tokens=tokens[1:-1], children=[])
             self.parent.children.append(track)
             self.stack.append(track)
-            self.next_token(4)
         else:
-            self.error()
+            self.error(tokens)
 
-    def year(self):
-        tokens = self.peek_tokens(3)
+    def year(self, tokens: list[Token]):
         types = [t.type for t in tokens]
-        if [TokenType.NAME, TokenType.INT, TokenType.EOL] == types:
-            self.parent.children.append(Year(tokens[1:-1]))
-            self.next_token(3)
+        if [
+            TokenType.NAME,
+            TokenType.NAME,
+            TokenType.INT,
+            TokenType.EOL,
+        ] == types:
+            self.parent.children.append(Year(tokens[2:-1]))
         else:
-            self.error()
+            self.error(tokens)

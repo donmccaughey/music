@@ -1,0 +1,95 @@
+PERFORMER "Amos, Tori"
+TITLE "Scarlet's Walk"
+REM YEAR 2002
+REM GENRE "Alternative"
+REM DISCID ""
+REM COMMENT "ExactAudioCopy v0.95b3"
+FILE "album.wav"
+  TRACK 01 AUDIO
+    TITLE "Amber Waves"
+    PERFORMER "Amos, Tori"
+    INDEX 01 00:00:00
+  TRACK 02 AUDIO
+    TITLE "A Sorta Fairytale"
+    PERFORMER "Amos, Tori"
+    INDEX 00 03:39:30
+    INDEX 01 03:39:71
+  TRACK 03 AUDIO
+    TITLE "Wednesday"
+    PERFORMER "Amos, Tori"
+    INDEX 00 09:08:41
+    INDEX 01 09:09:51
+  TRACK 04 AUDIO
+    TITLE "Strange"
+    PERFORMER "Amos, Tori"
+    INDEX 00 11:38:59
+    INDEX 01 11:39:26
+  TRACK 05 AUDIO
+    TITLE "Carbon"
+    PERFORMER "Amos, Tori"
+    INDEX 00 14:45:25
+    INDEX 01 14:46:37
+  TRACK 06 AUDIO
+    TITLE "Crazy"
+    PERFORMER "Amos, Tori"
+    INDEX 00 19:19:62
+    INDEX 01 19:22:07
+  TRACK 07 AUDIO
+    TITLE "Wampum Prayer"
+    PERFORMER "Amos, Tori"
+    INDEX 00 23:45:29
+    INDEX 01 23:49:65
+  TRACK 08 AUDIO
+    TITLE "Don't Make Me Come to Vegas"
+    PERFORMER "Amos, Tori"
+    INDEX 01 24:34:15
+  TRACK 09 AUDIO
+    TITLE "Sweet Sangria"
+    PERFORMER "Amos, Tori"
+    INDEX 00 29:25:57
+    INDEX 01 29:26:24
+  TRACK 10 AUDIO
+    TITLE "Your Cloud"
+    PERFORMER "Amos, Tori"
+    INDEX 00 33:28:01
+    INDEX 01 33:29:11
+  TRACK 11 AUDIO
+    TITLE "Pancake"
+    PERFORMER "Amos, Tori"
+    INDEX 00 37:59:62
+    INDEX 01 37:59:65
+  TRACK 12 AUDIO
+    TITLE "I Can't See New York"
+    PERFORMER "Amos, Tori"
+    INDEX 00 41:54:52
+    INDEX 01 41:55:63
+  TRACK 13 AUDIO
+    TITLE "Mrs. Jesus"
+    PERFORMER "Amos, Tori"
+    INDEX 00 49:10:56
+    INDEX 01 49:11:65
+  TRACK 14 AUDIO
+    TITLE "Taxi Ride"
+    PERFORMER "Amos, Tori"
+    INDEX 00 52:17:09
+    INDEX 01 52:18:12
+  TRACK 15 AUDIO
+    TITLE "Another Girl's Paradise"
+    PERFORMER "Amos, Tori"
+    INDEX 00 56:18:37
+    INDEX 01 56:20:07
+  TRACK 16 AUDIO
+    TITLE "Scarlet's Walk"
+    PERFORMER "Amos, Tori"
+    INDEX 00 59:54:53
+    INDEX 01 59:56:11
+  TRACK 17 AUDIO
+    TITLE "Virginia"
+    PERFORMER "Amos, Tori"
+    INDEX 00 64:13:00
+    INDEX 01 64:14:23
+  TRACK 18 AUDIO
+    TITLE "Gold Dust"
+    PERFORMER "Amos, Tori"
+    INDEX 00 68:09:34
+    INDEX 01 68:10:67
