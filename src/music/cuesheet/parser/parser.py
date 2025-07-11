@@ -46,7 +46,7 @@ class Parser:
         while tokens := self.next_line():
             if is_command(tokens):
                 self.command(tokens)
-            elif is_end_of_line(tokens):
+            elif is_blank_line(tokens):
                 pass
             else:
                 self.error(tokens)
@@ -167,5 +167,5 @@ def is_command(tokens: list[Token]) -> bool:
     return len(tokens) > 1 and TokenType.NAME == tokens[0].type
 
 
-def is_end_of_line(tokens: list[Token]) -> bool:
+def is_blank_line(tokens: list[Token]) -> bool:
     return 1 == len(tokens) and TokenType.EOL == tokens[0].type
