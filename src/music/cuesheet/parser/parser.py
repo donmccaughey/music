@@ -181,7 +181,7 @@ class Parser:
     def title(self, tokens: list[Token]):
         types = [t.type for t in tokens]
         if [TokenType.NAME, TokenType.QSTR, TokenType.EOL] == types:
-            self.parent.children.append(Title(tokens[1:-1]))
+            self.parent.children.append(Title(tokens))
         else:
             self.error(tokens)
 

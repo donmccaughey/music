@@ -157,7 +157,9 @@ def test_parser_for_normal_file():
             ),
             Title(
                 tokens=[
+                    Token(2, TokenType.NAME, 'TITLE'),
                     Token(2, TokenType.QSTR, 'Let It Bleed'),
+                    Token(2, TokenType.EOL, '\n'),
                 ],
             ),
             Year(
@@ -204,7 +206,9 @@ def test_parser_for_normal_file():
                         children=[
                             Title(
                                 tokens=[
+                                    Token(11, TokenType.NAME, 'TITLE'),
                                     Token(11, TokenType.QSTR, 'Gimme Shelter'),
+                                    Token(11, TokenType.EOL, '\n'),
                                 ],
                             ),
                             Performer(
@@ -234,7 +238,9 @@ def test_parser_for_normal_file():
                         children=[
                             Title(
                                 tokens=[
+                                    Token(15, TokenType.NAME, 'TITLE'),
                                     Token(15, TokenType.QSTR, 'Love in Vain'),
+                                    Token(15, TokenType.EOL, '\n'),
                                 ],
                             ),
                             Performer(
