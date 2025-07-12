@@ -6,8 +6,6 @@ import pytest
 
 from .builder import Builder
 from .cue_sheet import CueSheet, CueSheet2
-from .commands import Error
-from .lexer.line import Line
 from .lexer.lexer import Lexer
 from .parser import Parser
 
@@ -224,32 +222,32 @@ def test_parse_remark_in_track():
 
 
 def test_parse_title_misplaced():
-    source = make_test_data("""
+    source = """
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             TITLE "Away From The Sun"
-    """)
-    cue_sheet = CueSheet.parse(source)
-    assert cue_sheet and cue_sheet.title
-    assert cue_sheet.title.title == 'Away From The Sun'
+    """
+    cue_sheet = parse_str(source)
+    assert cue_sheet
+    assert cue_sheet.title == 'Away From The Sun'
 
-    assert len(cue_sheet.errors) == 1
-    assert cue_sheet.errors[0] == Error(
-        Line(4, '    TITLE "Away From The Sun"')
-    )
+    assert not cue_sheet.errors
+    assert cue_sheet.file
+    assert len(cue_sheet.file.errors) == 1
+    assert cue_sheet.file.errors[0] == (4, 'TITLE Away From The Sun')
 
 
 def test_parse_track_misplaced():
-    source = make_test_data("""
+    source = """
         PERFORMER "3 Doors Down"
         TRACK 01 AUDIO
         TITLE "Away From The Sun"
-    """)
-    cue_sheet = CueSheet.parse(source)
+    """
+    cue_sheet = parse_str(source)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
-    assert cue_sheet.errors[0] == Error(Line(2, 'TRACK 01 AUDIO'))
+    assert cue_sheet.errors[0] == (2, 'TRACK 1 AUDIO')
 
 
 def read_test_data(filename: str) -> str:
