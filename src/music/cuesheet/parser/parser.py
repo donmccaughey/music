@@ -30,15 +30,18 @@ class Parser:
         if self.line_stack:
             return self.line_stack.pop()
 
-        tokens = []
-        it = filter_out(lambda t: t.is_whitespace, self.token_iter)
-        while token := next(it, None):
-            tokens.append(token)
-            if token.is_end_of_line:
+        while True:
+            tokens = []
+            it = filter_out(lambda t: t.is_whitespace, self.token_iter)
+            while token := next(it, None):
+                tokens.append(token)
+                if token.is_end_of_line:
+                    break
+            if not is_blank_line(tokens):
                 break
 
         assert not tokens or TokenType.EOL == tokens[-1].type
-        return self.next_line() if is_blank_line(tokens) else tokens
+        return tokens
 
     def push_line(self, line: list[Token]):
         self.line_stack.append(line)
