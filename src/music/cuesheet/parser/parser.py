@@ -38,7 +38,7 @@ class Parser:
                 break
 
         assert not tokens or TokenType.EOL == tokens[-1].type
-        return tokens
+        return self.next_line() if is_blank_line(tokens) else tokens
 
     def push_line(self, line: list[Token]):
         self.line_stack.append(line)
@@ -50,9 +50,7 @@ class Parser:
 
     def _parse_root(self, root: Root):
         while tokens := self.next_line():
-            if is_blank_line(tokens):
-                continue
-            elif file := File.parse(tokens):
+            if file := File.parse(tokens):
                 root.children.append(file)
                 self._parse_file(file)
             elif performer := Performer.parse(tokens):
@@ -80,9 +78,7 @@ class Parser:
 
     def _parse_file(self, file: File):
         while tokens := self.next_line():
-            if is_blank_line(tokens):
-                continue
-            elif File.is_file(tokens):
+            if File.is_file(tokens):
                 self.push_line(tokens)
                 return
             elif track := Track.parse(tokens):
@@ -95,9 +91,7 @@ class Parser:
 
     def _parse_track(self, track: Track):
         while tokens := self.next_line():
-            if is_blank_line(tokens):
-                continue
-            elif index := Index.parse(tokens):
+            if index := Index.parse(tokens):
                 track.children.append(index)
             elif performer := Performer.parse(tokens):
                 track.children.append(performer)
