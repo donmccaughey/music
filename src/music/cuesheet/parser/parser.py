@@ -3,8 +3,7 @@ from __future__ import annotations
 from typing import Iterator
 
 from music.cuesheet.lexer.token import Token
-from music.cuesheet.lexer.token_type import TokenType
-from music.cuesheet.lexer.tokens import is_blank_line, take_line
+from music.cuesheet.lexer.tokens import take_non_blank_line
 
 from .asin import ASIN
 from .comment import Comment
@@ -34,14 +33,8 @@ class Parser:
     def _next_line(self) -> list[Token]:
         if self.line_stack:
             return self.line_stack.pop()
-
-        while True:
-            tokens = take_line(self.token_iter)
-            if not is_blank_line(tokens):
-                break
-
-        assert not tokens or TokenType.EOL == tokens[-1].type
-        return tokens
+        else:
+            return take_non_blank_line(self.token_iter)
 
     def _push_line(self, line: list[Token]):
         self.line_stack.append(line)
