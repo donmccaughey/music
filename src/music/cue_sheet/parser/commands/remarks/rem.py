@@ -1,6 +1,6 @@
 from typing import Self
 
-from music.cue_sheet.lexer import chomp, Token, TokenType
+from music.cue_sheet.lexer import chomp, EOL, NAME, Token
 from music.cue_sheet.parser.node import Node
 
 
@@ -13,9 +13,9 @@ class Rem(Node):
     def is_rem(cls, tokens: list[Token]) -> bool:
         return (
             len(tokens) >= 2
-            and tokens[0].type == TokenType.NAME
+            and tokens[0].type == NAME
             and tokens[0].value == 'REM'
-            and tokens[-1].type == TokenType.EOL
+            and tokens[-1].type == EOL
         )
 
     @classmethod

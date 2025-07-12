@@ -1,6 +1,6 @@
 from typing import Self
 
-from music.cue_sheet.lexer import Token, TokenType
+from music.cue_sheet.lexer import EOL, NAME, STR, Token
 from music.cue_sheet.parser.node import Node
 
 
@@ -11,12 +11,7 @@ class ASIN(Node):
         assert isinstance(tokens[2].value, str)
         self.value = tokens[2].value
 
-    type_pattern = [
-        TokenType.NAME,
-        TokenType.NAME,
-        TokenType.STR,
-        TokenType.EOL,
-    ]
+    type_pattern = [NAME, NAME, STR, EOL]
 
     @classmethod
     def is_asin(cls, tokens: list[Token]) -> bool:

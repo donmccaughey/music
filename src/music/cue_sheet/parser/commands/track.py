@@ -1,6 +1,6 @@
 from typing import Self
 
-from music.cue_sheet.lexer import Token, TokenType
+from music.cue_sheet.lexer import EOL, INT, NAME, Token
 
 from music.cue_sheet.parser.node import Node
 
@@ -15,12 +15,7 @@ class Track(Node):
         assert isinstance(tokens[2].value, str)
         self.type = tokens[2].value
 
-    type_pattern = [
-        TokenType.NAME,
-        TokenType.INT,
-        TokenType.NAME,
-        TokenType.EOL,
-    ]
+    type_pattern = [NAME, INT, NAME, EOL]
 
     @classmethod
     def is_track(cls, tokens: list[Token]) -> bool:

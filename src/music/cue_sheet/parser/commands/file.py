@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Self
 
-from music.cue_sheet.lexer import Token, TokenType
+from music.cue_sheet.lexer import EOL, NAME, QSTR, Token
 
 from music.cue_sheet.parser.node import Node
 
@@ -16,12 +16,7 @@ class File(Node):
         assert isinstance(tokens[2].value, str)
         self.type = tokens[2].value
 
-    type_pattern = [
-        TokenType.NAME,
-        TokenType.QSTR,
-        TokenType.NAME,
-        TokenType.EOL,
-    ]
+    type_pattern = [NAME, QSTR, NAME, EOL]
 
     @classmethod
     def is_file(cls, tokens: list[Token]) -> bool:
