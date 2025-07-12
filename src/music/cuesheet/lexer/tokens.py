@@ -5,6 +5,13 @@ from .token import Token
 from .token_type import TokenType
 
 
+def chomp(tokens: list[Token]) -> list[Token]:
+    if tokens and tokens[-1].type == TokenType.EOL:
+        return tokens[:-1]
+    else:
+        return tokens
+
+
 def is_blank_line(tokens: list[Token]) -> bool:
     return 1 == len(tokens) and TokenType.EOL == tokens[0].type
 

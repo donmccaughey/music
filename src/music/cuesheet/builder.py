@@ -1,4 +1,4 @@
-from .cuesheet import CueSheet2, File2, Track2
+from .cuesheet import CueSheet2, Error2, File2, Track2
 
 from .parser import (
     ASIN,
@@ -32,7 +32,9 @@ class Builder:
                 case DiscID() as disc_id:
                     cuesheet.disc_id = disc_id.value
                 case Error() as error_node:
-                    cuesheet.errors.append(error_node.value)
+                    cuesheet.errors.append(
+                        Error2(error_node.line_num, error_node.value)
+                    )
                 case File() as file_node:
                     cuesheet.file = self._build_file(file_node)
                 case Genre() as genre_node:

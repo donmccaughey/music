@@ -2,7 +2,18 @@ from typing import Iterator
 
 from .token import Token
 from .token_type import TokenType
-from .tokens import is_blank_line, take_non_blank_line, take_line
+from .tokens import chomp, is_blank_line, take_non_blank_line, take_line
+
+
+def test_chomp():
+    tokens: list[Token] = []
+    assert chomp(tokens) == []
+
+    tokens = [Token(1, TokenType.EOL, '\n')]
+    assert chomp(tokens) == []
+
+    tokens = [Token(2, TokenType.NAME, 'REM'), Token(2, TokenType.EOL, '\n')]
+    assert chomp(tokens) == [Token(2, TokenType.NAME, 'REM')]
 
 
 def test_is_blank_line():

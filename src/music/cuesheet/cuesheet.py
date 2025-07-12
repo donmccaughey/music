@@ -1,10 +1,14 @@
 from __future__ import annotations
 
+from collections import namedtuple
 from io import StringIO
 from pathlib import Path
 
 from .commands import Blank, Error, File, Index, Performer, Rem, Title, Track
 from .index_point import IndexPoint
+
+
+Error2 = namedtuple('Error2', ('line_num', 'value'))
 
 
 class Track2:
@@ -36,7 +40,7 @@ class CueSheet2:
         self.comment: str | None = None
         self.remarks: list[str] = []
         self.file: File2 | None = None
-        self.errors: list[str] = []
+        self.errors: list[Error2] = []
 
 
 class CueSheet:

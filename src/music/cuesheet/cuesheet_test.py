@@ -83,7 +83,7 @@ def test_parse_error():
     cue_sheet = parse_str(source)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
-    assert cue_sheet.errors[0] == '3: NOTACOMMAND fnord'
+    assert cue_sheet.errors[0] == (3, 'NOTACOMMAND fnord')
 
 
 def test_parse_index():
