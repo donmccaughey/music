@@ -27,6 +27,7 @@ class Lexer:
                 buf.next_ch()
                 assert buf.at_end
                 yield self._next_token(n, EOL, buf)
+                return
 
             elif scanning == IDX_PT:
                 if buf.ch.isdigit():
@@ -123,11 +124,11 @@ class Lexer:
             else:
                 raise RuntimeError(f'Unexpected lexer state: {scanning}')
 
-        if buf.has_token:
-            if scanning == QSTR:
-                yield Token.make(n, STR, buf.token)
-            else:
-                yield Token.make(n, scanning, buf.token)
+        if scanning == QSTR:
+            yield Token.make(n, STR, buf.token)
+        elif buf.has_token:
+            yield Token.make(n, scanning, buf.token)
+        yield Token.make(n, EOL, '')
 
     def _next_token(self, n: int, token_type: TokenType, buf: Buffer) -> Token:
         token = Token.make(n, token_type, buf.token)

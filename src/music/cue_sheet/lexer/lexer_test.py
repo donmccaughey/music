@@ -57,6 +57,17 @@ from .token_type import EOL, IDX_PT, INT, NAME, QSTR, STR, WS
                 Token(5, EOL, '\n'),
             ],
         ),
+        (
+            'FILE "album.wav" WAVE',
+            [
+                Token(1, NAME, 'FILE'),
+                Token(1, WS, ' '),
+                Token(1, QSTR, 'album.wav'),
+                Token(1, WS, ' '),
+                Token(1, NAME, 'WAVE'),
+                Token(1, EOL, ''),
+            ],
+        ),
     ],
 )
 def test_lex(source, expected_tokens):
@@ -98,6 +109,7 @@ def test_lex(source, expected_tokens):
                 Token(1, INT, 1),
                 Token(1, WS, ' '),
                 Token(1, IDX_PT, IndexPoint(4, 32, 38)),
+                Token(1, EOL, ''),
             ],
         ),
         (
@@ -108,6 +120,7 @@ def test_lex(source, expected_tokens):
                 Token(1, INT, 1),
                 Token(1, WS, ' '),
                 Token(1, STR, '04:32'),
+                Token(1, EOL, ''),
             ],
         ),
         (
@@ -116,6 +129,7 @@ def test_lex(source, expected_tokens):
                 Token(1, NAME, 'PERFORMER'),
                 Token(1, WS, ' '),
                 Token(1, QSTR, 'Alice and Bob'),
+                Token(1, EOL, ''),
             ],
         ),
         (
@@ -146,6 +160,7 @@ def test_lex(source, expected_tokens):
                 Token(1, NAME, 'TITLE'),
                 Token(1, WS, ' '),
                 Token(1, STR, '"No closing quote'),
+                Token(1, EOL, ''),
             ],
         ),
         (
@@ -158,6 +173,7 @@ def test_lex(source, expected_tokens):
                 Token(1, WS, '  '),
                 Token(1, NAME, 'AUDIO'),
                 Token(1, WS, '  '),
+                Token(1, EOL, ''),
             ],
         ),
         (
@@ -166,6 +182,7 @@ def test_lex(source, expected_tokens):
                 Token(1, NAME, 'TRACK'),
                 Token(1, WS, ' '),
                 Token(1, INT, 11),
+                Token(1, EOL, ''),
             ],
         ),
     ],
