@@ -1,15 +1,5 @@
 from typing import TextIO, Generator
 
-from music.cue_sheet.commands import (
-    Command,
-    File,
-    Index,
-    Performer,
-    Rem,
-    Title,
-    Track,
-)
-
 from .buffer import Buffer
 from .token import Token
 from .token_type import TokenType
@@ -19,15 +9,6 @@ LWS = '\t '
 
 
 class Lexer:
-    commands: dict[str, type[Command]] = {
-        'FILE': File,
-        'INDEX': Index,
-        'PERFORMER': Performer,
-        'REM': Rem,
-        'TITLE': Title,
-        'TRACK': Track,
-    }
-
     def __init__(self, source: TextIO):
         self.source = source
 
