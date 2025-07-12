@@ -76,7 +76,7 @@ class Parser:
                 root.children.append(rem)
 
             else:
-                root.children.append(Error.from_line(tokens))
+                root.children.append(Error(tokens))
 
     def _parse_file(self, file: File):
         while tokens := self.next_line():
@@ -91,7 +91,7 @@ class Parser:
             elif rem := Rem.parse(tokens):
                 file.children.append(rem)
             else:
-                file.children.append(Error.from_line(tokens))
+                file.children.append(Error(tokens))
 
     def _parse_track(self, track: Track):
         while tokens := self.next_line():
@@ -109,7 +109,7 @@ class Parser:
             elif rem := Rem.parse(tokens):
                 track.children.append(rem)
             else:
-                track.children.append(Error.from_line(tokens))
+                track.children.append(Error(tokens))
 
 
 def is_blank_line(tokens: list[Token]) -> bool:
