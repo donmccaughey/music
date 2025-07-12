@@ -1,4 +1,4 @@
-from typing import TextIO, Generator
+from typing import Generator, TextIO
 
 from .buffer import Buffer
 from .token import Token

@@ -1,8 +1,5 @@
 from .command import Command
 
-from .blank import Blank
-from .error import Error
-from .file import File
 from .index import Index
 from .performer import Performer
 from .rem import Rem
