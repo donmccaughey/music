@@ -6,7 +6,7 @@ from .write_report import write_report
 
 
 def test_write_report():
-    root = Path(__file__).parent / 'cuesheet/test_data'
+    root = Path(__file__).parent / 'cue_sheet/test_data'
     paths = find_cue_sheet_paths(root)
     sio = StringIO()
 

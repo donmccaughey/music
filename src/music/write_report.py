@@ -2,10 +2,10 @@ from io import StringIO
 from pathlib import Path
 from typing import TextIO
 
-from .cuesheet.builder import Builder
-from .cuesheet.cue_sheet import CueSheet2
-from .cuesheet.lexer.lexer import Lexer
-from .cuesheet.parser import Parser
+from .cue_sheet.builder import Builder
+from .cue_sheet.cue_sheet import CueSheet2
+from .cue_sheet.lexer.lexer import Lexer
+from .cue_sheet.parser import Parser
 
 
 def write_report(root: Path, paths: list[Path], out: TextIO, verbose: bool):
