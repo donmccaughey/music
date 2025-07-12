@@ -15,3 +15,12 @@ class TokenType(Enum):
 
     def __str__(self):
         return self.name
+
+
+EOL = TokenType.EOL
+IDX_PT = TokenType.IDX_PT
+INT = TokenType.INT
+NAME = TokenType.NAME
+QSTR = TokenType.QSTR
+STR = TokenType.STR
+WS = TokenType.WS
