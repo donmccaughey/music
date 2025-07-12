@@ -13,18 +13,30 @@ class File(Node):
         assert isinstance(tokens[1].value, str)
         self.filename = Path(tokens[1].value)
 
-        assert isinstance(tokens[2].value, str)
-        self.type = tokens[2].value
-
-    type_pattern = [NAME, QSTR, NAME, EOL]
+        if tokens[2].type == EOL:
+            self.type = 'WAVE'
+        else:
+            assert isinstance(tokens[2].value, str)
+            self.type = tokens[2].value
 
     @classmethod
     def is_file(cls, tokens: list[Token]) -> bool:
+        return cls.is_file_with_type(tokens) or cls.is_file_without_type(tokens)
+
+    @classmethod
+    def is_file_with_type(cls, tokens: list[Token]) -> bool:
         return (
-            [token.type for token in tokens] == cls.type_pattern
+            [token.type for token in tokens] == [NAME, QSTR, NAME, EOL]
             and tokens[0].value == 'FILE'
             and tokens[2].value in ['WAVE']
         )
+
+    @classmethod
+    def is_file_without_type(cls, tokens: list[Token]) -> bool:
+        return (
+            [token.type for token in tokens] == [NAME, QSTR, EOL]
+            and tokens[0].value == 'FILE'
+        )  # fmt: skip
 
     @classmethod
     def parse(cls, tokens: list[Token]) -> Self | None:
