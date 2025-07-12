@@ -1,6 +1,5 @@
 from music.cue_sheet import IndexPoint
-from music.cue_sheet.lexer import Token
-from music.cue_sheet.lexer.token_type import TokenType
+from music.cue_sheet.lexer import Token, TokenType
 
 from .commands import (
     ASIN,

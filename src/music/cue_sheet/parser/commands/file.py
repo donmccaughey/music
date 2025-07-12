@@ -1,8 +1,7 @@
 from pathlib import Path
 from typing import Self
 
-from music.cue_sheet.lexer import Token
-from music.cue_sheet.lexer.token_type import TokenType
+from music.cue_sheet.lexer import Token, TokenType
 
 from music.cue_sheet.parser.node import Node
 
