@@ -9,15 +9,12 @@ from .cue_sheet import CueSheet2
 from .lexer.lexer import Lexer
 from .parser import Parser
 
+
 TEST_DATA_DIR = Path(__file__).resolve().parent / 'test_data'
 
 
 def test_parse():
-    with open(TEST_DATA_DIR / 'cuesheet.txt') as f:
-        lexer = Lexer(f)
-        parser = Parser(lexer.lex())
-        builder = Builder(parser.parse())
-        cue_sheet = builder.build_cue_sheet()
+    cue_sheet = parse_file('cuesheet.txt')
 
     assert cue_sheet
     assert cue_sheet.performer == '3 Doors Down'
@@ -62,9 +59,9 @@ def test_parse_minimal():
         FILE "album.wav" WAVE
     """
     cue_sheet = parse_str(source)
+
     assert cue_sheet
     assert cue_sheet.performer
-    assert cue_sheet
     assert not cue_sheet.errors
 
 
@@ -76,6 +73,7 @@ def test_parse_error():
         FILE "album.wav" WAVE
     """
     cue_sheet = parse_str(source)
+
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
     assert cue_sheet.errors[0] == (3, 'NOTACOMMAND fnord')
@@ -91,7 +89,10 @@ def test_parse_index():
                 INDEX 01 04:21:66
     """
     cue_sheet = parse_str(source)
-    assert cue_sheet and cue_sheet.file and cue_sheet.file.tracks
+
+    assert cue_sheet
+    assert cue_sheet.file
+    assert cue_sheet.file.tracks
     assert cue_sheet.file.tracks[0].indices
     assert len(cue_sheet.file.tracks[0].indices) == 2
 
@@ -117,7 +118,10 @@ def test_parse_index_duplicate_number():
                 INDEX 00 04:21:66
     """
     cue_sheet = parse_str(source)
-    assert cue_sheet and cue_sheet.file and cue_sheet.file.tracks
+
+    assert cue_sheet
+    assert cue_sheet.file
+    assert cue_sheet.file.tracks
     assert cue_sheet.file.tracks[0].indices
     assert len(cue_sheet.file.tracks[0].indices) == 1
     assert len(cue_sheet.errors) == 1
@@ -138,6 +142,7 @@ def test_parse_index_misplaced_in_head():
         FILE "album.wav" WAVE
     """
     cue_sheet = parse_str(source)
+
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
     assert cue_sheet.errors[0] == (3, 'INDEX 1 00:00:00')
@@ -151,6 +156,7 @@ def test_parse_index_misplaced_in_file():
             INDEX 01 00:00:00
     """
     cue_sheet = parse_str(source)
+
     assert cue_sheet
     assert not cue_sheet.errors
     assert cue_sheet.file
@@ -166,6 +172,7 @@ def test_parse_performer_misplaced():
             PERFORMER "3 Doors Down"
     """
     cue_sheet = parse_str(source)
+
     assert cue_sheet
     assert not cue_sheet.errors
     assert cue_sheet.file
@@ -180,6 +187,7 @@ def test_parse_remark():
         REM foo bar
     """
     cue_sheet = parse_str(source)
+
     assert cue_sheet
     assert len(cue_sheet.remarks) == 1
     assert cue_sheet.remarks[0] == 'foo bar'
@@ -194,6 +202,7 @@ def test_parse_remark_in_file():
             REM foo bar
     """
     cue_sheet = parse_str(source)
+
     assert cue_sheet
     assert not cue_sheet.remarks
     assert cue_sheet.file and cue_sheet.file.remarks
@@ -210,6 +219,7 @@ def test_parse_remark_in_track():
                 REM foo bar
     """
     cue_sheet = parse_str(source)
+
     assert cue_sheet
     assert not cue_sheet.remarks
     assert cue_sheet.file and not cue_sheet.file.remarks
@@ -226,6 +236,7 @@ def test_parse_title_misplaced():
             TITLE "Away From The Sun"
     """
     cue_sheet = parse_str(source)
+
     assert cue_sheet
     assert cue_sheet.title == 'Away From The Sun'
 
@@ -242,9 +253,18 @@ def test_parse_track_misplaced():
         TITLE "Away From The Sun"
     """
     cue_sheet = parse_str(source)
+
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
     assert cue_sheet.errors[0] == (2, 'TRACK 1 AUDIO')
+
+
+def parse_file(filename: str) -> CueSheet2:
+    with open(TEST_DATA_DIR / filename) as f:
+        lexer = Lexer(f)
+        parser = Parser(lexer.lex())
+        builder = Builder(parser.parse())
+        return builder.build_cue_sheet()
 
 
 def parse_str(cue_sheet_str: str) -> CueSheet2:
