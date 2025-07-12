@@ -1,12 +1,15 @@
+from io import StringIO
 from pathlib import Path
 from textwrap import dedent
 
 import pytest
 
-from .cuesheet import CueSheet
+from .builder import Builder
+from .cuesheet import CueSheet, CueSheet2
 from .commands import Error
 from .lexer.line import Line
-
+from .lexer.lexer import Lexer
+from .parser import Parser
 
 TEST_DATA_DIR = Path(__file__).resolve().parent / 'test_data'
 
@@ -56,33 +59,35 @@ def test_parse():
     assert not cue_sheet.errors
 
 
-def test_parse_blank():
-    s = make_test_data("""
+def test_parse_minimal():
+    source = """
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         
         FILE "album.wav" WAVE
-    """)
-    cue_sheet = CueSheet.parse(s)
+    """
+    cue_sheet = parse_str(source)
+    assert cue_sheet
+    assert cue_sheet.performer
     assert cue_sheet
     assert not cue_sheet.errors
 
 
 def test_parse_error():
-    s = make_test_data("""
+    source = """
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         NOTACOMMAND fnord
         FILE "album.wav" WAVE
-    """)
-    cue_sheet = CueSheet.parse(s)
+    """
+    cue_sheet = parse_str(source)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
-    assert cue_sheet.errors[0] == Error(Line(3, 'NOTACOMMAND fnord'))
+    assert cue_sheet.errors[0] == '3: NOTACOMMAND fnord'
 
 
 def test_parse_index():
-    s = make_test_data("""
+    source = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
@@ -90,7 +95,7 @@ def test_parse_index():
                 INDEX 00 04:20:38
                 INDEX 01 04:21:66
     """)
-    cue_sheet = CueSheet.parse(s)
+    cue_sheet = CueSheet.parse(source)
     assert cue_sheet and cue_sheet.file and cue_sheet.file.tracks
     assert cue_sheet.file.tracks[0].indices
     assert len(cue_sheet.file.tracks[0].indices) == 2
@@ -110,7 +115,7 @@ def test_parse_index():
 
 @pytest.mark.skip
 def test_parse_index_duplicate_number():
-    s = make_test_data("""
+    source = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
@@ -118,7 +123,7 @@ def test_parse_index_duplicate_number():
                 INDEX 00 04:20:38
                 INDEX 00 04:21:66
     """)
-    cue_sheet = CueSheet.parse(s)
+    cue_sheet = CueSheet.parse(source)
     assert cue_sheet and cue_sheet.file and cue_sheet.file.tracks
     assert cue_sheet.file.tracks[0].indices
     assert len(cue_sheet.file.tracks[0].indices) == 1
@@ -134,51 +139,51 @@ def test_parse_index_duplicate_number():
 
 
 def test_parse_index_misplaced_in_head():
-    s = make_test_data("""
+    source = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         INDEX 01 00:00:00
         FILE "album.wav" WAVE
     """)
-    cue_sheet = CueSheet.parse(s)
+    cue_sheet = CueSheet.parse(source)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
     assert cue_sheet.errors[0] == Error(Line(3, 'INDEX 01 00:00:00'))
 
 
 def test_parse_index_misplaced_in_file():
-    s = make_test_data("""
+    source = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             INDEX 01 00:00:00
     """)
-    cue_sheet = CueSheet.parse(s)
+    cue_sheet = CueSheet.parse(source)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
     assert cue_sheet.errors[0] == Error(Line(4, '    INDEX 01 00:00:00'))
 
 
 def test_parse_performer_misplaced():
-    s = make_test_data("""
+    source = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             PERFORMER "3 Doors Down"
     """)
-    cue_sheet = CueSheet.parse(s)
+    cue_sheet = CueSheet.parse(source)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
     assert cue_sheet.errors[0] == Error(Line(4, '    PERFORMER "3 Doors Down"'))
 
 
 def test_parse_remark():
-    s = make_test_data("""
+    source = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         REM foo bar
     """)
-    cue_sheet = CueSheet.parse(s)
+    cue_sheet = CueSheet.parse(source)
     assert cue_sheet
     assert len(cue_sheet.remarks) == 1
     assert cue_sheet.remarks[0].remark == 'foo bar'
@@ -186,13 +191,13 @@ def test_parse_remark():
 
 
 def test_parse_remark_in_file():
-    s = make_test_data("""
+    source = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             REM foo bar
     """)
-    cue_sheet = CueSheet.parse(s)
+    cue_sheet = CueSheet.parse(source)
     assert cue_sheet
     assert not cue_sheet.remarks
     assert cue_sheet.file and cue_sheet.file.remarks
@@ -201,14 +206,14 @@ def test_parse_remark_in_file():
 
 
 def test_parse_remark_in_track():
-    s = make_test_data("""
+    source = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             TRACK 01 AUDIO
                 REM foo bar
     """)
-    cue_sheet = CueSheet.parse(s)
+    cue_sheet = CueSheet.parse(source)
     assert cue_sheet
     assert not cue_sheet.remarks
     assert cue_sheet.file and not cue_sheet.file.remarks
@@ -218,13 +223,13 @@ def test_parse_remark_in_track():
 
 
 def test_parse_title_misplaced():
-    s = make_test_data("""
+    source = make_test_data("""
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             TITLE "Away From The Sun"
     """)
-    cue_sheet = CueSheet.parse(s)
+    cue_sheet = CueSheet.parse(source)
     assert cue_sheet and cue_sheet.title
     assert cue_sheet.title.title == 'Away From The Sun'
 
@@ -235,12 +240,12 @@ def test_parse_title_misplaced():
 
 
 def test_parse_track_misplaced():
-    s = make_test_data("""
+    source = make_test_data("""
         PERFORMER "3 Doors Down"
         TRACK 01 AUDIO
         TITLE "Away From The Sun"
     """)
-    cue_sheet = CueSheet.parse(s)
+    cue_sheet = CueSheet.parse(source)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
     assert cue_sheet.errors[0] == Error(Line(2, 'TRACK 01 AUDIO'))
@@ -253,3 +258,11 @@ def read_test_data(filename: str) -> str:
 
 def make_test_data(s: str) -> str:
     return dedent(s).lstrip()
+
+
+def parse_str(cue_sheet_str: str) -> CueSheet2:
+    dedented = dedent(cue_sheet_str).lstrip()
+    lexer = Lexer(StringIO(dedented))
+    parser = Parser(lexer.lex())
+    builder = Builder(parser.parse())
+    return builder.build_cue_sheet()
