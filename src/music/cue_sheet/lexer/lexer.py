@@ -1,20 +1,16 @@
 from typing import TextIO, Generator
 
 from music.cue_sheet.commands import (
-    Blank,
     Command,
-    Error,
     File,
     Index,
     Performer,
     Rem,
-    split_tokens,
     Title,
     Track,
 )
 
 from .buffer import Buffer
-from .line import Line
 from .token import Token
 from .token_type import TokenType
 
@@ -156,21 +152,3 @@ class Lexer:
         token = Token.make(n, token_type, buf.token)
         buf.start_token()
         return token
-
-    def scan(self) -> Generator[Command]:
-        for i, line in enumerate(self.source):
-            yield self.scan_line(i + 1, line.strip('\n'))
-
-    def scan_line(self, line_number: int, line: str) -> Command:
-        tokens = split_tokens(line)
-
-        if not tokens:
-            return Blank(Line(line_number, line))
-
-        command_name = tokens[0]
-        if command_name in self.commands:
-            command_type = self.commands[command_name]
-            command = command_type.parse(Line(line_number, line))
-            return command if command else Error(Line(line_number, line))
-
-        return Error(Line(line_number, line))
