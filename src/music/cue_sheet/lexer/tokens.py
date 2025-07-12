@@ -2,18 +2,18 @@ from itertools import filterfalse as filter_out
 from typing import Iterator
 
 from .token import Token
-from .token_type import TokenType
+from .token_type import EOL
 
 
 def chomp(tokens: list[Token]) -> list[Token]:
-    if tokens and tokens[-1].type == TokenType.EOL:
+    if tokens and tokens[-1].type == EOL:
         return tokens[:-1]
     else:
         return tokens
 
 
 def is_blank_line(tokens: list[Token]) -> bool:
-    return 1 == len(tokens) and TokenType.EOL == tokens[0].type
+    return 1 == len(tokens) and EOL == tokens[0].type
 
 
 def take_line(token_iter: Iterator[Token]) -> list[Token]:
