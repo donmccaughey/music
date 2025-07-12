@@ -1,4 +1,5 @@
 from music.cuesheet.lexer.token import Token
+from music.cuesheet.lexer.token_type import TokenType
 
 from .node import Node
 
@@ -8,6 +9,11 @@ class Error(Node):
         super().__init__(tokens, [])
 
         self.line_num = tokens[0].line_num if tokens else 0
+        self.value = self._make_value(self.line_num, tokens)
 
-        source = ' '.join([str(token.value) for token in self.tokens])
-        self.value = f'{self.line_num}: {source}'
+    @staticmethod
+    def _make_value(line_num: int, tokens: list[Token]):
+        if tokens and tokens[-1].type == TokenType.EOL:
+            tokens = tokens[:-1]
+        source = ' '.join([str(token.value) for token in tokens])
+        return f'{line_num}: {source}'
