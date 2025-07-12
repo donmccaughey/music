@@ -164,60 +164,62 @@ def test_parse_index_misplaced_in_file():
 
 
 def test_parse_performer_misplaced():
-    source = make_test_data("""
+    source = """
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             PERFORMER "3 Doors Down"
-    """)
-    cue_sheet = CueSheet.parse(source)
+    """
+    cue_sheet = parse_str(source)
     assert cue_sheet
-    assert len(cue_sheet.errors) == 1
-    assert cue_sheet.errors[0] == Error(Line(4, '    PERFORMER "3 Doors Down"'))
+    assert not cue_sheet.errors
+    assert cue_sheet.file
+    assert len(cue_sheet.file.errors) == 1
+    assert cue_sheet.file.errors[0] == (4, 'PERFORMER 3 Doors Down')
 
 
 def test_parse_remark():
-    source = make_test_data("""
+    source = """
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         REM foo bar
-    """)
-    cue_sheet = CueSheet.parse(source)
+    """
+    cue_sheet = parse_str(source)
     assert cue_sheet
     assert len(cue_sheet.remarks) == 1
-    assert cue_sheet.remarks[0].remark == 'foo bar'
+    assert cue_sheet.remarks[0] == 'foo bar'
     assert not cue_sheet.errors
 
 
 def test_parse_remark_in_file():
-    source = make_test_data("""
+    source = """
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             REM foo bar
-    """)
-    cue_sheet = CueSheet.parse(source)
+    """
+    cue_sheet = parse_str(source)
     assert cue_sheet
     assert not cue_sheet.remarks
     assert cue_sheet.file and cue_sheet.file.remarks
-    assert cue_sheet.file.remarks[0].remark == 'foo bar'
+    assert cue_sheet.file.remarks[0] == 'foo bar'
     assert not cue_sheet.errors
 
 
 def test_parse_remark_in_track():
-    source = make_test_data("""
+    source = """
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             TRACK 01 AUDIO
                 REM foo bar
-    """)
-    cue_sheet = CueSheet.parse(source)
+    """
+    cue_sheet = parse_str(source)
     assert cue_sheet
     assert not cue_sheet.remarks
     assert cue_sheet.file and not cue_sheet.file.remarks
     assert cue_sheet.file.tracks and cue_sheet.file.tracks[0].remarks
-    assert cue_sheet.file.tracks[0].remarks[0].remark == 'foo bar'
+    assert cue_sheet.file.tracks[0].remarks[0] == 'foo bar'
     assert not cue_sheet.errors
 
 
