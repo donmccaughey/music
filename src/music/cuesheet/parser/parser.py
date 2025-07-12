@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from itertools import filterfalse as filter_out
 from typing import Iterator
 
 from music.cuesheet.lexer.token import Token
 from music.cuesheet.lexer.token_type import TokenType
+from music.cuesheet.lexer.tokens import is_blank_line, take_line
 
 from .asin import ASIN
 from .comment import Comment
@@ -36,12 +36,7 @@ class Parser:
             return self.line_stack.pop()
 
         while True:
-            tokens = []
-            it = filter_out(lambda t: t.is_whitespace, self.token_iter)
-            while token := next(it, None):
-                tokens.append(token)
-                if token.is_end_of_line:
-                    break
+            tokens = take_line(self.token_iter)
             if not is_blank_line(tokens):
                 break
 
@@ -107,7 +102,3 @@ class Parser:
                 track.children.append(rem)
             else:
                 track.children.append(Error(tokens))
-
-
-def is_blank_line(tokens: list[Token]) -> bool:
-    return 1 == len(tokens) and TokenType.EOL == tokens[0].type
