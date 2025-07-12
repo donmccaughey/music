@@ -55,6 +55,10 @@ class Builder:
         file = File2(file_node.filename, file_node.type)
         for child in file_node.children:
             match child:
+                case Error() as error_node:
+                    file.errors.append(
+                        Error2(error_node.line_num, error_node.value)
+                    )
                 case Rem() as rem_node:
                     file.remarks.append(rem_node.value)
                 case Track() as track_node:

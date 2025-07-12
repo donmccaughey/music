@@ -87,27 +87,25 @@ def test_parse_error():
 
 
 def test_parse_index():
-    source = make_test_data("""
+    source = """
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             TRACK 02 AUDIO
                 INDEX 00 04:20:38
                 INDEX 01 04:21:66
-    """)
-    cue_sheet = CueSheet.parse(source)
+    """
+    cue_sheet = parse_str(source)
     assert cue_sheet and cue_sheet.file and cue_sheet.file.tracks
     assert cue_sheet.file.tracks[0].indices
     assert len(cue_sheet.file.tracks[0].indices) == 2
 
     index0 = cue_sheet.file.tracks[0].indices[0]
-    assert index0.number == 0
     assert index0.minutes == 4
     assert index0.seconds == 20
     assert index0.frames == 38
 
     index1 = cue_sheet.file.tracks[0].indices[1]
-    assert index1.number == 1
     assert index1.minutes == 4
     assert index1.seconds == 21
     assert index1.frames == 66
@@ -115,53 +113,54 @@ def test_parse_index():
 
 @pytest.mark.skip
 def test_parse_index_duplicate_number():
-    source = make_test_data("""
+    source = """
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             TRACK 02 AUDIO
                 INDEX 00 04:20:38
                 INDEX 00 04:21:66
-    """)
-    cue_sheet = CueSheet.parse(source)
+    """
+    cue_sheet = parse_str(source)
     assert cue_sheet and cue_sheet.file and cue_sheet.file.tracks
     assert cue_sheet.file.tracks[0].indices
     assert len(cue_sheet.file.tracks[0].indices) == 1
     assert len(cue_sheet.errors) == 1
 
     index0 = cue_sheet.file.tracks[0].indices[0]
-    assert index0.number == 0
     assert index0.minutes == 4
     assert index0.seconds == 20
     assert index0.frames == 38
 
-    assert cue_sheet.errors[0] == Error(Line(6, 'INDEX 00 04:21:66'))
+    assert cue_sheet.errors[0] == (6, 'INDEX 0 04:21:66')
 
 
 def test_parse_index_misplaced_in_head():
-    source = make_test_data("""
+    source = """
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         INDEX 01 00:00:00
         FILE "album.wav" WAVE
-    """)
-    cue_sheet = CueSheet.parse(source)
+    """
+    cue_sheet = parse_str(source)
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
-    assert cue_sheet.errors[0] == Error(Line(3, 'INDEX 01 00:00:00'))
+    assert cue_sheet.errors[0] == (3, 'INDEX 1 00:00:00')
 
 
 def test_parse_index_misplaced_in_file():
-    source = make_test_data("""
+    source = """
         PERFORMER "3 Doors Down"
         TITLE "Away From The Sun"
         FILE "album.wav" WAVE
             INDEX 01 00:00:00
-    """)
-    cue_sheet = CueSheet.parse(source)
+    """
+    cue_sheet = parse_str(source)
     assert cue_sheet
-    assert len(cue_sheet.errors) == 1
-    assert cue_sheet.errors[0] == Error(Line(4, '    INDEX 01 00:00:00'))
+    assert not cue_sheet.errors
+    assert cue_sheet.file
+    assert len(cue_sheet.file.errors) == 1
+    assert cue_sheet.file.errors[0] == (4, 'INDEX 1 00:00:00')
 
 
 def test_parse_performer_misplaced():

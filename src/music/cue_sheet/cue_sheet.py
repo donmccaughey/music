@@ -27,6 +27,7 @@ class File2:
         self.type = file_type
         self.remarks: list[str] = []
         self.tracks: list[Track2] = []
+        self.errors: list[Error2] = []
 
 
 class CueSheet2:
