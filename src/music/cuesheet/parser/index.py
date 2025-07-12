@@ -26,8 +26,9 @@ class Index(Node):
 
     @classmethod
     def is_index(cls, tokens: list[Token]) -> bool:
-        types = [token.type for token in tokens]
-        return types == cls.type_pattern
+        return [token.type for token in tokens] == cls.type_pattern and tokens[
+            0
+        ].value == 'INDEX'
 
     @classmethod
     def parse(cls, tokens: list[Token]) -> Self | None:

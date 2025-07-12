@@ -17,8 +17,9 @@ class Title(Node):
 
     @classmethod
     def is_title(cls, tokens: list[Token]) -> bool:
-        types = [tokens.type for tokens in tokens]
-        return types == cls.type_pattern
+        return [
+            tokens.type for tokens in tokens
+        ] == cls.type_pattern and tokens[0].value == 'TITLE'
 
     @classmethod
     def parse(cls, tokens: list[Token]) -> Self | None:

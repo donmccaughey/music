@@ -13,15 +13,21 @@ class Year(Node):
         super().__init__(tokens, [])
         self.value = tokens[2].value
 
+    type_pattern = [
+        TokenType.NAME,
+        TokenType.NAME,
+        TokenType.INT,
+        TokenType.EOL,
+    ]
+
+    @classmethod
+    def is_year(cls, tokens: list[Token]) -> bool:
+        return (
+            [token.type for token in tokens] == cls.type_pattern
+            and tokens[0].value == 'REM'
+            and tokens[1].value == 'YEAR'
+        )
+
     @classmethod
     def parse(cls, tokens: list[Token]) -> Self | None:
-        types = [t.type for t in tokens]
-        if [
-            TokenType.NAME,
-            TokenType.NAME,
-            TokenType.INT,
-            TokenType.EOL,
-        ] == types:
-            return cls(tokens)
-        else:
-            return None
+        return cls(tokens) if cls.is_year(tokens) else None

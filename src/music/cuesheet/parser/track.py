@@ -25,8 +25,11 @@ class Track(Node):
 
     @classmethod
     def is_track(cls, tokens: list[Token]) -> bool:
-        types = [tokens.type for tokens in tokens]
-        return types == cls.type_pattern and tokens[2].value in ['AUDIO']
+        return (
+            [tokens.type for tokens in tokens] == cls.type_pattern
+            and tokens[0].value == 'TRACK'
+            and tokens[2].value in ['AUDIO']
+        )
 
     @classmethod
     def parse(cls, tokens: list[Token]) -> Self | None:

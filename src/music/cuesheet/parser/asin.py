@@ -13,15 +13,21 @@ class ASIN(Node):
         assert isinstance(tokens[2].value, str)
         self.value = tokens[2].value
 
+    type_pattern = [
+        TokenType.NAME,
+        TokenType.NAME,
+        TokenType.STR,
+        TokenType.EOL,
+    ]
+
+    @classmethod
+    def is_asin(cls, tokens: list[Token]) -> bool:
+        return (
+            [token.type for token in tokens] == cls.type_pattern
+            and tokens[0].value == 'REM'
+            and tokens[1].value == 'ASIN'
+        )
+
     @classmethod
     def parse(cls, tokens: list[Token]) -> Self | None:
-        types = [t.type for t in tokens]
-        if [
-            TokenType.NAME,
-            TokenType.NAME,
-            TokenType.STR,
-            TokenType.EOL,
-        ] == types:
-            return cls(tokens)
-        else:
-            return None
+        return cls(tokens) if cls.is_asin(tokens) else None
