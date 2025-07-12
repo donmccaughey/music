@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from music.cue_sheet.lexer.token import Token
+from music.cue_sheet.lexer import Token
 
 
 class Node:

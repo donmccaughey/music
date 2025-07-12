@@ -1,4 +1,4 @@
-from music.cue_sheet.lexer.token import Token
+from music.cue_sheet.lexer import Token
 from music.cue_sheet.lexer.tokens import chomp
 
 from music.cue_sheet.parser.node import Node
