@@ -2,19 +2,21 @@ from music.cuesheet import IndexPoint
 from music.cuesheet.lexer.token import Token
 from music.cuesheet.lexer.token_type import TokenType
 
-from .asin import ASIN
-from .comment import Comment
-from .disc_id import DiscID
-from .file import File
-from .genre import Genre
-from .index import Index
+from .commands import (
+    ASIN,
+    Comment,
+    DiscID,
+    File,
+    Genre,
+    Index,
+    Performer,
+    Rem,
+    Title,
+    Track,
+    Year,
+)
 from .parser import Parser
-from .performer import Performer
-from .rem import Rem
 from .root import Root
-from .title import Title
-from .track import Track
-from .year import Year
 
 
 def test_parser_for_normal_file():

@@ -5,19 +5,21 @@ from typing import Iterator
 from music.cuesheet.lexer.token import Token
 from music.cuesheet.lexer.tokens import take_non_blank_line
 
-from .asin import ASIN
-from .comment import Comment
-from .disc_id import DiscID
+from .commands import (
+    ASIN,
+    Comment,
+    DiscID,
+    File,
+    Genre,
+    Index,
+    Performer,
+    Rem,
+    Title,
+    Track,
+    Year,
+)
 from .error import Error
-from .file import File
-from .genre import Genre
-from .index import Index
-from .performer import Performer
-from .rem import Rem
 from .root import Root
-from .title import Title
-from .track import Track
-from .year import Year
 
 
 class Parser:

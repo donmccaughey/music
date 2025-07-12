@@ -3,10 +3,10 @@ from typing import Self
 from music.cuesheet.lexer.token import Token
 from music.cuesheet.lexer.token_type import TokenType
 
-from .node import Node
+from music.cuesheet.parser.node import Node
 
 
-class Title(Node):
+class Performer(Node):
     def __init__(self, tokens: list[Token]):
         super().__init__(tokens, [])
 
@@ -16,12 +16,10 @@ class Title(Node):
     type_pattern = [TokenType.NAME, TokenType.QSTR, TokenType.EOL]
 
     @classmethod
-    def is_title(cls, tokens: list[Token]) -> bool:
-        return (
-            [tokens.type for tokens in tokens] == cls.type_pattern
-            and tokens[0].value == 'TITLE'
-        )  # fmt: skip
+    def is_performer(cls, tokens: list[Token]) -> bool:
+        types = [tokens.type for tokens in tokens]
+        return types == cls.type_pattern and tokens[0].value == 'PERFORMER'
 
     @classmethod
     def parse(cls, tokens: list[Token]) -> Self | None:
-        return cls(tokens) if cls.is_title(tokens) else None
+        return cls(tokens) if cls.is_performer(tokens) else None

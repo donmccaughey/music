@@ -1,17 +1,20 @@
 from .cuesheet import CueSheet2, File2, Track2
-from .parser.asin import ASIN
-from .parser.comment import Comment
-from .parser.disc_id import DiscID
+
+from .parser.commands import (
+    ASIN,
+    Comment,
+    DiscID,
+    File,
+    Genre,
+    Index,
+    Performer,
+    Rem,
+    Title,
+    Track,
+    Year,
+)
 from .parser.error import Error
-from .parser.file import File
-from .parser.genre import Genre
-from .parser.index import Index
-from .parser.performer import Performer
-from .parser.rem import Rem
 from .parser.root import Root
-from .parser.title import Title
-from .parser.track import Track
-from .parser.year import Year
 
 
 class Builder:

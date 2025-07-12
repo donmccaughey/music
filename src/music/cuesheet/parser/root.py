@@ -1,6 +1,4 @@
-from music.cuesheet.lexer.token import Token
-
-from .node import Node
+from music.cuesheet.parser.node import Node
 
 
 class Root(Node):

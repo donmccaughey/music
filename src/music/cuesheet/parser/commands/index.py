@@ -4,7 +4,7 @@ from music.cuesheet import IndexPoint
 from music.cuesheet.lexer.token import Token
 from music.cuesheet.lexer.token_type import TokenType
 
-from .node import Node
+from music.cuesheet.parser.node import Node
 
 
 class Index(Node):
