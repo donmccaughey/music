@@ -1,28 +1,30 @@
-from .cue_sheet import CueSheet2, Error2, File2, Track2
-
+from .cue_sheet import CueSheet
+from .error import Error
+from .file import File
 from .parser import (
     ASIN,
     Comment,
     DiscID,
-    Error,
-    File,
+    Error as ErrorNode,
+    File as FileNode,
     Genre,
     Index,
     Performer,
     Rem,
     Root,
     Title,
-    Track,
+    Track as TrackNode,
     Year,
 )
+from .track import Track
 
 
 class Builder:
     def __init__(self, root: Root):
         self.root = root
 
-    def build_cue_sheet(self) -> CueSheet2:
-        cue_sheet = CueSheet2()
+    def build_cue_sheet(self) -> CueSheet:
+        cue_sheet = CueSheet()
         for child in self.root.children:
             match child:
                 case ASIN() as asin_node:
@@ -31,11 +33,11 @@ class Builder:
                     cue_sheet.comment = comment_node.value
                 case DiscID() as disc_id:
                     cue_sheet.disc_id = disc_id.value
-                case Error() as error_node:
+                case ErrorNode() as error_node:
                     cue_sheet.errors.append(
-                        Error2(error_node.line_num, error_node.value)
+                        Error(error_node.line_num, error_node.value)
                     )
-                case File() as file_node:
+                case FileNode() as file_node:
                     cue_sheet.file = self._build_file(file_node)
                 case Genre() as genre_node:
                     cue_sheet.genre = genre_node.value
@@ -51,25 +53,25 @@ class Builder:
                     raise RuntimeError(f'Unexpected node {child}')
         return cue_sheet
 
-    def _build_file(self, file_node: File) -> File2:
-        file = File2(file_node.filename, file_node.type)
+    def _build_file(self, file_node: FileNode) -> File:
+        file = File(file_node.filename, file_node.type)
         for child in file_node.children:
             match child:
-                case Error() as error_node:
+                case ErrorNode() as error_node:
                     file.errors.append(
-                        Error2(error_node.line_num, error_node.value)
+                        Error(error_node.line_num, error_node.value)
                     )
                 case Rem() as rem_node:
                     file.remarks.append(rem_node.value)
-                case Track() as track_node:
+                case TrackNode() as track_node:
                     track = self._build_track(track_node)
                     file.tracks.append(track)
                 case _:
                     raise RuntimeError(f'Unexpected node {child}')
         return file
 
-    def _build_track(self, track_node: Track) -> Track2:
-        track = Track2(track_node.number, track_node.type)
+    def _build_track(self, track_node: TrackNode) -> Track:
+        track = Track(track_node.number, track_node.type)
         for child in track_node.children:
             match child:
                 case Index() as index_node:

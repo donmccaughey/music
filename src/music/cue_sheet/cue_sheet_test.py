@@ -5,7 +5,7 @@ from textwrap import dedent
 import pytest
 
 from .builder import Builder
-from .cue_sheet import CueSheet2
+from .cue_sheet import CueSheet
 from .lexer import Lexer
 from .parser import Parser
 
@@ -259,7 +259,7 @@ def test_parse_track_misplaced():
     assert cue_sheet.errors[0] == (2, 'TRACK 1 AUDIO')
 
 
-def parse_file(filename: str) -> CueSheet2:
+def parse_file(filename: str) -> CueSheet:
     with open(TEST_DATA_DIR / filename) as f:
         lexer = Lexer(f)
         parser = Parser(lexer.lex())
@@ -267,7 +267,7 @@ def parse_file(filename: str) -> CueSheet2:
         return builder.build_cue_sheet()
 
 
-def parse_str(cue_sheet_str: str) -> CueSheet2:
+def parse_str(cue_sheet_str: str) -> CueSheet:
     dedented = dedent(cue_sheet_str).lstrip()
     lexer = Lexer(StringIO(dedented))
     parser = Parser(lexer.lex())

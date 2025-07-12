@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import TextIO
 
 from .cue_sheet.builder import Builder
-from .cue_sheet.cue_sheet import CueSheet2
+from .cue_sheet.cue_sheet import CueSheet
 from .cue_sheet.lexer import Lexer
 from .cue_sheet.parser import Parser
 
@@ -11,7 +11,7 @@ from .cue_sheet.parser import Parser
 def write_report(root: Path, paths: list[Path], out: TextIO, verbose: bool):
     good_cue_sheets: list[Path] = []
     unicode_errors: list[Path] = []
-    parse_errors: list[tuple[Path, CueSheet2]] = []
+    parse_errors: list[tuple[Path, CueSheet]] = []
     for path in paths:
         relative_path = path.relative_to(root)
 
