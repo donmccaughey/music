@@ -5,7 +5,7 @@ from textwrap import dedent
 import pytest
 
 from .builder import Builder
-from .cue_sheet import CueSheet, CueSheet2
+from .cue_sheet import CueSheet2
 from .lexer.lexer import Lexer
 from .parser import Parser
 
@@ -13,43 +13,40 @@ TEST_DATA_DIR = Path(__file__).resolve().parent / 'test_data'
 
 
 def test_parse():
-    cue_sheet = CueSheet.parse(read_test_data('cuesheet.txt'))
+    with open(TEST_DATA_DIR / 'cuesheet.txt') as f:
+        lexer = Lexer(f)
+        parser = Parser(lexer.lex())
+        builder = Builder(parser.parse())
+        cue_sheet = builder.build_cue_sheet()
+
     assert cue_sheet
-    assert cue_sheet.performer
-    assert cue_sheet.performer.name == '3 Doors Down'
-    assert cue_sheet.title
-    assert cue_sheet.title.title == 'Away From The Sun'
+    assert cue_sheet.performer == '3 Doors Down'
+    assert cue_sheet.title == 'Away From The Sun'
     assert cue_sheet.file
     assert cue_sheet.file.filename == Path('album.wav')
-    assert cue_sheet.file.file_type == 'WAVE'
+    assert cue_sheet.file.type == 'WAVE'
     assert len(cue_sheet.file.tracks) == 12
 
     track1 = cue_sheet.file.tracks[0]
     assert track1.number == 1
-    assert track1.track_type == 'AUDIO'
-    assert track1.title
-    assert track1.title.title == "When I'm Gone"
-    assert track1.performer
-    assert track1.performer.name == '3 Doors Down'
+    assert track1.type == 'AUDIO'
+    assert track1.title == "When I'm Gone"
+    assert track1.performer == '3 Doors Down'
     assert len(track1.indices) == 1
 
-    index1 = track1.indices[0]
-    assert index1.number == 1
+    index1 = track1.indices[1]
     assert index1.minutes == 0
     assert index1.seconds == 0
     assert index1.frames == 0
 
     track12 = cue_sheet.file.tracks[-1]
     assert track12.number == 12
-    assert track12.track_type == 'AUDIO'
-    assert track12.title
-    assert track12.title.title == 'This Time'
-    assert track12.performer
-    assert track12.performer.name == '3 Doors Down'
+    assert track12.type == 'AUDIO'
+    assert track12.title == 'This Time'
+    assert track12.performer == '3 Doors Down'
     assert len(track1.indices) == 1
 
-    index1 = track12.indices[0]
-    assert index1.number == 1
+    index1 = track12.indices[1]
     assert index1.minutes == 41
     assert index1.seconds == 38
     assert index1.frames == 70
@@ -248,15 +245,6 @@ def test_parse_track_misplaced():
     assert cue_sheet
     assert len(cue_sheet.errors) == 1
     assert cue_sheet.errors[0] == (2, 'TRACK 1 AUDIO')
-
-
-def read_test_data(filename: str) -> str:
-    path = TEST_DATA_DIR / filename
-    return path.read_text()
-
-
-def make_test_data(s: str) -> str:
-    return dedent(s).lstrip()
 
 
 def parse_str(cue_sheet_str: str) -> CueSheet2:
