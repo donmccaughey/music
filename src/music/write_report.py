@@ -5,7 +5,7 @@ from typing import TextIO
 from .cuesheet.builder import Builder
 from .cuesheet.cuesheet import CueSheet2
 from .cuesheet.lexer.lexer import Lexer
-from .cuesheet.parser.parser import Parser
+from .cuesheet.parser import Parser
 
 
 def write_report(root: Path, paths: list[Path], out: TextIO, verbose: bool):

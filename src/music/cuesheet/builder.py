@@ -1,20 +1,20 @@
 from .cuesheet import CueSheet2, File2, Track2
 
-from .parser.commands import (
+from .parser import (
     ASIN,
     Comment,
     DiscID,
+    Error,
     File,
     Genre,
     Index,
     Performer,
     Rem,
+    Root,
     Title,
     Track,
     Year,
 )
-from .parser.error import Error
-from .parser.root import Root
 
 
 class Builder:
