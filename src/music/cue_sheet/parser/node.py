@@ -11,7 +11,7 @@ class Node:
         self.children = children
 
     def __eq__(self, other: Any) -> bool:
-        if isinstance(other, Node):
+        if isinstance(other, self.__class__):
             return (
                 self.tokens == other.tokens and self.children == other.children
             )

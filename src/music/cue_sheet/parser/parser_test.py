@@ -14,6 +14,7 @@ from .commands import (
     Track,
     Year,
 )
+from .error import Error
 from .parser import Parser
 from .root import Root
 
@@ -308,6 +309,38 @@ def test_parser_for_normal_file():
                             ),
                         ],
                     ),
+                ],
+            ),
+        ],
+    )
+
+
+def test_parser_when_no_final_eol():
+    tokens = [
+        Token(1, TokenType.NAME, 'PERFORMER'),
+        Token(1, TokenType.WS, ' '),
+        Token(1, TokenType.QSTR, 'The Rolling Stones'),
+        Token(1, TokenType.EOL, '\n'),
+        #
+        Token(2, TokenType.NAME, 'TITLE'),
+        Token(2, TokenType.WS, ' '),
+        Token(2, TokenType.QSTR, 'Let It Bleed'),
+    ]
+    parser = Parser(iter(tokens))
+
+    assert parser.parse() == Root(
+        [
+            Performer(
+                tokens=[
+                    Token(1, TokenType.NAME, 'PERFORMER'),
+                    Token(1, TokenType.QSTR, 'The Rolling Stones'),
+                    Token(1, TokenType.EOL, '\n'),
+                ],
+            ),
+            Error(
+                tokens=[
+                    Token(2, TokenType.NAME, 'TITLE'),
+                    Token(2, TokenType.QSTR, 'Let It Bleed'),
                 ],
             ),
         ],
