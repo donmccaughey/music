@@ -13,7 +13,6 @@ from .error import Error
 from .file import File
 from .genre import Genre
 from .index import Index
-from .node import Node
 from .performer import Performer
 from .rem import Rem
 from .root import Root
@@ -27,11 +26,6 @@ class Parser:
         self.root = Root([])
         self.token_iter = token_iter
         self.line_stack: list[list[Token]] = []
-        self.stack: list[Node] = [self.root]
-
-    @property
-    def parent(self) -> Node:
-        return self.stack[-1]
 
     def next_line(self) -> list[Token]:
         if self.line_stack:
