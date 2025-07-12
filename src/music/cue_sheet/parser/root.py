@@ -1,4 +1,4 @@
-from music.cue_sheet.parser.node import Node
+from .node import Node
 
 
 class Root(Node):

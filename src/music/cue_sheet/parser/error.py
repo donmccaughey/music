@@ -1,7 +1,6 @@
-from music.cue_sheet.lexer import Token
-from music.cue_sheet.lexer.tokens import chomp
+from music.cue_sheet.lexer import chomp, Token
 
-from music.cue_sheet.parser.node import Node
+from .node import Node
 
 
 class Error(Node):

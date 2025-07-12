@@ -1,8 +1,6 @@
 from typing import Self
 
-from music.cue_sheet.lexer import Token, TokenType
-from music.cue_sheet.lexer.tokens import chomp
-
+from music.cue_sheet.lexer import chomp, Token, TokenType
 from music.cue_sheet.parser.node import Node
 
 

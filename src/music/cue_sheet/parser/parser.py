@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from typing import Iterator
 
-from music.cue_sheet.lexer import Token
-from music.cue_sheet.lexer.tokens import take_non_blank_line
+from music.cue_sheet.lexer import take_non_blank_line, Token
 
 from .commands import (
     ASIN,
