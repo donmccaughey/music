@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import TextIO
 
 from .cuesheet.builder import Builder
-from .cuesheet.cuesheet import CueSheet2
+from .cuesheet.cue_sheet import CueSheet2
 from .cuesheet.lexer.lexer import Lexer
 from .cuesheet.parser import Parser
 

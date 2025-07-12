@@ -5,7 +5,7 @@ from textwrap import dedent
 import pytest
 
 from .builder import Builder
-from .cuesheet import CueSheet, CueSheet2
+from .cue_sheet import CueSheet, CueSheet2
 from .commands import Error
 from .lexer.line import Line
 from .lexer.lexer import Lexer

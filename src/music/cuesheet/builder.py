@@ -1,4 +1,4 @@
-from .cuesheet import CueSheet2, Error2, File2, Track2
+from .cue_sheet import CueSheet2, Error2, File2, Track2
 
 from .parser import (
     ASIN,
