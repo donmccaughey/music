@@ -4,7 +4,7 @@ from typing import TextIO
 
 from .cue_sheet.builder import Builder
 from .cue_sheet.cue_sheet import CueSheet2
-from .cue_sheet.lexer.lexer import Lexer
+from .cue_sheet.lexer import Lexer
 from .cue_sheet.parser import Parser
 
 

@@ -6,7 +6,7 @@ import pytest
 
 from .builder import Builder
 from .cue_sheet import CueSheet2
-from .lexer.lexer import Lexer
+from .lexer import Lexer
 from .parser import Parser
 
 
