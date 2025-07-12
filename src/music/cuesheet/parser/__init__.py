@@ -1,14 +1,17 @@
-from .commands.asin import ASIN
-from .commands.comment import Comment
-from .commands.disc_id import DiscID
 from .commands.file import File
-from .commands.genre import Genre
 from .commands.index import Index
 from .commands.performer import Performer
-from .commands.rem import Rem
+
+from .commands.remarks.asin import ASIN
+from .commands.remarks.comment import Comment
+from .commands.remarks.rem import Rem
+from .commands.remarks.disc_id import DiscID
+from .commands.remarks.genre import Genre
+from .commands.remarks.year import Year
+
 from .commands.title import Title
 from .commands.track import Track
-from .commands.year import Year
+
 from .error import Error
 from .node import Node
 from .parser import Parser

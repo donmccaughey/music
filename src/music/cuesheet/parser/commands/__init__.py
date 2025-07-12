@@ -1,11 +1,13 @@
-from .asin import ASIN
-from .comment import Comment
-from .disc_id import DiscID
 from .file import File
-from .genre import Genre
 from .index import Index
 from .performer import Performer
-from .rem import Rem
+
+from .remarks.asin import ASIN
+from .remarks.comment import Comment
+from .remarks.disc_id import DiscID
+from .remarks.genre import Genre
+from .remarks.rem import Rem
+from .remarks.year import Year
+
 from .title import Title
 from .track import Track
-from .year import Year
