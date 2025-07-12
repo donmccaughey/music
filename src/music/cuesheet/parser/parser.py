@@ -26,7 +26,12 @@ class Parser:
         self.token_iter = token_iter
         self.line_stack: list[list[Token]] = []
 
-    def next_line(self) -> list[Token]:
+    def parse(self) -> Root:
+        root = Root([])
+        self._parse_root(root)
+        return root
+
+    def _next_line(self) -> list[Token]:
         if self.line_stack:
             return self.line_stack.pop()
 
@@ -43,16 +48,11 @@ class Parser:
         assert not tokens or TokenType.EOL == tokens[-1].type
         return tokens
 
-    def push_line(self, line: list[Token]):
+    def _push_line(self, line: list[Token]):
         self.line_stack.append(line)
 
-    def parse(self) -> Root:
-        root = Root([])
-        self._parse_root(root)
-        return root
-
     def _parse_root(self, root: Root):
-        while tokens := self.next_line():
+        while tokens := self._next_line():
             if file := File.parse(tokens):
                 root.children.append(file)
                 self._parse_file(file)
@@ -80,9 +80,9 @@ class Parser:
                 root.children.append(Error(tokens))
 
     def _parse_file(self, file: File):
-        while tokens := self.next_line():
+        while tokens := self._next_line():
             if File.is_file(tokens):
-                self.push_line(tokens)
+                self._push_line(tokens)
                 return
             elif track := Track.parse(tokens):
                 file.children.append(track)
@@ -93,7 +93,7 @@ class Parser:
                 file.children.append(Error(tokens))
 
     def _parse_track(self, track: Track):
-        while tokens := self.next_line():
+        while tokens := self._next_line():
             if index := Index.parse(tokens):
                 track.children.append(index)
             elif performer := Performer.parse(tokens):
@@ -101,7 +101,7 @@ class Parser:
             elif title := Title.parse(tokens):
                 track.children.append(title)
             elif Track.is_track(tokens):
-                self.push_line(tokens)
+                self._push_line(tokens)
                 return
             elif rem := Rem.parse(tokens):
                 track.children.append(rem)
