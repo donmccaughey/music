@@ -3,7 +3,7 @@ from typing import Self
 
 from music.cue_sheet import IndexPoint
 
-from .token_type import TokenType
+from .token_type import EOL, IDX_PT, INT, NAME, QSTR, STR, TokenType, WS
 
 
 NAMES = [
@@ -31,31 +31,31 @@ class Token:
 
     @property
     def is_end_of_line(self) -> bool:
-        return self.type == TokenType.EOL
+        return self.type == EOL
 
     @property
     def is_whitespace(self) -> bool:
-        return self.type == TokenType.WS
+        return self.type == WS
 
     @classmethod
     def make(cls, n: int, token_type: TokenType, text: str) -> Self:
-        if TokenType.IDX_PT == token_type:
+        if IDX_PT == token_type:
             if index_point := IndexPoint.parse(text):
-                return cls(n, TokenType.IDX_PT, index_point)
+                return cls(n, IDX_PT, index_point)
             else:
-                return cls(n, TokenType.STR, text)
+                return cls(n, STR, text)
 
-        elif TokenType.INT == token_type:
-            return cls(n, TokenType.INT, int(text))
+        elif INT == token_type:
+            return cls(n, INT, int(text))
 
-        elif TokenType.NAME == token_type:
+        elif NAME == token_type:
             if text in NAMES:
-                return cls(n, TokenType.NAME, text)
+                return cls(n, NAME, text)
             else:
-                return cls(n, TokenType.STR, text)
+                return cls(n, STR, text)
 
-        elif TokenType.QSTR == token_type:
-            return cls(n, TokenType.QSTR, text.strip('"'))
+        elif QSTR == token_type:
+            return cls(n, QSTR, text.strip('"'))
 
         else:
             return cls(n, token_type, text)
