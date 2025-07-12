@@ -23,7 +23,6 @@ from .year import Year
 
 class Parser:
     def __init__(self, token_iter: Iterator[Token]):
-        self.root = Root([])
         self.token_iter = token_iter
         self.line_stack: list[list[Token]] = []
 
@@ -45,8 +44,9 @@ class Parser:
         self.line_stack.append(line)
 
     def parse(self) -> Root:
-        self._parse_root(self.root)
-        return self.root
+        root = Root([])
+        self._parse_root(root)
+        return root
 
     def _parse_root(self, root: Root):
         while tokens := self.next_line():
