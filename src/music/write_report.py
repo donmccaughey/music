@@ -1,4 +1,3 @@
-from io import StringIO
 from pathlib import Path
 from typing import TextIO
 
@@ -16,11 +15,11 @@ def write_report(root: Path, paths: list[Path], out: TextIO, verbose: bool):
         relative_path = path.relative_to(root)
 
         try:
-            s = path.read_text()
-            lexer = Lexer(StringIO(s))
-            parser = Parser(lexer.lex())
-            builder = Builder(parser.parse())
-            cue_sheet = builder.build_cue_sheet()
+            with path.open() as file:
+                lexer = Lexer(file)
+                parser = Parser(lexer.lex())
+                builder = Builder(parser.parse())
+                cue_sheet = builder.build_cue_sheet()
 
             if cue_sheet.errors:
                 parse_errors.append((relative_path, cue_sheet))
