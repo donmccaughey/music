@@ -1,9 +1,8 @@
 from itertools import filterfalse as filter_out
 from typing import Iterator
 
-from . import TokenType
 from .token import Token
-from .token_type import EOL
+from .token_type import EOL, TokenType
 
 
 def chomp(tokens: list[Token]) -> list[Token]:
