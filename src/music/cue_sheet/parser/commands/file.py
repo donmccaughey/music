@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Self
 
-from music.cue_sheet.lexer import EOL, NAME, QSTR, Token
+from music.cue_sheet.lexer import EOL, NAME, QSTR, Token, types_of
 
 from music.cue_sheet.parser.node import Node
 
@@ -26,16 +26,16 @@ class File(Node):
     @classmethod
     def is_file_with_type(cls, tokens: list[Token]) -> bool:
         return (
-            [token.type for token in tokens] == [NAME, QSTR, NAME, EOL]
-            and tokens[0].value == 'FILE'
+            [NAME, QSTR, NAME, EOL] == types_of(tokens)
+            and 'FILE' == tokens[0].value
             and tokens[2].value in ['WAVE']
         )
 
     @classmethod
     def is_file_without_type(cls, tokens: list[Token]) -> bool:
         return (
-            [token.type for token in tokens] == [NAME, QSTR, EOL]
-            and tokens[0].value == 'FILE'
+            [NAME, QSTR, EOL] == types_of(tokens)
+            and 'FILE' == tokens[0].value
         )  # fmt: skip
 
     @classmethod

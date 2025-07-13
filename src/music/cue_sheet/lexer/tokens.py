@@ -1,6 +1,7 @@
 from itertools import filterfalse as filter_out
 from typing import Iterator
 
+from . import TokenType
 from .token import Token
 from .token_type import EOL
 
@@ -31,3 +32,7 @@ def take_non_blank_line(token_iter: Iterator[Token]) -> list[Token]:
         tokens = take_line(token_iter)
         if not is_blank_line(tokens):
             return tokens
+
+
+def types_of(tokens: list[Token]) -> list[TokenType]:
+    return [token.type for token in tokens]

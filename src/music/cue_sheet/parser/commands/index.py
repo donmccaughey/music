@@ -1,7 +1,7 @@
 from typing import Self
 
 from music.cue_sheet import IndexPoint
-from music.cue_sheet.lexer import EOL, IDX_PT, INT, NAME, Token
+from music.cue_sheet.lexer import EOL, IDX_PT, INT, NAME, Token, types_of
 
 from music.cue_sheet.parser.node import Node
 
@@ -16,13 +16,11 @@ class Index(Node):
         assert isinstance(tokens[2].value, IndexPoint)
         self.index_point = tokens[2].value
 
-    type_pattern = [NAME, INT, IDX_PT, EOL]
-
     @classmethod
     def is_index(cls, tokens: list[Token]) -> bool:
         return (
-            [token.type for token in tokens] == cls.type_pattern
-            and tokens[0].value == 'INDEX'
+            [NAME, INT, IDX_PT, EOL] == types_of(tokens)
+            and 'INDEX' == tokens[0].value
         )  # fmt: skip
 
     @classmethod

@@ -13,9 +13,9 @@ class Rem(Node):
     def is_rem(cls, tokens: list[Token]) -> bool:
         return (
             len(tokens) >= 2
-            and tokens[0].type == NAME
-            and tokens[0].value == 'REM'
-            and tokens[-1].type == EOL
+            and NAME == tokens[0].type
+            and 'REM' == tokens[0].value
+            and EOL == tokens[-1].type
         )
 
     @classmethod

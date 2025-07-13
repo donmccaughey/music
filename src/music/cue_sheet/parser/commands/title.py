@@ -1,6 +1,6 @@
 from typing import Self
 
-from music.cue_sheet.lexer import EOL, NAME, QSTR, Token
+from music.cue_sheet.lexer import EOL, NAME, QSTR, Token, types_of
 
 from music.cue_sheet.parser.node import Node
 
@@ -12,13 +12,11 @@ class Title(Node):
         assert isinstance(tokens[1].value, str)
         self.value = tokens[1].value
 
-    type_pattern = [NAME, QSTR, EOL]
-
     @classmethod
     def is_title(cls, tokens: list[Token]) -> bool:
         return (
-            [tokens.type for tokens in tokens] == cls.type_pattern
-            and tokens[0].value == 'TITLE'
+            [NAME, QSTR, EOL] == types_of(tokens)
+            and 'TITLE' == tokens[0].value
         )  # fmt: skip
 
     @classmethod

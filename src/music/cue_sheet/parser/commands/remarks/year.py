@@ -1,6 +1,6 @@
 from typing import Self
 
-from music.cue_sheet.lexer import EOL, INT, NAME, Token
+from music.cue_sheet.lexer import EOL, INT, NAME, Token, types_of
 from music.cue_sheet.parser.node import Node
 
 
@@ -11,14 +11,12 @@ class Year(Node):
         super().__init__(tokens, children=[])
         self.value = tokens[2].value
 
-    type_pattern = [NAME, NAME, INT, EOL]
-
     @classmethod
     def is_year(cls, tokens: list[Token]) -> bool:
         return (
-            [token.type for token in tokens] == cls.type_pattern
-            and tokens[0].value == 'REM'
-            and tokens[1].value == 'YEAR'
+            [NAME, NAME, INT, EOL] == types_of(tokens)
+            and 'REM' == tokens[0].value
+            and 'YEAR' == tokens[1].value
         )
 
     @classmethod
