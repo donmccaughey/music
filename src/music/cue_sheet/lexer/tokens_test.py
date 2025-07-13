@@ -98,11 +98,9 @@ def test_take_non_blank_line_for_several_lines():
     assert take_non_blank_line(token_iter) == [
         Token(1, NAME, 'PERFORMER'),
         Token(1, QSTR, 'The Rolling Stones'),
-        Token(1, EOL, '\n'),
     ]
     assert take_non_blank_line(token_iter) == [
         Token(3, NAME, 'TITLE'),
         Token(3, QSTR, 'Gimme Shelter'),
-        Token(3, EOL, '\n'),
     ]
     assert take_non_blank_line(token_iter) == []

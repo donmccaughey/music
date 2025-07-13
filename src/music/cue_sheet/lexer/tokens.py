@@ -31,7 +31,7 @@ def take_non_blank_line(token_iter: Iterator[Token]) -> list[Token]:
     while True:
         tokens = take_line(token_iter)
         if not is_blank_line(tokens):
-            return tokens
+            return chomp(tokens)
 
 
 def types_of(tokens: list[Token]) -> list[TokenType]:
