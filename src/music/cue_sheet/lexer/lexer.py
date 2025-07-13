@@ -20,9 +20,23 @@ class Lexer:
 
     def _lex_line(self, n: int, line: str) -> Generator[Token]:
         buf = Buffer(line)
-        scanning = WS
+        scanning = None
         while buf.has_more:
-            if scanning == EOL:
+            if scanning is None:
+                if '\n' == buf.ch:
+                    scanning = EOL
+                elif buf.ch.isdigit():
+                    scanning = INT
+                elif buf.ch.isalpha():
+                    scanning = NAME
+                elif '"' == buf.ch:
+                    scanning = QSTR
+                elif buf.ch in LWS:
+                    scanning = WS
+                else:
+                    scanning = STR
+
+            elif scanning == EOL:
                 assert '\n' == buf.ch
                 buf.next_ch()
                 assert buf.at_end
@@ -90,7 +104,7 @@ class Lexer:
                     else:
                         buf.next_ch()
                         yield self._next_token(n, QSTR, buf)
-                        scanning = WS
+                        scanning = None
                 elif '\n' == buf.ch:
                     yield self._next_token(n, STR, buf)
                     scanning = EOL
@@ -100,26 +114,9 @@ class Lexer:
             elif scanning == WS:
                 if buf.ch in LWS:
                     buf.next_ch()
-                elif buf.ch.isalpha():
-                    if buf.has_token:
-                        yield self._next_token(n, WS, buf)
-                    scanning = NAME
-                elif buf.ch.isdigit():
-                    if buf.has_token:
-                        yield self._next_token(n, WS, buf)
-                    scanning = INT
-                elif '"' == buf.ch:
-                    if buf.has_token:
-                        yield self._next_token(n, WS, buf)
-                    scanning = QSTR
-                elif '\n' == buf.ch:
-                    if buf.has_token:
-                        yield self._next_token(n, WS, buf)
-                    scanning = EOL
                 else:
-                    if buf.has_token:
-                        yield self._next_token(n, WS, buf)
-                    scanning = STR
+                    yield self._next_token(n, WS, buf)
+                    scanning = None
 
             else:
                 raise RuntimeError(f'Unexpected lexer state: {scanning}')
@@ -127,6 +124,7 @@ class Lexer:
         if scanning == QSTR:
             yield Token.make(n, STR, buf.token)
         elif buf.has_token:
+            assert scanning
             yield Token.make(n, scanning, buf.token)
         yield Token.make(n, EOL, '')
 
