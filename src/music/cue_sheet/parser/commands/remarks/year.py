@@ -6,15 +6,15 @@ from music.cue_sheet.parser.node import Node
 
 class Year(Node):
     def __init__(self, tokens: list[Token]):
-        assert len(tokens) == 4
-        assert isinstance(tokens[2].value, int)
         super().__init__(tokens, children=[])
+
+        assert isinstance(tokens[2].value, int)
         self.value = tokens[2].value
 
     @classmethod
     def is_year(cls, tokens: list[Token]) -> bool:
         return (
-            [NAME, NAME, INT, EOL] == types_of(tokens)
+            [NAME, NAME, INT] == types_of(tokens)
             and 'REM' == tokens[0].value
             and 'YEAR' == tokens[1].value
         )

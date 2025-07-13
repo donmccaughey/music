@@ -10,7 +10,6 @@ def test_is_file_with_type():
         Token(4, NAME, 'FILE'),
         Token(4, QSTR, 'Hard Candy'),
         Token(4, NAME, 'WAVE'),
-        Token(4, EOL, '\n'),
     ]
     assert File.is_file(tokens)
     assert File.is_file_with_type(tokens)
@@ -21,7 +20,6 @@ def test_is_file_without_type():
     tokens = [
         Token(4, NAME, 'FILE'),
         Token(4, QSTR, 'Hard Candy'),
-        Token(4, EOL, '\n'),
     ]
     assert File.is_file(tokens)
     assert not File.is_file_with_type(tokens)
@@ -33,7 +31,6 @@ def test_parse_with_type():
         Token(4, NAME, 'FILE'),
         Token(4, QSTR, 'Hard Candy'),
         Token(4, NAME, 'WAVE'),
-        Token(4, EOL, '\n'),
     ]
     file = File.parse(tokens)
     assert file
@@ -45,7 +42,6 @@ def test_parse_without_type():
     tokens = [
         Token(4, NAME, 'FILE'),
         Token(4, QSTR, 'Hard Candy'),
-        Token(4, EOL, '\n'),
     ]
     file = File.parse(tokens)
     assert file

@@ -13,7 +13,7 @@ class File(Node):
         assert isinstance(tokens[1].value, str)
         self.filename = Path(tokens[1].value)
 
-        if tokens[2].type == EOL:
+        if 2 == len(tokens):
             self.type = 'WAVE'
         else:
             assert isinstance(tokens[2].value, str)
@@ -26,7 +26,7 @@ class File(Node):
     @classmethod
     def is_file_with_type(cls, tokens: list[Token]) -> bool:
         return (
-            [NAME, QSTR, NAME, EOL] == types_of(tokens)
+            [NAME, QSTR, NAME] == types_of(tokens)
             and 'FILE' == tokens[0].value
             and tokens[2].value in ['WAVE']
         )
@@ -34,7 +34,7 @@ class File(Node):
     @classmethod
     def is_file_without_type(cls, tokens: list[Token]) -> bool:
         return (
-            [NAME, QSTR, EOL] == types_of(tokens)
+            [NAME, QSTR] == types_of(tokens)
             and 'FILE' == tokens[0].value
         )  # fmt: skip
 

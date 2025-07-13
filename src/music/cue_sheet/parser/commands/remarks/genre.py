@@ -14,7 +14,7 @@ class Genre(Node):
     @classmethod
     def is_genre(cls, tokens: list[Token]) -> bool:
         return (
-            [NAME, NAME, QSTR, EOL] == types_of(tokens)
+            [NAME, NAME, QSTR] == types_of(tokens)
             and 'REM' == tokens[0].value
             and 'GENRE' == tokens[1].value
         )

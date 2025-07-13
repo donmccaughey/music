@@ -14,7 +14,7 @@ class ASIN(Node):
     @classmethod
     def is_asin(cls, tokens: list[Token]) -> bool:
         return (
-            [NAME, NAME, STR, EOL] == types_of(tokens)
+            [NAME, NAME, STR] == types_of(tokens)
             and 'REM' == tokens[0].value
             and 'ASIN' == tokens[1].value
         )

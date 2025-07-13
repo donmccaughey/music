@@ -15,7 +15,6 @@ class Rem(Node):
             len(tokens) >= 2
             and NAME == tokens[0].type
             and 'REM' == tokens[0].value
-            and EOL == tokens[-1].type
         )
 
     @classmethod

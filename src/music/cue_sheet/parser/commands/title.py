@@ -15,7 +15,7 @@ class Title(Node):
     @classmethod
     def is_title(cls, tokens: list[Token]) -> bool:
         return (
-            [NAME, QSTR, EOL] == types_of(tokens)
+            [NAME, QSTR] == types_of(tokens)
             and 'TITLE' == tokens[0].value
         )  # fmt: skip
 

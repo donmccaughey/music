@@ -156,14 +156,12 @@ def test_parser_for_normal_file():
                 tokens=[
                     Token(1, TokenType.NAME, 'PERFORMER'),
                     Token(1, TokenType.QSTR, 'The Rolling Stones'),
-                    Token(1, TokenType.EOL, '\n'),
                 ],
             ),
             Title(
                 tokens=[
                     Token(2, TokenType.NAME, 'TITLE'),
                     Token(2, TokenType.QSTR, 'Let It Bleed'),
-                    Token(2, TokenType.EOL, '\n'),
                 ],
             ),
             Year(
@@ -171,7 +169,6 @@ def test_parser_for_normal_file():
                     Token(3, TokenType.NAME, 'REM'),
                     Token(3, TokenType.NAME, 'YEAR'),
                     Token(3, TokenType.INT, 1969),
-                    Token(3, TokenType.EOL, '\n'),
                 ],
             ),
             Genre(
@@ -179,7 +176,6 @@ def test_parser_for_normal_file():
                     Token(4, TokenType.NAME, 'REM'),
                     Token(4, TokenType.NAME, 'GENRE'),
                     Token(4, TokenType.QSTR, 'Classic Rock'),
-                    Token(4, TokenType.EOL, '\n'),
                 ],
             ),
             ASIN(
@@ -187,7 +183,6 @@ def test_parser_for_normal_file():
                     Token(5, TokenType.NAME, 'REM'),
                     Token(5, TokenType.NAME, 'ASIN'),
                     Token(5, TokenType.STR, 'B00006ZCFG'),
-                    Token(5, TokenType.EOL, '\n'),
                 ],
             ),
             DiscID(
@@ -195,7 +190,6 @@ def test_parser_for_normal_file():
                     Token(6, TokenType.NAME, 'REM'),
                     Token(6, TokenType.NAME, 'DISCID'),
                     Token(6, TokenType.STR, '9E0B010C'),
-                    Token(6, TokenType.EOL, '\n'),
                 ],
             ),
             Comment(
@@ -203,14 +197,12 @@ def test_parser_for_normal_file():
                     Token(7, TokenType.NAME, 'REM'),
                     Token(7, TokenType.NAME, 'COMMENT'),
                     Token(7, TokenType.QSTR, 'ExactAudioCopy v0.95b4'),
-                    Token(7, TokenType.EOL, '\n'),
                 ],
             ),
             Rem(
                 tokens=[
                     Token(8, TokenType.NAME, 'REM'),
                     Token(8, TokenType.QSTR, 'This is a remark'),
-                    Token(8, TokenType.EOL, '\n'),
                 ],
             ),
             File(
@@ -218,7 +210,6 @@ def test_parser_for_normal_file():
                     Token(9, TokenType.NAME, 'FILE'),
                     Token(9, TokenType.QSTR, 'album.wav'),
                     Token(9, TokenType.NAME, 'WAVE'),
-                    Token(9, TokenType.EOL, '\n'),
                 ],
                 children=[
                     Track(
@@ -226,14 +217,12 @@ def test_parser_for_normal_file():
                             Token(10, TokenType.NAME, 'TRACK'),
                             Token(10, TokenType.INT, 1),
                             Token(10, TokenType.NAME, 'AUDIO'),
-                            Token(10, TokenType.EOL, '\n'),
                         ],
                         children=[
                             Title(
                                 tokens=[
                                     Token(11, TokenType.NAME, 'TITLE'),
                                     Token(11, TokenType.QSTR, 'Gimme Shelter'),
-                                    Token(11, TokenType.EOL, '\n'),
                                 ],
                             ),
                             Performer(
@@ -242,7 +231,6 @@ def test_parser_for_normal_file():
                                     Token(
                                         12, TokenType.QSTR, 'The Rolling Stones'
                                     ),
-                                    Token(12, TokenType.EOL, '\n'),
                                 ],
                             ),
                             Index(
@@ -254,7 +242,6 @@ def test_parser_for_normal_file():
                                         TokenType.IDX_PT,
                                         IndexPoint(0, 0, 0),
                                     ),
-                                    Token(13, TokenType.EOL, '\n'),
                                 ],
                             ),
                         ],
@@ -264,14 +251,12 @@ def test_parser_for_normal_file():
                             Token(14, TokenType.NAME, 'TRACK'),
                             Token(14, TokenType.INT, 2),
                             Token(14, TokenType.NAME, 'AUDIO'),
-                            Token(14, TokenType.EOL, '\n'),
                         ],
                         children=[
                             Title(
                                 tokens=[
                                     Token(15, TokenType.NAME, 'TITLE'),
                                     Token(15, TokenType.QSTR, 'Love in Vain'),
-                                    Token(15, TokenType.EOL, '\n'),
                                 ],
                             ),
                             Performer(
@@ -280,7 +265,6 @@ def test_parser_for_normal_file():
                                     Token(
                                         16, TokenType.QSTR, 'The Rolling Stones'
                                     ),
-                                    Token(16, TokenType.EOL, '\n'),
                                 ],
                             ),
                             Index(
@@ -292,7 +276,6 @@ def test_parser_for_normal_file():
                                         TokenType.IDX_PT,
                                         IndexPoint(4, 31, 12),
                                     ),
-                                    Token(17, TokenType.EOL, '\n'),
                                 ],
                             ),
                             Index(
@@ -304,7 +287,6 @@ def test_parser_for_normal_file():
                                         TokenType.IDX_PT,
                                         IndexPoint(4, 32, 34),
                                     ),
-                                    Token(18, TokenType.EOL, '\n'),
                                 ],
                             ),
                         ],
@@ -334,13 +316,45 @@ def test_parser_when_no_final_eol():
                 tokens=[
                     Token(1, TokenType.NAME, 'PERFORMER'),
                     Token(1, TokenType.QSTR, 'The Rolling Stones'),
-                    Token(1, TokenType.EOL, '\n'),
                 ],
             ),
-            Error(
+            Title(
                 tokens=[
                     Token(2, TokenType.NAME, 'TITLE'),
                     Token(2, TokenType.QSTR, 'Let It Bleed'),
+                ],
+            ),
+        ],
+    )
+
+
+def test_parser_when_blank_line():
+    tokens = [
+        Token(1, TokenType.NAME, 'PERFORMER'),
+        Token(1, TokenType.WS, ' '),
+        Token(1, TokenType.QSTR, 'The Rolling Stones'),
+        Token(1, TokenType.EOL, '\n'),
+        #
+        Token(2, TokenType.EOL, '\n'),
+        #
+        Token(3, TokenType.NAME, 'TITLE'),
+        Token(3, TokenType.WS, ' '),
+        Token(3, TokenType.QSTR, 'Let It Bleed'),
+    ]
+    parser = Parser(iter(tokens))
+
+    assert parser.parse() == Root(
+        [
+            Performer(
+                tokens=[
+                    Token(1, TokenType.NAME, 'PERFORMER'),
+                    Token(1, TokenType.QSTR, 'The Rolling Stones'),
+                ],
+            ),
+            Title(
+                tokens=[
+                    Token(3, TokenType.NAME, 'TITLE'),
+                    Token(3, TokenType.QSTR, 'Let It Bleed'),
                 ],
             ),
         ],

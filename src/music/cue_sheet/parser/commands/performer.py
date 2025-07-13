@@ -15,7 +15,7 @@ class Performer(Node):
     @classmethod
     def is_performer(cls, tokens: list[Token]) -> bool:
         return (
-            [NAME, QSTR, EOL] == types_of(tokens)
+            [NAME, QSTR] == types_of(tokens)
             and 'PERFORMER' == tokens[0].value
         )  # fmt: skip
 

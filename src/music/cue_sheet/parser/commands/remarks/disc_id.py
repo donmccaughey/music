@@ -14,7 +14,7 @@ class DiscID(Node):
     @classmethod
     def is_disk_id(cls, tokens: list[Token]) -> bool:
         return (
-            [NAME, NAME, STR, EOL] == types_of(tokens)
+            [NAME, NAME, STR] == types_of(tokens)
             and 'REM' == tokens[0].value
             and 'DISCID' == tokens[1].value
         )

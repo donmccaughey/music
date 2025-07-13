@@ -19,7 +19,7 @@ class Index(Node):
     @classmethod
     def is_index(cls, tokens: list[Token]) -> bool:
         return (
-            [NAME, INT, IDX_PT, EOL] == types_of(tokens)
+            [NAME, INT, IDX_PT] == types_of(tokens)
             and 'INDEX' == tokens[0].value
         )  # fmt: skip
 

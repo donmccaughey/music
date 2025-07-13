@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Iterator
 
-from music.cue_sheet.lexer import take_non_blank_line, Token
+from music.cue_sheet.lexer import chomp, take_non_blank_line, Token
 
 from .commands import (
     ASIN,
@@ -35,7 +35,8 @@ class Parser:
         if self.line_stack:
             return self.line_stack.pop()
         else:
-            return take_non_blank_line(self.token_iter)
+            tokens = take_non_blank_line(self.token_iter)
+            return chomp(tokens) if tokens else []
 
     def _push_line(self, line: list[Token]):
         self.line_stack.append(line)

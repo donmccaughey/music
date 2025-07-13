@@ -18,7 +18,7 @@ class Track(Node):
     @classmethod
     def is_track(cls, tokens: list[Token]) -> bool:
         return (
-            [NAME, INT, NAME, EOL] == types_of(tokens)
+            [NAME, INT, NAME] == types_of(tokens)
             and 'TRACK' == tokens[0].value
             and tokens[2].value in ['AUDIO']
         )

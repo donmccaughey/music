@@ -14,7 +14,7 @@ class Comment(Node):
     @classmethod
     def is_comment(cls, tokens: list[Token]) -> bool:
         return (
-            [NAME, NAME, QSTR, EOL] == types_of(tokens)
+            [NAME, NAME, QSTR] == types_of(tokens)
             and 'REM' == tokens[0].value
             and 'COMMENT' == tokens[1].value
         )
