@@ -6,7 +6,7 @@ from music.cue_sheet.parser.node import Node
 
 class DiscID(Node):
     def __init__(self, tokens: list[Token]):
-        super().__init__(tokens, [])
+        super().__init__(tokens, children=[])
 
         assert isinstance(tokens[2].value, str)
         self.value = tokens[2].value

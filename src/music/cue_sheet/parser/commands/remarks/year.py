@@ -8,7 +8,7 @@ class Year(Node):
     def __init__(self, tokens: list[Token]):
         assert len(tokens) == 4
         assert isinstance(tokens[2].value, int)
-        super().__init__(tokens, [])
+        super().__init__(tokens, children=[])
         self.value = tokens[2].value
 
     type_pattern = [NAME, NAME, INT, EOL]
