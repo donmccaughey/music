@@ -79,6 +79,11 @@ def test_take_non_blank_line_when_empty():
     assert take_non_blank_line(token_iter) == []
 
 
+def test_take_non_blank_line_for_one_blank_line():
+    token_iter = iter([Token(1, EOL, '\n')])
+    assert take_non_blank_line(token_iter) == []
+
+
 def test_take_non_blank_line_for_several_lines():
     token_iter = iter(
         [
