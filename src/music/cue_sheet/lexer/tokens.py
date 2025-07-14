@@ -18,9 +18,8 @@ def take_line(token_iter: Iterator[Token]) -> Generator[list[Token]]:
         yield tokens
 
 
-def take_non_blank_line(token_iter: Iterator[Token]) -> list[Token] | None:
-    non_blank_lines = filter(lambda tokens: tokens, take_line(token_iter))
-    return next(non_blank_lines, None)
+def take_non_blank_lines(token_iter: Iterator[Token]) -> Generator[list[Token]]:
+    yield from filter(lambda tokens: tokens, take_line(token_iter))
 
 
 def types_of(tokens: list[Token]) -> list[TokenType]:
