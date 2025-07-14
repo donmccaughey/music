@@ -31,7 +31,7 @@ class Parser:
         self._parse_root(root)
         return root
 
-    def _next_line(self) -> list[Token]:
+    def _next_line(self) -> list[Token] | None:
         if self.line_stack:
             return self.line_stack.pop()
         else:
