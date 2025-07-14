@@ -2,15 +2,16 @@ from typing import Iterator
 
 from .token import Token
 from .token_type import EOL, INT, NAME, QSTR
-from .tokens import take_non_blank_lines, take_line
+from .tokens import take_non_blank_lines, take_lines
 
 
-def test_take_line_when_empty():
+def test_take_lines_when_empty():
     token_iter: Iterator[Token] = iter([])
-    assert next(take_line(token_iter), None) is None
+    lines = take_lines(token_iter)
+    assert next(lines, None) is None
 
 
-def test_take_line_for_several_lines():
+def test_take_lines_for_several_lines():
     token_iter = iter(
         [
             Token(1, NAME, 'PERFORMER'),
@@ -24,70 +25,32 @@ def test_take_line_for_several_lines():
             Token(3, EOL, '\n'),
         ]
     )
-    assert next(take_line(token_iter)) == [
+    lines = take_lines(token_iter)
+    assert next(lines) == [
         Token(1, NAME, 'PERFORMER'),
         Token(1, QSTR, 'The Rolling Stones'),
     ]
-    assert next(take_line(token_iter)) == [
+    assert next(lines) == [
         Token(2, NAME, 'TITLE'),
         Token(2, QSTR, 'Gimme Shelter'),
     ]
-    assert next(take_line(token_iter)) == []
-    assert next(take_line(token_iter), None) is None
+    assert next(lines) == []
+    assert next(lines, None) is None
 
 
-def test_take_line_iteration():
-    token_iter = iter(
-        [
-            Token(1, NAME, 'PERFORMER'),
-            Token(1, QSTR, 'The Rolling Stones'),
-            Token(1, EOL, '\n'),
-            #
-            Token(2, NAME, 'TITLE'),
-            Token(2, QSTR, 'Gimme Shelter'),
-            Token(2, EOL, '\n'),
-            #
-            Token(3, NAME, 'REM'),
-            Token(3, NAME, 'YEAR'),
-            Token(3, INT, 1969),
-            Token(3, EOL, '\n'),
-            #
-            Token(4, EOL, '\n'),
-        ]
-    )
-    lines = []
-    for line in take_line(token_iter):
-        lines.append(line)
-
-    assert len(lines) == 4
-    assert lines[0] == [
-        Token(1, NAME, 'PERFORMER'),
-        Token(1, QSTR, 'The Rolling Stones'),
-    ]
-    assert lines[1] == [
-        Token(2, NAME, 'TITLE'),
-        Token(2, QSTR, 'Gimme Shelter'),
-    ]
-    assert lines[2] == [
-        Token(3, NAME, 'REM'),
-        Token(3, NAME, 'YEAR'),
-        Token(3, INT, 1969),
-    ]
-    assert lines[3] == []
-
-
-def test_take_line_for_missing_eol():
+def test_take_lines_for_missing_eol():
     token_iter = iter(
         [
             Token(1, NAME, 'PERFORMER'),
             Token(1, QSTR, 'The Rolling Stones'),
         ]
     )
-    assert next(take_line(token_iter)) == [
+    lines = take_lines(token_iter)
+    assert next(lines) == [
         Token(1, NAME, 'PERFORMER'),
         Token(1, QSTR, 'The Rolling Stones'),
     ]
-    assert next(take_line(token_iter), None) is None
+    assert next(lines, None) is None
 
 
 def test_take_non_blank_lines_when_empty():
