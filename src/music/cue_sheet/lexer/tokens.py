@@ -1,4 +1,3 @@
-from itertools import filterfalse as filter_out, takewhile
 from typing import Generator, Iterator
 
 from .token import Token
@@ -6,9 +5,9 @@ from .token_type import TokenType
 
 
 def take_lines(token_iter: Iterator[Token]) -> Generator[list[Token]]:
+    no_ws_iter = filter(lambda token: not token.is_whitespace, token_iter)
     tokens: list[Token] = []
-    no_ws_iter = filter_out(lambda token: token.is_whitespace, token_iter)
-    while token := next(no_ws_iter, None):
+    for token in no_ws_iter:
         if token.is_end_of_line:
             yield tokens
             tokens = []

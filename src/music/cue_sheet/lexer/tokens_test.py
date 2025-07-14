@@ -1,7 +1,7 @@
 from typing import Iterator
 
 from .token import Token
-from .token_type import EOL, INT, NAME, QSTR
+from .token_type import EOL, NAME, QSTR
 from .tokens import take_non_blank_lines, take_lines
 
 
