@@ -24,7 +24,7 @@ from .root import Root
 class Parser:
     def __init__(self, token_iter: Iterator[Token]):
         self.lines_iter = take_non_blank_lines(token_iter)
-        self.line_stack: list[list[Token]] = []
+        self.lines_stack: list[list[Token]] = []
 
     def parse(self) -> Root:
         root = Root([])
@@ -32,13 +32,13 @@ class Parser:
         return root
 
     def _next_line(self) -> list[Token] | None:
-        if self.line_stack:
-            return self.line_stack.pop()
+        if self.lines_stack:
+            return self.lines_stack.pop()
         else:
             return next(self.lines_iter, None)
 
     def _push_line(self, line: list[Token]):
-        self.line_stack.append(line)
+        self.lines_stack.append(line)
 
     def _parse_root(self, root: Root):
         while tokens := self._next_line():
