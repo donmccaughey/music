@@ -11,6 +11,7 @@ def take_line(token_iter: Iterator[Token]) -> Generator[list[Token]]:
     while token := next(no_ws_iter, None):
         if token.is_end_of_line:
             yield tokens
+            tokens = []
         else:
             tokens.append(token)
     if tokens:
