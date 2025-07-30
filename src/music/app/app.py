@@ -11,12 +11,14 @@ from PySide6.QtWidgets import (
     QListWidgetItem,
     QVBoxLayout,
     QWidget,
+    QGroupBox,
 )
 
 
 @dataclass
 class Album:
     title: str
+
 
 @dataclass
 class Artist:
@@ -32,7 +34,7 @@ class MainWindow(QWidget):
         self.paths = paths
         self.verbose = verbose
 
-        self.artists = []
+        self.artists: list[Artist] = []
         for path in self.paths:
             relative_path = path.relative_to(root)
             artist_name, album_title, _ = relative_path.parts
@@ -45,25 +47,32 @@ class MainWindow(QWidget):
         # TODO: sort albums of last artist
         self.artists.sort(key=lambda a: a.name)
 
+        self.setWindowTitle('Music')
+
         self.box_layout = QVBoxLayout(self)
 
-        self.title = QLabel('-- ♫ Music ♫ --')
-        self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.title.setFont(QFont('Arial', 24))
-        self.box_layout.addWidget(self.title)
+        artists_group = QGroupBox()
+        artists_layout = QVBoxLayout(artists_group)
+        artists_layout.setContentsMargins(1, 2, 1, 2)
+        artists_layout.setSpacing(2)
+        self.box_layout.addWidget(artists_group)
+
+        artists_title = QLabel('Artists')
+        artists_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        artists_layout.addWidget(artists_title)
 
         self.artists_list = QListWidget()
+        self.artists_list.setFont(QFont('Arial', 14))
+        artists_layout.addWidget(self.artists_list)
+
+        self.status_bar = QLabel(f'{len(self.artists)} artists')
+        self.status_bar.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        artists_layout.addWidget(self.status_bar)
+
         for artist in self.artists:
             item = QListWidgetItem(artist.name)
             self.artists_list.addItem(item)
         # TODO: can the list widget sort itself?
-        self.box_layout.addWidget(self.artists_list)
-
-        self.status_bar = QLabel(
-            f'{len(self.artists)} artists'
-        )
-        self.status_bar.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.box_layout.addWidget(self.status_bar)
 
 
 def run_app(root: Path, paths: list[Path], verbose: bool):
