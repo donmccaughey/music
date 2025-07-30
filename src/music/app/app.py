@@ -1,16 +1,27 @@
 import sys
 
+from dataclasses import dataclass
 from pathlib import Path
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import (
     QApplication,
     QLabel,
-    QTreeWidget,
+    QListWidget,
+    QListWidgetItem,
     QVBoxLayout,
     QWidget,
-    QTreeWidgetItem,
 )
+
+
+@dataclass
+class Album:
+    title: str
+
+@dataclass
+class Artist:
+    name: str
+    albums: list[Album]
 
 
 class MainWindow(QWidget):
@@ -21,6 +32,19 @@ class MainWindow(QWidget):
         self.paths = paths
         self.verbose = verbose
 
+        self.artists = []
+        for path in self.paths:
+            relative_path = path.relative_to(root)
+            artist_name, album_title, _ = relative_path.parts
+            if not self.artists or artist_name != self.artists[-1].name:
+                # TODO: sort albums
+                artist = Artist(name=artist_name, albums=[])
+                self.artists.append(artist)
+            album = Album(album_title)
+            self.artists[-1].albums.append(album)
+        # TODO: sort albums of last artist
+        self.artists.sort(key=lambda a: a.name)
+
         self.box_layout = QVBoxLayout(self)
 
         self.title = QLabel('-- ♫ Music ♫ --')
@@ -28,34 +52,15 @@ class MainWindow(QWidget):
         self.title.setFont(QFont('Arial', 24))
         self.box_layout.addWidget(self.title)
 
-        self.paths_tree = QTreeWidget()
-        self.paths_tree.setHeaderHidden(True)
-
-        current_artist = ''
-        artist_count = 0
-        current_artist_item: QTreeWidgetItem | None = None
-
-        current_album = ''
-        album_count = 0
-
-        for path in self.paths:
-            relative_path = path.relative_to(root)
-            artist, album, _ = relative_path.parts
-            if artist != current_artist:
-                current_artist = artist
-                artist_count += 1
-                current_artist_item = QTreeWidgetItem([artist])
-                self.paths_tree.addTopLevelItem(current_artist_item)
-            if album != current_album:
-                current_album = album
-                album_count += 1
-                assert current_artist_item
-                album_item = QTreeWidgetItem([album])
-                current_artist_item.addChild(album_item)
-        self.box_layout.addWidget(self.paths_tree)
+        self.artists_list = QListWidget()
+        for artist in self.artists:
+            item = QListWidgetItem(artist.name)
+            self.artists_list.addItem(item)
+        # TODO: can the list widget sort itself?
+        self.box_layout.addWidget(self.artists_list)
 
         self.status_bar = QLabel(
-            f'{album_count} albums from {artist_count} artists'
+            f'{len(self.artists)} artists'
         )
         self.status_bar.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.box_layout.addWidget(self.status_bar)
