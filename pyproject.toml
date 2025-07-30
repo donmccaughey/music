@@ -2,7 +2,9 @@
 name = 'music'
 version = '0.0.1'
 requires-python = '==3.13.*'
-dependencies = []
+dependencies = [
+    'PySide6 ==6.9.1',
+]
 
 
 [tool.ruff]
@@ -15,7 +17,8 @@ quote-style = 'single'
 
 [tool.uv]
 dev-dependencies = [
-    'mypy ==1.16.1',
+    'mypy ==1.17.0',
+    'PySide6-stubs ==6.7.3.0',
     'pytest ==8.4.1',
     'pytest-cov ==6.2.1',
 ]

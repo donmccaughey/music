@@ -9,12 +9,16 @@ from pathlib import Path
 
 @dataclass
 class Options:
+    app: bool
     root: Path
     verbose: bool
 
     @classmethod
     def parse(cls, args: list[str] | None = None) -> Options:
         parser = ArgumentParser(description='Finds and check cue sheets')
+        parser.add_argument(
+            '-a', '--app', action='store_true', help='Launch the music app'
+        )
         parser.add_argument(
             '-v',
             '--verbose',
@@ -29,6 +33,7 @@ class Options:
         )
         namespace = parser.parse_args(args if args else sys.argv[1:])
         return cls(
+            app=namespace.app,
             root=namespace.root.expanduser().resolve(),
             verbose=namespace.verbose,
         )
