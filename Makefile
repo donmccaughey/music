@@ -1,4 +1,5 @@
 TMP ?= $(abspath tmp)
+MUSIC_ROOT ?= "~/Dropbox/Music/Don's Music"
 
 
 .SECONDEXPANSION :
@@ -23,6 +24,11 @@ clean :
 .PHONY : clobber
 clobber : clean
 	rm -rf .venv
+
+
+.PHONY : app
+app :
+	PYTHONPATH=src uv run -m music --app $(MUSIC_ROOT)
 
 
 .PHONY : cov
