@@ -27,14 +27,6 @@ class MainWindow(QWidget):
         self.albums_list = AlbumsList()
         h_box_layout.addWidget(self.albums_list.group_box)
 
-        # populate artists
-
-        for artist in self.library.artists:
-            item = QListWidgetItem(artist.name)
-            # TODO: can I attach an Artist object to the item?
-            self.artists_list.list_widget.addItem(item)
-        # TODO: can the list widget sort itself?
-
     def update_albumns_list(self, current, previous):
         self.albums_list.list_widget.clear()
         if not current:
