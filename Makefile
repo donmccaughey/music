@@ -28,7 +28,8 @@ clobber : clean
 
 .PHONY : app
 app :
-	PYTHONPATH=src uv run -m music --app $(MUSIC_ROOT)
+	PYTHONPATH=src \
+	uv run -m music --app $(MUSIC_ROOT)
 
 
 .PHONY : cov
@@ -36,7 +37,7 @@ cov : $(TMP)/coverage.sqlite
 	open "$(TMP)/coverage/index.html"
 
 
-src_files := $(shell find src/ -type f -not -name '.DS_Store')
+python_files := $(shell find src/ -type f -not -name '.DS_Store')
 
 
 uv.lock : pyproject.toml .python-version
@@ -60,7 +61,7 @@ $(TMP)/coverage.sqlite : \
 
 $(TMP)/mypy.stamp : \
 		.mypy.ini \
-		$(src_files) \
+		$(python_files) \
 		$(TMP)/ruff-format.stamp
 	uv run -m mypy --check-untyped-defs src
 	touch $@
@@ -68,8 +69,7 @@ $(TMP)/mypy.stamp : \
 
 $(TMP)/ruff-format.stamp : \
 		pyproject.toml \
-		$(src_files) \
-		$(test_files) \
+		$(python_files) \
 		$(TMP)/uv-sync.stamp
 	ruff format \
 		--config pyproject.toml \
