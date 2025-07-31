@@ -28,14 +28,9 @@ class MainWindow(QWidget):
         h_box_layout.addWidget(self.albums_list.group_box)
 
     def update_albumns_list(self, current, previous):
-        self.albums_list.list_widget.clear()
-        if not current:
-            self.albums_list.status_bar.setText('No albums')
-            return
-
-        name = current.text()
-        artist = self.library.artists_by_name[name]
-        for album in artist.albums:
-            item = QListWidgetItem(album.title)
-            self.albums_list.list_widget.addItem(item)
-        self.albums_list.status_bar.setText(f'{len(artist.albums)} albums')
+        if current:
+            name = current.text()
+            artist = self.library.artists_by_name[name]
+            self.albums_list.show_albums(artist.albums)
+        else:
+            self.albums_list.show_albums([])
