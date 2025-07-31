@@ -11,6 +11,7 @@ from PySide6.QtWidgets import (
 )
 
 from .library import Library
+from .artists_list import ArtistsList
 
 
 class MainWindow(QWidget):
@@ -26,25 +27,11 @@ class MainWindow(QWidget):
         self.box_layout.addLayout(horizontal_layout)
 
         # artists
-
-        artists_group = QGroupBox()
-        artists_layout = QVBoxLayout(artists_group)
-        artists_layout.setContentsMargins(1, 2, 1, 2)
-        artists_layout.setSpacing(2)
-        horizontal_layout.addWidget(artists_group)
-
-        artists_title = QLabel('Artists')
-        artists_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        artists_layout.addWidget(artists_title)
-
-        self.artists_list = QListWidget()
-        self.artists_list.setFont(QFont('Arial', 14))
-        self.artists_list.currentItemChanged.connect(self.update_albumns_list)
-        artists_layout.addWidget(self.artists_list)
-
-        self.status_bar = QLabel(f'{len(self.library.artists)} artists')
-        self.status_bar.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        artists_layout.addWidget(self.status_bar)
+        self.artists_list = ArtistsList(self.library)
+        horizontal_layout.addWidget(self.artists_list.group_box)
+        self.artists_list.list_widget.currentItemChanged.connect(
+            self.update_albumns_list
+        )
 
         # albums
 
@@ -71,7 +58,7 @@ class MainWindow(QWidget):
         for artist in self.library.artists:
             item = QListWidgetItem(artist.name)
             # TODO: can I attach an Artist object to the item?
-            self.artists_list.addItem(item)
+            self.artists_list.list_widget.addItem(item)
         # TODO: can the list widget sort itself?
 
     def update_albumns_list(self, current, previous):
