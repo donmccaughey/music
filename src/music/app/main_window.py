@@ -16,22 +16,16 @@ class MainWindow(QWidget):
         self.library = library
 
         self.setWindowTitle('Music')
+        h_box_layout = QHBoxLayout(self)
 
-        self.box_layout = QVBoxLayout(self)
-
-        horizontal_layout = QHBoxLayout()
-        self.box_layout.addLayout(horizontal_layout)
-
-        # artists
         self.artists_list = ArtistsList(self.library)
-        horizontal_layout.addWidget(self.artists_list.group_box)
+        h_box_layout.addWidget(self.artists_list.group_box)
         self.artists_list.list_widget.currentItemChanged.connect(
             self.update_albumns_list
         )
 
-        # albums
         self.albums_list = AlbumsList()
-        horizontal_layout.addWidget(self.albums_list.group_box)
+        h_box_layout.addWidget(self.albums_list.group_box)
 
         # populate artists
 
