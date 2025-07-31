@@ -3,13 +3,16 @@ import sys
 from pathlib import Path
 from PySide6.QtWidgets import QApplication
 
+from .library import Library
 from .main_window import MainWindow
 
 
-def run_app(root: Path, paths: list[Path], verbose: bool):
+def run_app(root: Path, paths: list[Path]):
+    library = Library(root, paths)
+
     app = QApplication([])
 
-    main_window = MainWindow(root, paths, verbose)
+    main_window = MainWindow(library)
     main_window.resize(800, 600)
     main_window.show()
 

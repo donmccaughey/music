@@ -1,4 +1,3 @@
-from pathlib import Path
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import (
@@ -15,14 +14,9 @@ from .library import Library
 
 
 class MainWindow(QWidget):
-    def __init__(self, root: Path, paths: list[Path], verbose: bool):
+    def __init__(self, library: Library):
         super().__init__()
-
-        self.root = root
-        self.paths = paths
-        self.verbose = verbose
-
-        self.library = Library(self.root, paths)
+        self.library = library
 
         self.setWindowTitle('Music')
 

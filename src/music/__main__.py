@@ -10,6 +10,6 @@ options = Options.parse()
 paths = find_cue_sheet_paths(options.root)
 
 if options.app:
-    run_app(options.root, paths, options.verbose)
+    run_app(options.root, paths)
 else:
     write_report(options.root, paths, sys.stdout, options.verbose)
