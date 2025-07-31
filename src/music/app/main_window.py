@@ -1,9 +1,4 @@
-from PySide6.QtWidgets import (
-    QListWidgetItem,
-    QVBoxLayout,
-    QWidget,
-    QHBoxLayout,
-)
+from PySide6.QtWidgets import QWidget, QHBoxLayout
 
 from .albums_list import AlbumsList
 from .artists_list import ArtistsList
