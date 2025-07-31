@@ -15,13 +15,39 @@ from PySide6.QtWidgets import (
 
 @dataclass
 class Album:
+    folder: Path
     title: str
 
 
 @dataclass
 class Artist:
+    folder: Path
     name: str
     albums: list[Album]
+
+
+class Library:
+    def __init__(self, folder: Path, paths: list[Path]):
+        self.folder = folder
+        self.artists: list[Artist] = []
+        self.artists_by_name: dict[str, Artist] = {}
+
+        for path in paths:
+            relative_path = path.relative_to(self.folder)
+            artist_folder = relative_path.parent
+            artist_name, album_title, _ = relative_path.parts
+
+            if not self.artists or artist_name != self.artists[-1].name:
+                artist = Artist(
+                    folder=artist_folder, name=artist_name, albums=[]
+                )
+                self.artists.append(artist)
+                self.artists_by_name[artist_name] = artist
+
+            album = Album(folder=relative_path, title=album_title)
+            self.artists[-1].albums.append(album)
+
+        self.artists.sort(key=lambda a: a.name)
 
 
 class MainWindow(QWidget):
@@ -32,21 +58,7 @@ class MainWindow(QWidget):
         self.paths = paths
         self.verbose = verbose
 
-        self.artists: list[Artist] = []
-        self.artists_by_name: dict[str, Artist] = {}
-
-        for path in self.paths:
-            relative_path = path.relative_to(root)
-            artist_name, album_title, _ = relative_path.parts
-            if not self.artists or artist_name != self.artists[-1].name:
-                # TODO: sort albums
-                artist = Artist(name=artist_name, albums=[])
-                self.artists.append(artist)
-                self.artists_by_name[artist_name] = artist
-            album = Album(album_title)
-            self.artists[-1].albums.append(album)
-        # TODO: sort albums of last artist
-        self.artists.sort(key=lambda a: a.name)
+        self.library = Library(self.root, paths)
 
         self.setWindowTitle('Music')
 
@@ -72,7 +84,7 @@ class MainWindow(QWidget):
         self.artists_list.currentItemChanged.connect(self.update_albumns_list)
         artists_layout.addWidget(self.artists_list)
 
-        self.status_bar = QLabel(f'{len(self.artists)} artists')
+        self.status_bar = QLabel(f'{len(self.library.artists)} artists')
         self.status_bar.setAlignment(Qt.AlignmentFlag.AlignCenter)
         artists_layout.addWidget(self.status_bar)
 
@@ -98,7 +110,7 @@ class MainWindow(QWidget):
 
         # populate artists
 
-        for artist in self.artists:
+        for artist in self.library.artists:
             item = QListWidgetItem(artist.name)
             # TODO: can I attach an Artist object to the item?
             self.artists_list.addItem(item)
@@ -111,7 +123,7 @@ class MainWindow(QWidget):
             return
 
         name = current.text()
-        artist = self.artists_by_name[name]
+        artist = self.library.artists_by_name[name]
         for album in artist.albums:
             item = QListWidgetItem(album.title)
             self.albums_list.addItem(item)
