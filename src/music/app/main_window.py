@@ -1,17 +1,13 @@
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QFont
 from PySide6.QtWidgets import (
-    QLabel,
-    QListWidget,
     QListWidgetItem,
     QVBoxLayout,
     QWidget,
-    QGroupBox,
     QHBoxLayout,
 )
 
-from .library import Library
+from .albums_list import AlbumsList
 from .artists_list import ArtistsList
+from .library import Library
 
 
 class MainWindow(QWidget):
@@ -34,24 +30,8 @@ class MainWindow(QWidget):
         )
 
         # albums
-
-        albums_group = QGroupBox()
-        albumns_layout = QVBoxLayout(albums_group)
-        albumns_layout.setContentsMargins(1, 2, 1, 2)
-        albumns_layout.setSpacing(2)
-        horizontal_layout.addWidget(albums_group)
-
-        albumns_title = QLabel('Albums')
-        albumns_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        albumns_layout.addWidget(albumns_title)
-
-        self.albums_list = QListWidget()
-        self.albums_list.setFont(QFont('Arial', 14))
-        albumns_layout.addWidget(self.albums_list)
-
-        self.albums_status_bar = QLabel('No albums')
-        self.albums_status_bar.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        albumns_layout.addWidget(self.albums_status_bar)
+        self.albums_list = AlbumsList()
+        horizontal_layout.addWidget(self.albums_list.group_box)
 
         # populate artists
 
@@ -62,14 +42,14 @@ class MainWindow(QWidget):
         # TODO: can the list widget sort itself?
 
     def update_albumns_list(self, current, previous):
-        self.albums_list.clear()
+        self.albums_list.list_widget.clear()
         if not current:
-            self.albums_status_bar.setText('No albums')
+            self.albums_list.status_bar.setText('No albums')
             return
 
         name = current.text()
         artist = self.library.artists_by_name[name]
         for album in artist.albums:
             item = QListWidgetItem(album.title)
-            self.albums_list.addItem(item)
-        self.albums_status_bar.setText(f'{len(artist.albums)} albums')
+            self.albums_list.list_widget.addItem(item)
+        self.albums_list.status_bar.setText(f'{len(artist.albums)} albums')
