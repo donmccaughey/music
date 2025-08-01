@@ -1,15 +1,13 @@
 import sys
 
-from pathlib import Path
 from PySide6.QtWidgets import QApplication
 
 from music.library import Library
+
 from .main_window import MainWindow
 
 
-def run_app(root: Path, paths: list[Path]):
-    library = Library(root, paths)
-
+def run_app(library: Library):
     app = QApplication([])
 
     main_window = MainWindow(library)

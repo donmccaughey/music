@@ -1,8 +1,9 @@
 from PySide6.QtWidgets import QWidget, QHBoxLayout
 
+from music.library.library import Library
+
 from .albums_list import AlbumsList
 from .artists_list import ArtistsList
-from music.library.library import Library
 
 
 class MainWindow(QWidget):
