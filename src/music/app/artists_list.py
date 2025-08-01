@@ -8,13 +8,11 @@ from PySide6.QtWidgets import (
     QGroupBox,
 )
 
-from music.library import Library
+from music.library import Library, Artist
 
 
 class ArtistsList:
-    def __init__(self, library: Library):
-        self.library = library
-
+    def __init__(self):
         self.group_box = QGroupBox()
 
         v_box_layout = QVBoxLayout(self.group_box)
@@ -29,12 +27,18 @@ class ArtistsList:
         self.list_widget.setFont(QFont('Arial', 14))
         v_box_layout.addWidget(self.list_widget)
 
-        self.status_bar = QLabel(f'{len(self.library.artists)} artists')
+        self.status_bar = QLabel('No artists')
         self.status_bar.setAlignment(Qt.AlignmentFlag.AlignCenter)
         v_box_layout.addWidget(self.status_bar)
 
-        for artist in self.library.artists:
+    def show_artists(self, artists: list[Artist]):
+        self.list_widget.clear()
+        sorted_artists = sorted(artists, key=lambda artist: artist.name)
+
+        for artist in sorted_artists:
             item = QListWidgetItem(artist.name)
-            # TODO: can I attach an Artist object to the item?
             self.list_widget.addItem(item)
-        # TODO: can the list widget sort itself?
+
+        self.status_bar.setText(
+            f'{len(artists)} artists' if artists else 'No artists'
+        )

@@ -33,11 +33,12 @@ class AlbumsList:
 
     def show_albums(self, albums: list[Album]):
         self.list_widget.clear()
+        sorted_albums = sorted(albums, key=lambda album: album.title)
 
-        if albums:
-            for album in albums:
-                item = QListWidgetItem(album.title)
-                self.list_widget.addItem(item)
-            self.status_bar.setText(f'{len(albums)} albums')
-        else:
-            self.status_bar.setText('No albums')
+        for album in sorted_albums:
+            item = QListWidgetItem(album.title)
+            self.list_widget.addItem(item)
+
+        self.status_bar.setText(
+            f'{len(albums)} albums' if albums else 'No albums'
+        )
