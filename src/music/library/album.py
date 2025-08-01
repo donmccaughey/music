@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
+from .track import Track
+
 
 @dataclass
 class Album:
@@ -12,7 +14,7 @@ class Album:
     covers: list[Path]
     cue_sheets: list[Path]
     flac_files: list[Path]
-    music_files: list[Path]
+    tracks: list[Track]
 
     @classmethod
     def load(cls, library_root: Path, rel_album_dir: Path) -> Album:
@@ -20,7 +22,7 @@ class Album:
         covers = []
         cue_sheets = []
         flac_files = []
-        music_files = []
+        tracks = []
 
         album_dir = library_root / rel_album_dir
         for path in album_dir.iterdir():
@@ -32,16 +34,18 @@ class Album:
                 elif is_flac(path):
                     flac_files.append(path)
                 elif is_music(path):
-                    music_files.append(path)
+                    rel_track_dir = path.relative_to(library_root)
+                    track = Track.load(library_root, rel_track_dir)
+                    tracks.append(track)
 
-        return Album(
+        return cls(
             library_root=library_root,
             rel_album_dir=rel_album_dir,
             title=title,
             covers=covers,
             cue_sheets=cue_sheets,
             flac_files=flac_files,
-            music_files=music_files,
+            tracks=tracks,
         )
 
 
@@ -63,4 +67,4 @@ def is_flac(path: Path) -> bool:
 
 
 def is_music(path: Path) -> bool:
-    return path.suffix in ['mp3']
+    return path.suffix in ['.mp3', '.m4a']
