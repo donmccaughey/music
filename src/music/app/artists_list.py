@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
     QGroupBox,
 )
 
-from .library import Library
+from music.library import Library
 
 
 class ArtistsList:

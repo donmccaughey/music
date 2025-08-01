@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 from PySide6.QtWidgets import QApplication
 
-from .library import Library
+from music.library import Library
 from .main_window import MainWindow
 
 

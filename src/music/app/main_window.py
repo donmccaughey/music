@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QWidget, QHBoxLayout
 
 from .albums_list import AlbumsList
 from .artists_list import ArtistsList
-from .library import Library
+from music.library.library import Library
 
 
 class MainWindow(QWidget):
