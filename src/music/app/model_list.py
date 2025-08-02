@@ -21,22 +21,22 @@ class ModelList(Generic[M], ABC):
 
         self.group_box = QGroupBox()
 
-        v_box_layout = QVBoxLayout(self.group_box)
-        v_box_layout.setContentsMargins(1, 2, 1, 2)
-        v_box_layout.setSpacing(2)
+        layout = QVBoxLayout(self.group_box)
+        layout.setContentsMargins(1, 1, 1, 1)
+        layout.setSpacing(3)
 
         title = QLabel(self.model_type.title())
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        v_box_layout.addWidget(title)
+        layout.addWidget(title)
 
         self.list_widget = QListWidget()
         self.list_widget.setFont(QFont('Arial', 14))
-        v_box_layout.addWidget(self.list_widget)
+        layout.addWidget(self.list_widget)
 
         self.status_bar = QLabel()
         self.status_bar.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.set_status_bar(0)
-        v_box_layout.addWidget(self.status_bar)
+        layout.addWidget(self.status_bar)
 
     @abstractmethod
     def model_text(self, model: M) -> str: ...

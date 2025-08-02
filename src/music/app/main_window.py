@@ -15,22 +15,24 @@ class MainWindow(QWidget):
         self.library = library
 
         self.setWindowTitle('Music')
-        h_box_layout = QHBoxLayout(self)
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(10, 8, 10, 10)
+        layout.setSpacing(8)
 
         self.artist_list = ArtistList()
-        h_box_layout.addWidget(self.artist_list.group_box)
+        layout.addWidget(self.artist_list.group_box)
         self.artist_list.list_widget.currentItemChanged.connect(
             self.change_artist
         )
 
         self.album_list = AlbumList()
-        h_box_layout.addWidget(self.album_list.group_box)
+        layout.addWidget(self.album_list.group_box)
         self.album_list.list_widget.currentItemChanged.connect(
             self.change_album
         )
 
         self.track_list = TrackList()
-        h_box_layout.addWidget(self.track_list.group_box)
+        layout.addWidget(self.track_list.group_box)
 
         self.artist_list.set_models(self.library.artists)
 
