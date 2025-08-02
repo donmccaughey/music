@@ -33,7 +33,7 @@ class Album:
                     cue_sheets.append(path)
                 elif is_flac(path):
                     flac_files.append(path)
-                elif is_music(path):
+                elif is_track(path):
                     rel_track_dir = path.relative_to(library_root)
                     track = Track.load(library_root, rel_track_dir)
                     tracks.append(track)
@@ -66,5 +66,5 @@ def is_flac(path: Path) -> bool:
     return '.flac' == path.suffix
 
 
-def is_music(path: Path) -> bool:
+def is_track(path: Path) -> bool:
     return path.suffix in ['.mp3', '.m4a']

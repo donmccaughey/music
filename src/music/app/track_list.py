@@ -11,4 +11,4 @@ class TrackList(ModelList[Track]):
         return str(model.title)
 
     def sort_models(self, models: list[Track]) -> list[Track]:
-        return sorted(models, key=lambda model: model.title)
+        return sorted(models, key=lambda model: (model.number, model.title))

@@ -25,8 +25,8 @@ class Artist:
     @classmethod
     def load(cls, library_root: Path, rel_artist_dir: Path) -> Artist:
         name = rel_artist_dir.name
-        albums = []
 
+        albums = []
         artist_dir = library_root / rel_artist_dir
         for path in artist_dir.iterdir():
             if path.is_dir():
