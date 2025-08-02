@@ -3,7 +3,7 @@ from music.library import Artist
 from .model_list import ModelList
 
 
-class ArtistsList(ModelList[Artist]):
+class ArtistList(ModelList[Artist]):
     def __init__(self):
         super().__init__('artist')
 

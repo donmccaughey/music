@@ -3,9 +3,9 @@ from PySide6.QtWidgets import QWidget, QHBoxLayout
 
 from music.library.library import Library
 
-from .albums_list import AlbumsList
-from .artists_list import ArtistsList
-from .tracks_list import TracksList
+from .album_list import AlbumList
+from .artist_list import ArtistList
+from .track_list import TrackList
 
 
 class MainWindow(QWidget):
@@ -17,22 +17,22 @@ class MainWindow(QWidget):
         self.setWindowTitle('Music')
         h_box_layout = QHBoxLayout(self)
 
-        self.artists_list = ArtistsList()
-        h_box_layout.addWidget(self.artists_list.group_box)
-        self.artists_list.list_widget.currentItemChanged.connect(
+        self.artist_list = ArtistList()
+        h_box_layout.addWidget(self.artist_list.group_box)
+        self.artist_list.list_widget.currentItemChanged.connect(
             self.change_artist
         )
 
-        self.albums_list = AlbumsList()
-        h_box_layout.addWidget(self.albums_list.group_box)
-        self.albums_list.list_widget.currentItemChanged.connect(
+        self.album_list = AlbumList()
+        h_box_layout.addWidget(self.album_list.group_box)
+        self.album_list.list_widget.currentItemChanged.connect(
             self.change_album
         )
 
-        self.tracks_list = TracksList()
-        h_box_layout.addWidget(self.tracks_list.group_box)
+        self.track_list = TrackList()
+        h_box_layout.addWidget(self.track_list.group_box)
 
-        self.artists_list.set_models(self.library.artists)
+        self.artist_list.set_models(self.library.artists)
 
     @Slot()
     def change_artist(self, current, previous):
@@ -40,17 +40,17 @@ class MainWindow(QWidget):
             artist_name = current.text()
             artist = self.library.get_artist(artist_name)
             assert artist
-            self.albums_list.set_models(artist.albums)
+            self.album_list.set_models(artist.albums)
         else:
-            self.albums_list.set_models([])
+            self.album_list.set_models([])
 
     @Slot()
     def change_album(self, current, previous):
         if current:
-            artist_name = self.artists_list.list_widget.currentItem().text()
+            artist_name = self.artist_list.list_widget.currentItem().text()
             album_title = current.text()
             album = self.library.get_album(artist_name, album_title)
             assert album
-            self.tracks_list.set_models(album.tracks)
+            self.track_list.set_models(album.tracks)
         else:
-            self.tracks_list.set_models([])
+            self.track_list.set_models([])

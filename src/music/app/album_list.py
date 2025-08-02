@@ -3,7 +3,7 @@ from music.library import Album
 from .model_list import ModelList
 
 
-class AlbumsList(ModelList[Album]):
+class AlbumList(ModelList[Album]):
     def __init__(self):
         super().__init__('album')
 
