@@ -1,6 +1,6 @@
 import sys
 
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QMenuBar
 
 from music.library import Library
 
@@ -16,6 +16,9 @@ class App(QApplication):
         self.setApplicationDisplayName('Music')
         self.setApplicationName('Music')
         self.setApplicationVersion('0.0.1')
+
+        self.menu_bar = QMenuBar()
+        self.menu_bar.setNativeMenuBar(True)
 
     def run(self):
         main_window = MainWindow(self.library)
