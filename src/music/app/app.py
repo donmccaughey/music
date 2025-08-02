@@ -7,11 +7,18 @@ from music.library import Library
 from .main_window import MainWindow
 
 
-def run_app(library: Library):
-    app = QApplication([])
+class App(QApplication):
+    def __init__(self, library: Library):
+        super().__init__([])
 
-    main_window = MainWindow(library)
-    main_window.resize(800, 600)
-    main_window.show()
+        self.library = library
 
-    sys.exit(app.exec())
+        self.setApplicationDisplayName('Music')
+        self.setApplicationName('Music')
+        self.setApplicationVersion('0.0.1')
+
+    def run(self):
+        main_window = MainWindow(self.library)
+        main_window.resize(800, 600)
+        main_window.show()
+        sys.exit(self.exec())
