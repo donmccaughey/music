@@ -27,18 +27,25 @@ class AlbumsList:
         self.list_widget.setFont(QFont('Arial', 14))
         v_box_layout.addWidget(self.list_widget)
 
-        self.status_bar = QLabel('No albums')
+        self.status_bar = QLabel()
         self.status_bar.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.set_status_bar(0)
         v_box_layout.addWidget(self.status_bar)
 
-    def show_albums(self, albums: list[Album]):
+    def set_albums(self, albums: list[Album]):
+        self.list_widget.setCurrentRow(-1)
         self.list_widget.clear()
-        sorted_albums = sorted(albums, key=lambda album: album.title)
 
-        for album in sorted_albums:
-            item = QListWidgetItem(album.title)
-            self.list_widget.addItem(item)
+        if albums:
+            sorted_albums = sorted(albums, key=lambda album: album.title)
+            for album in sorted_albums:
+                item = QListWidgetItem(album.title)
+                self.list_widget.addItem(item)
+            self.list_widget.setCurrentRow(0)
 
-        self.status_bar.setText(
-            f'{len(albums)} albums' if albums else 'No albums'
-        )
+        self.set_status_bar(len(albums))
+
+    def set_status_bar(self, count: int):
+        amount = str(count) if count else 'No'
+        label = 'album' if 1 == count else 'albums'
+        self.status_bar.setText(f'{amount} {label}')

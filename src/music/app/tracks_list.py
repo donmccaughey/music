@@ -27,18 +27,26 @@ class TracksList:
         self.list_widget.setFont(QFont('Arial', 14))
         v_box_layout.addWidget(self.list_widget)
 
-        self.status_bar = QLabel('No tracks')
+        self.status_bar = QLabel()
+        self.set_status_bar(0)
         self.status_bar.setAlignment(Qt.AlignmentFlag.AlignCenter)
         v_box_layout.addWidget(self.status_bar)
 
-    def show_tracks(self, tracks: list[Track]):
+    def set_tracks(self, tracks: list[Track]):
+        self.list_widget.setCurrentRow(-1)
         self.list_widget.clear()
-        sorted_tracks = sorted(tracks, key=lambda track: track.title)
 
-        for track in sorted_tracks:
-            item = QListWidgetItem(track.title)
-            self.list_widget.addItem(item)
+        if tracks:
+            sorted_tracks = sorted(tracks, key=lambda track: track.title)
 
-        self.status_bar.setText(
-            f'{len(tracks)} tracks' if tracks else 'No tracks'
-        )
+            for track in sorted_tracks:
+                item = QListWidgetItem(track.title)
+                self.list_widget.addItem(item)
+            self.list_widget.setCurrentRow(0)
+
+        self.set_status_bar(len(tracks))
+
+    def set_status_bar(self, count: int):
+        amount = str(count) if count else 'No'
+        label = 'track' if 1 == count else 'tracks'
+        self.status_bar.setText(f'{amount} {label}')
