@@ -1,5 +1,5 @@
+CODESIGN_IDENTITY ?= "Donald McCaughey (K39VF43BJL)"
 TMP ?= $(abspath tmp)
-MUSIC_ROOT ?= "~/Dropbox/Music/Don's Music"
 
 
 .SECONDEXPANSION :
@@ -27,9 +27,7 @@ clobber : clean
 
 
 .PHONY : app
-app :
-	PYTHONPATH=src \
-	uv run -m music --app $(MUSIC_ROOT)
+app : $(TMP)/Music.app
 
 
 .PHONY : cov
@@ -37,7 +35,25 @@ cov : $(TMP)/coverage.sqlite
 	open "$(TMP)/coverage/index.html"
 
 
+.PHONY : run
+run : $(TMP)/Music.app
+	open $<
+
+
 python_files := $(shell find src/ -type f -not -name '.DS_Store')
+
+
+Music.spec :
+	uv run pyi-makespec \
+		--codesign-identity $(CODESIGN_IDENTITY) \
+		--log-level ERROR \
+		--name Music \
+		--onedir \
+		--osx-bundle-identifier cc.donm.music \
+		--paths src \
+		--specpath . \
+		--windowed \
+		src/run_app.py
 
 
 uv.lock : pyproject.toml .python-version
@@ -47,8 +63,7 @@ uv.lock : pyproject.toml .python-version
 
 $(TMP)/coverage.sqlite : \
 		.coveragerc \
-		$(TMP)/mypy.stamp \
-		| $$(dir $$@)
+		$(TMP)/mypy.stamp
 	rm -rf "$(TMP)/coverage"
 	COVERAGE_FILE=$@ \
 	uv run -m pytest \
@@ -59,16 +74,25 @@ $(TMP)/coverage.sqlite : \
 		--quiet --quiet
 
 
+$(TMP)/Music.app : Music.spec $(TMP)/coverage.sqlite
+	uv run pyinstaller \
+		--clean \
+		--distpath $(TMP)/dist \
+		--log-level ERROR \
+		--noconfirm \
+		--workpath $(TMP)/pyinstaller \
+		$<
+	mv $(TMP)/dist/Music.app $@
+
+
 $(TMP)/mypy.stamp : \
 		.mypy.ini \
-		$(python_files) \
 		$(TMP)/ruff-format.stamp
 	uv run -m mypy --check-untyped-defs src
 	touch $@
 
 
 $(TMP)/ruff-format.stamp : \
-		pyproject.toml \
 		$(python_files) \
 		$(TMP)/uv-sync.stamp
 	ruff format \
