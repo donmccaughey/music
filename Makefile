@@ -75,6 +75,7 @@ $(TMP)/coverage.sqlite : \
 
 
 $(TMP)/Music.app : Music.spec $(TMP)/coverage.sqlite
+	rm -rf $@
 	uv run pyinstaller \
 		--clean \
 		--distpath $(TMP)/dist \
